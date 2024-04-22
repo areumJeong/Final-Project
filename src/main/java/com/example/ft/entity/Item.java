@@ -28,7 +28,7 @@ public class Item {
 	private LocalDateTime saleDate;
 	private LocalDateTime regDate;
 	private String option;
-	private String count;
+	private int count;
 	private int isDeleted;
 	private String tag;
 	private int totalSta;

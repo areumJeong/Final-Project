@@ -1,10 +1,10 @@
 import React from "react";
-import ItemInsert from "./pages/ItemInsert";
+import ItemList from "./pages/ItemList";
 
 function App() {
   return (
     <>
-      <ItemInsert />
+      <ItemList />
     </>
   );
 }

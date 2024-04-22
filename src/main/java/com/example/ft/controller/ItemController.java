@@ -1,14 +1,14 @@
 package com.example.ft.controller;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.ibatis.javassist.expr.NewArray;
 import org.json.simple.JSONObject;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,15 +17,12 @@ import net.minidev.json.JSONArray;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.ft.entity.Board;
 import com.example.ft.entity.Item;
-import com.example.ft.service.BoardService;
 import com.example.ft.service.ItemService;
-import org.springframework.web.bind.annotation.RequestBody;
 
-
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @Slf4j // log로 값을 출력
-@Controller
+@RestController
 @RequestMapping("/item")	
 @RequiredArgsConstructor
 public class ItemController {
@@ -54,6 +51,7 @@ public class ItemController {
 			jObj.put("totalSta", item.getTotalSta());
 			jArr.add(jObj);
 		}
+		list.forEach(x -> System.out.println(x));
 		return jArr;
 	}
 	
@@ -63,6 +61,7 @@ public class ItemController {
 		JSONArray jArr = new JSONArray();
 		for(Item item : list) {
 			JSONObject jObj = new JSONObject(); 
+			JSONArray jArray = new JSONArray();
 			jObj.put("iid", item.getIid());
 			jObj.put("name", item.getName());
 			jObj.put("category", item.getCategory());
@@ -85,7 +84,7 @@ public class ItemController {
 	
 	@PostMapping("/insert")
 	public String ItemInsert(String name, String category, String img1, String img2,
-			 String content, int price, String option, String count, String tag) {
+			 String content, int price, String option, int count, String tag) {
 		Item item = Item.builder()
 						.name(name).category(category).img1(img1).img2(img2)
 						.content(content).price(price).option(option).count(count)
@@ -96,7 +95,7 @@ public class ItemController {
 	
 	@PostMapping("/update")
 	public String ItemUpdate(String name, String category, String img1, String img2,
-			 String content, int price, String option, String count, String tag, int iid) {
+			 String content, int price, String option, int count, String tag, int iid) {
 		Item item = Item.builder()
 						.name(name).category(category).img1(img1).img2(img2)
 						.content(content).price(price).option(option).count(count)

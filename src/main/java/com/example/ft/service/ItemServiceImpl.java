@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.ft.dao.BoardDao;
 import com.example.ft.dao.ItemDao;
-import com.example.ft.entity.Board;
 import com.example.ft.entity.Item;
 
 import lombok.RequiredArgsConstructor;
