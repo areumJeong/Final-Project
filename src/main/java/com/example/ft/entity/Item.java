@@ -1,6 +1,7 @@
 package com.example.ft.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,7 @@ public class Item {
 	private LocalDateTime saleDate;
 	private LocalDateTime regDate;
 	private String option;
-	private int count;
+	private String count;
 	private int isDeleted;
 	private String tag;
 	private int totalSta;

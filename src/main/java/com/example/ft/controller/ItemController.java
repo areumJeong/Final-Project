@@ -1,11 +1,14 @@
 package com.example.ft.controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.javassist.expr.NewArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -82,7 +85,7 @@ public class ItemController {
 	
 	@PostMapping("/insert")
 	public String ItemInsert(String name, String category, String img1, String img2,
-			 String content, int price, String option, int count, String tag) {
+			 String content, int price, String option, String count, String tag) {
 		Item item = Item.builder()
 						.name(name).category(category).img1(img1).img2(img2)
 						.content(content).price(price).option(option).count(count)
@@ -93,7 +96,7 @@ public class ItemController {
 	
 	@PostMapping("/update")
 	public String ItemUpdate(String name, String category, String img1, String img2,
-			 String content, int price, String option, int count, String tag, int iid) {
+			 String content, int price, String option, String count, String tag, int iid) {
 		Item item = Item.builder()
 						.name(name).category(category).img1(img1).img2(img2)
 						.content(content).price(price).option(option).count(count)
