@@ -23,7 +23,7 @@ public interface BoardDao {
 	void insertBoard(Board board);
 	
 	@Update("update board set iId=#{iId}, btype=#{btype}, bcate=#{bcate}, title=#{title},"
-			+ " content=#{content}, img=#{img}")
+			+ " content=#{content}, img=#{img} where bid=#{bid}")
 	void updateBoard(Board board);
 	
 	@Update("update board set isDeleted=1 where bid=#{bid}")
