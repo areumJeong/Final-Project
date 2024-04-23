@@ -1,13 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import ItemList from './pages/ItemList';
+import NotFound from './pages/NotFound';
+import ItemInsert from './pages/ItemInsert';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <NotFound />,
+    children: [
+      { index: true, element: <ItemList /> },
+      { path: 'itemlist', element: <ItemList /> },
+      { path: 'iteminsert', element: <ItemInsert /> },
+    ]
+  }
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

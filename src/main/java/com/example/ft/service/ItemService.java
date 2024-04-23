@@ -3,6 +3,8 @@ package com.example.ft.service;
 import java.util.List;
 
 import com.example.ft.entity.Item;
+import com.example.ft.entity.ItemOption;
+import com.example.ft.entity.ItemTag;
 
 public interface ItemService {
 	
@@ -19,4 +21,10 @@ public interface ItemService {
 	void deleteItem(int iid);
 	
 	void saleItem(Item item);
+	
+	// itemOtion
+	void optionInsert(ItemOption itemOption);
+	
+	// itemTag
+	void tagInsert(ItemTag itemTag);
 }

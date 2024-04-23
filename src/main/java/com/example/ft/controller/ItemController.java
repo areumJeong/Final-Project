@@ -1,6 +1,7 @@
 package com.example.ft.controller;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.simple.JSONObject;
@@ -16,8 +17,12 @@ import net.minidev.json.JSONArray;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.ft.entity.Item;
+import com.example.ft.entity.ItemOption;
+import com.example.ft.entity.ItemRequest;
+import com.example.ft.entity.ItemTag;
 import com.example.ft.service.ItemService;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
@@ -44,14 +49,10 @@ public class ItemController {
 			jObj.put("salePrice", item.getSalePrice());
 			jObj.put("saleDate", item.getSaleDate());
 			jObj.put("regDate", item.getRegDate());
-			jObj.put("option", item.getOption());
-			jObj.put("count", item.getCount());
 			jObj.put("isDeleted", item.getIsDeleted());
-			jObj.put("tag", item.getTag());
 			jObj.put("totalSta", item.getTotalSta());
 			jArr.add(jObj);
 		}
-		list.forEach(x -> System.out.println(x));
 		return jArr;
 	}
 	
@@ -72,10 +73,7 @@ public class ItemController {
 			jObj.put("salePrice", item.getSalePrice());
 			jObj.put("saleDate", item.getSaleDate());
 			jObj.put("regDate", item.getRegDate());
-			jObj.put("option", item.getOption());
-			jObj.put("count", item.getCount());
 			jObj.put("isDeleted", item.getIsDeleted());
-			jObj.put("tag", item.getTag());
 			jObj.put("totalSta", item.getTotalSta());
 			jArr.add(jObj);
 		}
@@ -83,23 +81,41 @@ public class ItemController {
 	}
 	
 	@PostMapping("/insert")
-	public String ItemInsert(String name, String category, String img1, String img2,
-			 String content, int price, String option, int count, String tag) {
-		Item item = Item.builder()
-						.name(name).category(category).img1(img1).img2(img2)
-						.content(content).price(price).option(option).count(count)
-						.tag(tag).build();
-		itemService.insertItem(item);
-		return null;
+	public String ItemInsert(@RequestBody ItemRequest itemRequest) {
+	    Item item = Item.builder()
+	            .name(itemRequest.getName()).category(itemRequest.getCategory())
+	            .img1(itemRequest.getImg1()).img2(itemRequest.getImg2())
+	            .img3(itemRequest.getImg3()).content(itemRequest.getContent())
+	            .price(itemRequest.getPrice())
+	            .build();
+	    itemService.insertItem(item);
+	    String[] option = itemRequest.getOption();
+	    int[] count = itemRequest.getCount();
+	    String[] tag = itemRequest.getTag();
+	    
+	    for (int i = 0; i < option.length; i++) {
+	        ItemOption itemOption = ItemOption.builder()
+	                .iid(item.getIid()).option(option[i]).count(count[i])
+	                .build();
+	        itemService.optionInsert(itemOption);
+	    }
+	    for (int i = 0; i < tag.length; i++) {
+	        ItemTag itemTag = ItemTag.builder()
+	                .iid(item.getIid()).tag(tag[i])
+	                .build();
+	        itemService.tagInsert(itemTag);
+	    }
+
+	    return "Success";
 	}
+
 	
 	@PostMapping("/update")
 	public String ItemUpdate(String name, String category, String img1, String img2,
-			 String content, int price, String option, int count, String tag, int iid) {
+			 String content, int price, int iid) {
 		Item item = Item.builder()
 						.name(name).category(category).img1(img1).img2(img2)
-						.content(content).price(price).option(option).count(count)
-						.tag(tag).iid(iid).build();
+						.content(content).price(price).iid(iid).build();
 		itemService.updateItem(item);
 		return null;
 	}

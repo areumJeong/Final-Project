@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.ft.dao.ItemDao;
 import com.example.ft.entity.Item;
+import com.example.ft.entity.ItemOption;
+import com.example.ft.entity.ItemTag;
 
 import lombok.RequiredArgsConstructor;
 
@@ -49,6 +51,19 @@ public class ItemServiceImpl implements ItemService{
 	@Override
 	public void saleItem(Item item) {
 		itemDao.saleItem(item);
+	}
+
+	// itemOption
+	@Override
+	public void optionInsert(ItemOption itemOption) {
+		itemDao.optionInsert(itemOption);
+		
+	}
+	
+	// itemTag
+	@Override
+	public void tagInsert(ItemTag itemTag) {
+		itemDao.tagInsert(itemTag);
 	}
 
 }
