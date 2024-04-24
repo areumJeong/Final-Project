@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class ItemServiceImpl implements ItemService{
 	private final ItemDao itemDao;
 	
+	// 순수 아이템
 	@Override
 	public Item getItemIId(int iid) {
 		return itemDao.getItemIid(iid);
@@ -60,10 +61,20 @@ public class ItemServiceImpl implements ItemService{
 		
 	}
 	
+	@Override
+	public List<ItemOption> getItemOptionIId(int iid) {
+		return itemDao.getItemOptionIId(iid);
+	}
+	
 	// itemTag
 	@Override
 	public void tagInsert(ItemTag itemTag) {
 		itemDao.tagInsert(itemTag);
+	}
+
+	@Override
+	public List<ItemTag> getItemTagIId(int iid) {
+		return itemDao.getItemTagIId(iid);
 	}
 
 }

@@ -41,10 +41,17 @@ public interface ItemDao {
 	void saleItem(Item item);
 	
 	// itemOption
+	@Select("select * from itemOption where iId=#{iid} and isDeleted=0")
+	 List<ItemOption> getItemOptionIId(int iid);
+	
 	@Insert("insert into itemoption values (default, #{iid}, #{option}, #{count},default)")
 	void optionInsert(ItemOption itemOption);
 	
 	// itemTag
+	@Select("select * from itemTag where iId=#{iid} and isDeleted=0")
+	 List<ItemTag> getItemTagIId(int iid);
+	
 	@Insert("insert into itemtag values (default, #{iid}, #{tag}, default)")
 	void tagInsert(ItemTag itemTag);
+	
 }

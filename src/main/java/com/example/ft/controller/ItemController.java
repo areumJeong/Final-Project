@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -62,7 +63,6 @@ public class ItemController {
 		JSONArray jArr = new JSONArray();
 		for(Item item : list) {
 			JSONObject jObj = new JSONObject(); 
-			JSONArray jArray = new JSONArray();
 			jObj.put("iid", item.getIid());
 			jObj.put("name", item.getName());
 			jObj.put("category", item.getCategory());
@@ -78,6 +78,54 @@ public class ItemController {
 			jArr.add(jObj);
 		}
 		return jArr;
+	}
+	
+	@GetMapping("/detail/{iid}")
+	public JSONObject getItemDetail(@PathVariable int iid) {
+		Item item = itemService.getItemIId(iid);
+		JSONObject jItem = new JSONObject();
+		jItem.put("iid", item.getIid());
+		jItem.put("name", item.getName());
+		jItem.put("category", item.getCategory());
+		jItem.put("img1", item.getImg1());
+		jItem.put("img2", item.getImg2());
+		jItem.put("content", item.getContent());
+		jItem.put("price", item.getPrice());
+		jItem.put("salePrice", item.getSalePrice());
+		jItem.put("saleDate", item.getSaleDate());
+		jItem.put("regDate", item.getRegDate());
+		jItem.put("isDeleted", item.getIsDeleted());
+		jItem.put("totalSta", item.getTotalSta());
+		
+		List<ItemOption> itemOptionlist = itemService.getItemOptionIId(iid);
+		JSONArray jArrOption = new JSONArray();
+		for(ItemOption option : itemOptionlist) {
+			JSONObject jObj = new JSONObject(); 
+			jObj.put("ioid", option.getIoid());
+			jObj.put("iid", option.getIid());
+			jObj.put("option", option.getOption());
+			jObj.put("count", option.getCount());
+			jObj.put("isDeleted", option.getIsDeleted());
+			jArrOption.add(jObj);
+		}
+		
+		List<ItemTag> itemTaglist = itemService.getItemTagIId(iid);
+		JSONArray jArrTag = new JSONArray();
+		for(ItemTag tag : itemTaglist) {
+			JSONObject jObj = new JSONObject(); 
+			jObj.put("itid", tag.getItid());
+			jObj.put("iid", tag.getIid());
+			jObj.put("tag", tag.getTag());
+			jObj.put("isDeleted", tag.getIsDeleted());
+			jArrTag.add(jObj);
+		}
+		
+		JSONObject response = new JSONObject();
+	    response.put("item", jItem);
+	    response.put("options", jArrOption);
+	    response.put("tags", jArrTag);
+	    
+		return response;
 	}
 	
 	@PostMapping("/insert")

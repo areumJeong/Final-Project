@@ -4,11 +4,13 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { lineHeight } from "@mui/system";
+import { useNavigate } from "react-router-dom";
 
 export default function ItemList() {
   const [isLoading, setIsLoading] = useState(true);
   const [list, setList] = useState([]);
   const [timeRemaining, setTimeRemaining] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get('/ft/item/list')
@@ -62,7 +64,7 @@ export default function ItemList() {
       <Grid container spacing={2}>
         {list.map((item, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-            <Paper style={{ padding: 20, height: 300 }}>
+            <Paper style={{ padding: 20, height: 300 }} onClick={() => { navigate(`/item/detail/${item.iid}`) }}>
               <img src={item.img1} alt={'img'} style={{ width: '100%', height: 200 }} />
               <table>
                 <tbody>

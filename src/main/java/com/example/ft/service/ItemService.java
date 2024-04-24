@@ -8,6 +8,7 @@ import com.example.ft.entity.ItemTag;
 
 public interface ItemService {
 	
+	// 순수 아이템
 	Item getItemIId(int iid);	
 	
 	List<Item> getItemList();
@@ -23,8 +24,12 @@ public interface ItemService {
 	void saleItem(Item item);
 	
 	// itemOtion
+	List<ItemOption> getItemOptionIId(int iid);
+
 	void optionInsert(ItemOption itemOption);
 	
 	// itemTag
+	List<ItemTag> getItemTagIId(int iid);
+	
 	void tagInsert(ItemTag itemTag);
 }

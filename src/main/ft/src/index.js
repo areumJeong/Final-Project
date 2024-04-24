@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import ItemList from './pages/ItemList';
 import NotFound from './pages/NotFound';
 import ItemInsert from './pages/ItemInsert';
+import ItemDetail from './pages/ItemDetail';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
       { index: true, element: <ItemList /> },
       { path: 'itemlist', element: <ItemList /> },
       { path: 'iteminsert', element: <ItemInsert /> },
+      { path: 'item/detail/:iid', element: <ItemDetail /> },
     ]
   }
 ]);
