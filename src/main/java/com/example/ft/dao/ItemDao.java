@@ -29,9 +29,8 @@ public interface ItemDao {
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="iid", before=false, resultType=int.class)
 	void insertItem(Item item);
 	
-	@Update("update item set name=#{name}, category=#{category}, img1=#{img1}, img2=#{img2},"
-			+ " content=#{content}, price=#{price}, option=#{option}, count=#{count}, "
-			+ " tag=#{tag} where iid=#{iid}")
+	@Update("update item set name=#{name}, category=#{category}, img1=#{img1}, img2=#{img2}, img3=#{img3},"
+			+ " content=#{content}, price=#{price} where iid=#{iid}")
 	void updateItem(Item item);	
 	
 	@Update("update item set isDeleted=1 where iid=#{iid}")
@@ -44,8 +43,14 @@ public interface ItemDao {
 	@Select("select * from itemOption where iId=#{iid} and isDeleted=0")
 	 List<ItemOption> getItemOptionIId(int iid);
 	
-	@Insert("insert into itemoption values (default, #{iid}, #{option}, #{count},default)")
+	@Insert("insert into itemoption values (default, #{iid}, #{option}, #{count}, default)")
 	void optionInsert(ItemOption itemOption);
+	
+	@Update("update itemoption set `option`=#{option}, count=#{count} where ioid=#{ioid}")
+	void optionUpdate(ItemOption itemOption);	
+	
+	@Update("update itemoption set isDeleted=1 where ioid=#{ioid}")
+	void optionDeleted(Integer[] ioidsToDelete);
 	
 	// itemTag
 	@Select("select * from itemTag where iId=#{iid} and isDeleted=0")
@@ -54,4 +59,9 @@ public interface ItemDao {
 	@Insert("insert into itemtag values (default, #{iid}, #{tag}, default)")
 	void tagInsert(ItemTag itemTag);
 	
+	@Update("update itemtag set tag=#{tag} where itid=#{itid}")
+	void tagUpdate(ItemTag itemTag);
+	
+	@Update("update itemtag set isDeleted=1 where itid=#{itid}")
+	void tagDeleted(Integer[] itidsToDelete);
 }

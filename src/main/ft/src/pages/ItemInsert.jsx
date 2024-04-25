@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { uploadImage } from "../api/cloudinary";
 
 export default function ItemInsert() {
   const [form, setForm] = useState({ name: '', category: '', img1: '', img2: '', img3: '', content: '', price: '', option: [], count: [], tag: [] });
-
+  
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setForm({ ...form, [name]: value });
+  
+    if (name.startsWith('img')) {
+      handleUpload(name, event.target.files[0]);
+    } else {
+      setForm(prevForm => ({
+        ...prevForm,
+        [name]: value
+      }));
+    }
   }
 
   const handleOptionChange = (index, event) => {
@@ -29,80 +42,109 @@ export default function ItemInsert() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (form.option.every(opt => opt.trim() !== '') && form.count.every(cnt => cnt.trim() !== '')) {
-      const requestData = {
-        name: form.name,
-        category: form.category,
-        img1: form.img1,
-        img2: form.img2,
-        img3: form.img3,
-        content: form.content,
-        price: form.price,
-        option: form.option,
-        count: form.count,
-        tag: form.tag
-      };
-
-      axios
-        .post('/ft/item/insert', requestData)
-        .then(res => {
-          console.log(res);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-    } else {
-
-    }
+  
+    const requestData = {
+      name: form.name,
+      category: form.category,
+      img1: form.img1,
+      img2: form.img2,
+      img3: form.img3,
+      content: form.content,
+      price: form.price,
+      option: form.option,
+      count: form.count,
+      tag: form.tag
+    };
+  
+    axios
+      .post('/ft/item/insert', requestData)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
 
-  const handleAddOption = () => {
-    setForm({ ...form, option: [...form.option, ''] });
-  }
+  const handleAddOptionAndCount = () => {
+  // 새로운 요소 추가 시 공백 대신 빈 문자열 추가
+  const updatedOption = [...form.option, '']; // 빈 문자열 추가
+  const updatedCount = [...form.count, '']; // 빈 문자열 추가
 
-  const handleAddCount = () => {
-    setForm({ ...form, count: [...form.count, ''] });
-  }
+  setForm({
+    ...form,
+    option: updatedOption,
+    count: updatedCount
+  });
+}
 
   const handleAddTag = () => {
     setForm({ ...form, tag: [...form.tag, ''] });
   }
 
+  const handleUpload = (name, file) => {
+    if (file) {
+      uploadImage(file).then(url => {
+        setForm(prevForm => ({
+          ...prevForm,
+          [name]: url
+        }));
+      }).catch(error => {
+        console.error('Error uploading image:', error);
+      });
+    }
+  }
+
   return (
-    <div className="App">
+    <div style={{ textAlign: 'center' }}>
+  <Card style={{ width: '80%', display: 'inline-block' }}>
+    <CardContent style={{ width: '90%', display: 'inline-block', textAlign: 'center' }}>
       <form onSubmit={handleSubmit}>
-        <label htmlFor='name'>상품명:</label>
-        <input type='text' name='name' value={form.name} onChange={handleChange} /><br />
-        <label htmlFor='category'>가구종류:</label>
-        <input type='text' name='category' value={form.category} onChange={handleChange} /><br />
-        <label htmlFor='img1'>대표이미지:</label>
-        <input type='text' name='img1' value={form.img1} onChange={handleChange} /><br />
-        <label htmlFor='img2'>상세이미지:</label>
-        <input type='text' name='img2' value={form.img2} onChange={handleChange} /><br />
-        <label htmlFor='img3'>상세이미지:</label>
-        <input type='text' name='img3' value={form.img3} onChange={handleChange} /><br />
-        <label htmlFor='content'>내용:</label>
-        <input type='text' name='content' value={form.content} onChange={handleChange} /><br />
-        <label htmlFor='price'>가격:</label>
-        <input type='text' name='price' value={form.price} onChange={handleChange} /><br />
-        <label>옵션:</label><br />
-        {form.option.map((opt, index) => (
-          <input key={index} type='text' value={opt} onChange={(e) => handleOptionChange(index, e)} />
-        ))}
-        <button type='button' onClick={handleAddOption}>옵션 추가</button><br />
-        <label>갯수:</label><br />
-        {form.count.map((cnt, index) => (
-          <input key={index} type='text' value={cnt} onChange={(e) => handleCountChange(index, e)} />
-        ))}
-        <button type='button' onClick={handleAddCount}>갯수 추가</button><br />
-        <label>태그:</label><br />
-        {form.tag.map((tag, index) => (
-          <input key={index} type='text' value={tag} onChange={(e) => handleTagChange(index, e)} />
-        ))}
-        <button type='button' onClick={handleAddTag}>태그 추가</button><br />
-        <button type='submit'>확인</button>
+        <div>
+          <TextField label='상품명' name='name' value={form.name} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
+        </div>
+        <div>
+          <TextField label='가구종류' name='category' value={form.category} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
+        </div>
+        <div>
+          <TextField label='가격' name='price' value={form.price} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
+        </div>
+        <div>
+          <TextField label='내용' name='content' value={form.content} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
+        </div>
+        <div style={{ textAlign: 'left' , marginLeft:50, marginBottom: '10px'}}>
+          <label>옵션: </label>
+          {form.option.map((opt, index) => (
+            <TextField key={index} label={`옵션 ${index + 1}`} value={opt} onChange={(e) => handleOptionChange(index, e)} style={{ marginRight: '10px', width: '20%', fontSize: '10px' }} />
+          ))}
+          <Button variant='contained' onClick={handleAddOptionAndCount} style={{ marginBottom: '10px', padding: '5px 10px', minWidth: 'unset' }}>옵션/갯수 추가</Button>
+        </div>
+        <div style={{ textAlign: 'left' , marginLeft:50, marginBottom: '10px'}}>
+          <label>갯수: </label>
+          {form.count.map((cnt, index) => (
+            <TextField key={index} label={`갯수 ${index + 1}`} value={cnt} onChange={(e) => handleCountChange(index, e)} style={{ marginRight: '10px', width: '20%' }} />
+          ))}
+        </div>
+        <div style={{ textAlign: 'left' , marginLeft:50, marginBottom: '10px'}}>
+          <label>태그: </label>
+          {form.tag.map((tag, index) => (
+            <TextField key={index} label={`태그 ${index + 1}`} value={tag} onChange={(e) => handleTagChange(index, e)} style={{ marginRight: '10px', width: '20%' }} />
+          ))}
+          <Button variant='contained' onClick={handleAddTag} style={{ marginBottom: '10px', padding: '5px 10px', minWidth: 'unset' }}>추가</Button>
+        </div>
+        <div style={{ textAlign: 'left' , marginLeft:50, marginBottom: '10px'}}>
+          <input type="file" accept="image/*" onChange={(e) => handleUpload('img1', e.target.files[0])} />
+        </div>
+        <div style={{ textAlign: 'left' , marginLeft:50, marginBottom: '10px'}}>
+          <input type="file" accept="image/*" onChange={(e) => handleUpload('img2', e.target.files[0])} />
+        </div>
+        <div style={{ textAlign: 'left' , marginLeft:50, marginBottom: '10px'}}>
+          <input type="file" accept="image/*" onChange={(e) => handleUpload('img3', e.target.files[0])} />
+        </div>
+        <Button type='submit' variant='contained' style={{ marginTop: '10px' }}>등록</Button>
       </form>
-    </div>
+    </CardContent>
+  </Card>
+</div>
   );
 }

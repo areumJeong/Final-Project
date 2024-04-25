@@ -3,13 +3,13 @@ import axios from 'axios';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { lineHeight } from "@mui/system";
+import { Button } from "@mui/material";
+import CountDown from "../components/CountDown";
 import { useNavigate } from "react-router-dom";
 
 export default function ItemList() {
   const [isLoading, setIsLoading] = useState(true);
   const [list, setList] = useState([]);
-  const [timeRemaining, setTimeRemaining] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,50 +17,13 @@ export default function ItemList() {
       .then(res => {
         setList(res.data);
         setIsLoading(false);
-        console.log(res.data);
       })
       .catch(err => console.log(err))
   }, []);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const now = new Date();
-      const updatedTimes = list.map(item => {
-        if (item.saleDate) {
-          const targetDateTime_ = item.saleDate.replace("T", " ");
-          const targetDateTime = targetDateTime_.replace("-", "/");
-          const endTime = new Date(targetDateTime);
-          const timeDifference = endTime.getTime() - now.getTime();
-  
-          if (timeDifference > 0) {
-            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-  
-            if (days === 0) {
-              return `${twoDigit(hours)}:${twoDigit(minutes)}:${twoDigit(seconds)}`;
-            } else {
-              return `${days}일${twoDigit(hours)}:${twoDigit(minutes)}:${twoDigit(seconds)}`;
-            }
-          } else {
-            return ;  //'경매 종료';
-          }
-        };
-      });
-  
-      setTimeRemaining(updatedTimes);
-    }, 1000);
-  
-    return () => clearInterval(intervalId);
-  }, [list]);
-
-  function twoDigit(num) {
-    return (num < 10) ? '0' + num : String(num);
-  }
-
   return (
     <>
+      <Button onClick={() => { navigate(`/admin/itemlist/`) }}>어드민</Button>
       <Grid container spacing={2}>
         {list.map((item, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
@@ -69,7 +32,7 @@ export default function ItemList() {
               <table>
                 <tbody>
                   <tr>
-                    <td>{timeRemaining[index] ? <Typography variant="p">{timeRemaining[index]}</Typography> : <Typography variant="p">&nbsp;</Typography>}</td>
+                    <td>{new Date(item.saleDate) > new Date() ? <CountDown saleDate={item.saleDate} /> : <Typography variant="h6">&nbsp;</Typography>} </td>
                   </tr>
                   <tr>
                     <td>{item.name ? <Typography variant="h6">{item.name}</Typography> : <Typography variant="h6">&nbsp;</Typography>}</td>
@@ -89,6 +52,7 @@ export default function ItemList() {
                     <tr>
                       <td><Typography variant="body2">{((item.price - item.salePrice) / item.price * 100).toFixed(0)}%</Typography></td>
                       <td><Typography variant="body2">{item.salePrice}원</Typography></td>
+                      
                     </tr>
                   )}
                 </tbody>

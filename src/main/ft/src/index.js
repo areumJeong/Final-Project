@@ -8,6 +8,8 @@ import ItemList from './pages/ItemList';
 import NotFound from './pages/NotFound';
 import ItemInsert from './pages/ItemInsert';
 import ItemDetail from './pages/ItemDetail';
+import AdminItemList from './pages/AdminItemList';
+import ItemUpdate from './pages/ItemUpdate';
 
 const router = createBrowserRouter([
   {
@@ -17,8 +19,10 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <ItemList /> },
       { path: 'itemlist', element: <ItemList /> },
-      { path: 'iteminsert', element: <ItemInsert /> },
+      { path: 'admin/item/insert', element: <ItemInsert /> },
       { path: 'item/detail/:iid', element: <ItemDetail /> },
+      { path: 'admin/itemlist', element: <AdminItemList /> },
+      { path: 'admin/item/update/:iid', element: <ItemUpdate/> },
     ]
   }
 ]);

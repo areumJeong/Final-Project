@@ -56,25 +56,44 @@ public class ItemServiceImpl implements ItemService{
 
 	// itemOption
 	@Override
-	public void optionInsert(ItemOption itemOption) {
-		itemDao.optionInsert(itemOption);
-		
-	}
-	
-	@Override
 	public List<ItemOption> getItemOptionIId(int iid) {
 		return itemDao.getItemOptionIId(iid);
 	}
 	
+	@Override
+	public void optionInsert(ItemOption itemOption) {
+		itemDao.optionInsert(itemOption);
+	}
+	
+	@Override
+	public void optionUpdate(ItemOption itemOption) {
+		itemDao.optionUpdate(itemOption);
+	}
+	
+	@Override
+	public void optionDeleted(Integer[] ioidsToDelete) {
+		
+	}
+	
 	// itemTag
+	@Override
+	public List<ItemTag> getItemTagIId(int iid) {
+		return itemDao.getItemTagIId(iid);
+	}
+	
 	@Override
 	public void tagInsert(ItemTag itemTag) {
 		itemDao.tagInsert(itemTag);
 	}
 
 	@Override
-	public List<ItemTag> getItemTagIId(int iid) {
-		return itemDao.getItemTagIId(iid);
+	public void tagUpdate(ItemTag itemTag) {
+		itemDao.tagUpdate(itemTag);
+	}
+
+	@Override
+	public void tagDeleted(Integer[] itidsToDelete) {
+		itemDao.tagDeleted(itidsToDelete);
 	}
 
 }

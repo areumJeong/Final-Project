@@ -28,8 +28,16 @@ public interface ItemService {
 
 	void optionInsert(ItemOption itemOption);
 	
+	void optionUpdate(ItemOption itemOption);	
+	
+	void optionDeleted(Integer[] ioidsToDelete);
+	
 	// itemTag
 	List<ItemTag> getItemTagIId(int iid);
 	
 	void tagInsert(ItemTag itemTag);
+	
+	void tagUpdate(ItemTag itemTag);
+	
+	void tagDeleted(Integer[] itidsToDelete);
 }

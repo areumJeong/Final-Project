@@ -14,14 +14,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class ItemRequest {
-	private String name;
-    private String category;
-    private String img1;
-    private String img2;
-    private String img3;
-    private String content;
-    private int price;
-    private String[] option;
-    private int[] count;
-    private String[] tag;
+	private int iid; // 상품 ID
+    private Integer[] ioid; // 옵션 ID 배열
+    private Integer[] itid; // 태그 ID 배열
+    private String name; // 상품명
+    private String category; // 가구 종류
+    private String img1; // 이미지 URL 1
+    private String img2; // 이미지 URL 2
+    private String img3; // 이미지 URL 3
+    private String content; // 내용
+    private int price; // 가격
+    private String[] option; // 옵션
+    private int[] count; // 갯수
+    private String[] tag; // 태그
 }

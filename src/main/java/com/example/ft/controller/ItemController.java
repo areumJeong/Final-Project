@@ -140,18 +140,21 @@ public class ItemController {
 	    String[] option = itemRequest.getOption();
 	    int[] count = itemRequest.getCount();
 	    String[] tag = itemRequest.getTag();
-	    
 	    for (int i = 0; i < option.length; i++) {
+	    	if (!option[i].trim().isEmpty() && !(count[i] == 0)) {
 	        ItemOption itemOption = ItemOption.builder()
 	                .iid(item.getIid()).option(option[i]).count(count[i])
 	                .build();
 	        itemService.optionInsert(itemOption);
+	        }
 	    }
 	    for (int i = 0; i < tag.length; i++) {
+	    	if(tag[i] != null && !tag[i].trim().isEmpty()) {
 	        ItemTag itemTag = ItemTag.builder()
 	                .iid(item.getIid()).tag(tag[i])
 	                .build();
 	        itemService.tagInsert(itemTag);
+	    	}
 	    }
 
 	    return "Success";
@@ -159,13 +162,87 @@ public class ItemController {
 
 	
 	@PostMapping("/update")
-	public String ItemUpdate(String name, String category, String img1, String img2,
-			 String content, int price, int iid) {
-		Item item = Item.builder()
-						.name(name).category(category).img1(img1).img2(img2)
-						.content(content).price(price).iid(iid).build();
-		itemService.updateItem(item);
-		return null;
+	public String ItemUpdate(@RequestBody ItemRequest itemRequest) {
+	    // 상품 정보 업데이트
+	    Item item = Item.builder()
+	            .name(itemRequest.getName())
+	            .category(itemRequest.getCategory())
+	            .img1(itemRequest.getImg1())
+	            .img2(itemRequest.getImg2())
+	            .img3(itemRequest.getImg3())
+	            .content(itemRequest.getContent())
+	            .price(itemRequest.getPrice())
+	            .iid(itemRequest.getIid())
+	            .build();
+	    itemService.updateItem(item);
+	    
+	 // 옵션 및 갯수 업데이트 또는 추가
+	    String[] options = itemRequest.getOption();
+	    int[] counts = itemRequest.getCount();
+	    Integer[] ioids = itemRequest.getIoid();
+	    if (options != null && counts != null) {
+	        for (int i = 0; i < options.length; i++) {
+	            if (i < counts.length && counts[i] > 0) { // 유효한 옵션과 갯수일 경우에만 처리
+	                if (ioids != null && i < ioids.length && ioids[i] != null && ioids[i] != 0) { // 기존 옵션 업데이트
+	                    ItemOption itemOption = ItemOption.builder()
+	                            .option(options[i])
+	                            .count(counts[i])
+	                            .ioid(ioids[i])
+	                            .build();
+	                    itemService.optionUpdate(itemOption);
+	                } else { // 새로운 옵션 추가
+	                    ItemOption itemOption = ItemOption.builder()
+	                            .iid(itemRequest.getIid())
+	                            .option(options[i])
+	                            .count(counts[i])
+	                            .build();
+	                    itemService.optionInsert(itemOption);
+	                }
+	            }
+	        }
+	    }
+
+
+	 // 태그 업데이트 또는 추가
+	    String[] tags = itemRequest.getTag();
+	    Integer[] itids = itemRequest.getItid();
+
+	    // itids 배열의 길이가 tags 배열의 길이보다 작으면, itids 배열의 길이를 tags 배열의 길이로 확장하고 0으로 채웁니다.
+	    if (itids != null && itids.length < tags.length) {
+	        Integer[] newItids = Arrays.copyOf(itids, tags.length);
+	        Arrays.fill(newItids, itids.length, tags.length, 0);
+	        itids = newItids;
+	    }
+
+	    if (tags != null) {
+	        for (int i = 0; i < tags.length; i++) {
+	            // 기존 태그 업데이트
+	            if (i < itids.length && itids[i] != null && itids[i] != 0) {
+	                ItemTag itemTag = ItemTag.builder()
+	                        .tag(tags[i])
+	                        .itid(itids[i])
+	                        .build();
+	                itemService.tagUpdate(itemTag);
+	            } else { // 새로운 태그 추가
+	                ItemTag itemTag = ItemTag.builder()
+	                        .iid(itemRequest.getIid())
+	                        .tag(tags[i])
+	                        .build();
+	                itemService.tagInsert(itemTag);
+	            }
+	        }
+	    }
+	    // 옵션 및 태그 삭제
+//	    int[] ioidsToDelete = itemRequest.getIoid();
+//	    int[] itidsToDelete = itemRequest.getItid();
+//	    if (ioidsToDelete != null) {
+//	        itemService.optionDeleted(ioidsToDelete); // ioid가 itemRequest에 없는 옵션 삭제
+//	    }
+//	    if (itidsToDelete != null) {
+//	        itemService.tagDeleted(itidsToDelete); // itid가 itemRequest에 없는 태그 삭제
+//	    }
+
+	    return null;
 	}
 	
 	@PostMapping("/delete")
