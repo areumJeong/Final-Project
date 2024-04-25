@@ -70,6 +70,7 @@ export default function ItemDetail() {
         setItem(formattedItem);
 
         const formattedOptions = options ? options.map(option => ({
+          ioid: option.ioid,
           option: option.option,
           stock: option.count, // 재고갯수
           count: 0, // 수량
@@ -208,6 +209,30 @@ export default function ItemDetail() {
     setRatesResArr(calcStarRates());
   }, [popularity]);
 
+  // 장바구니 클릭 핸들러
+  const handleAddToCart = () => {
+    // 현재 선택된 옵션과 수량을 담은 객체 생성
+    const cartItems = selectedOptions.map(option => ({
+      iid: item.iid,
+      ioid: option.ioid,
+      count: option.count,
+      totalPrice: document.getElementById('currentPrice').innerText
+    }));
+
+    // 데이터 로깅
+    console.log('장바구니에 추가될 상품:', cartItems);
+
+    // 서버로 데이터 전송
+    axios.post('/ft/api/carts', cartItems)
+      .then(response => {
+        // 성공 시 처리
+        console.log('장바구니에 상품이 추가되었습니다.');
+      })
+      .catch(error => {
+        // 실패 시 처리
+        console.error('장바구니 추가 실패:', error);
+      });
+  };
   
   return (
     <Grid container spacing={2}>
@@ -228,7 +253,7 @@ export default function ItemDetail() {
           {timeRemaining}
         </Typography>
         <div style={{ marginBottom: '10px' }}>
-          <span style={item.salePrice && new Date(item.saleDate) > new Date() ? { textDecoration: 'line-through', lineHeight: '1.5', fontSize: 'small' } : {}}>
+          <span id="nowPrice" style={item.salePrice && new Date(item.saleDate) > new Date() ? { textDecoration: 'line-through', lineHeight: '1.5', fontSize: 'small' } : {}}>
             {item.saleDate && new Date(item.saleDate) > new Date() ? `${item.price}원` : ''}
           </span><br/>
           <span id="currentPrice">{item.saleDate && new Date(item.saleDate) > new Date() ? item.salePrice : item.price}</span><span>원</span>
@@ -271,7 +296,7 @@ export default function ItemDetail() {
             <Input
               value={option.count}
               readOnly
-              style={{ width: `${(option.count.toString().length) * 10}px`}}
+              style={{ width: `${(option.count.toString().length + 1) * 10}px`}}
               disableUnderline 
             />
             <Button onClick={() => increaseQuantity(index)}>+</Button>
@@ -279,11 +304,11 @@ export default function ItemDetail() {
           </Box>
         ))}
         </div>
-        <Typography variant="body1" style={{ fontWeight: 'bold' }}>
+        <Typography variant="h5" style={{ fontWeight: 'bold' }}>
           총 가격: {totalPrice}원
         </Typography>
         <Button variant="contained" color="primary" style={{ marginBottom: '10px' }}>구매하기</Button>
-        <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5 }}>장바구니</Button>
+        <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5 }} onClick={handleAddToCart}>장바구니</Button>
         <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5 }}>찜</Button>
       </Grid>
       <Grid item xs={12} md={12} style={{ padding:50, textAlign: 'center' }}>
