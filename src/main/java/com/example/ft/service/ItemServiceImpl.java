@@ -56,6 +56,11 @@ public class ItemServiceImpl implements ItemService{
 
 	// itemOption
 	@Override
+	public int[] getItemOptionIoid(int iid) {
+		return itemDao.getItemOptionIoid(iid);
+	}
+	
+	@Override
 	public List<ItemOption> getItemOptionIId(int iid) {
 		return itemDao.getItemOptionIId(iid);
 	}
@@ -71,11 +76,16 @@ public class ItemServiceImpl implements ItemService{
 	}
 	
 	@Override
-	public void optionDeleted(Integer[] ioidsToDelete) {
-		
+	public void optionDeleted(int ioid) {
+		itemDao.optionDeleted(ioid);
 	}
 	
 	// itemTag
+	@Override
+	public int[] getItemTagItid(int iid) {
+		return itemDao.getItemTagItid(iid);
+	}
+	
 	@Override
 	public List<ItemTag> getItemTagIId(int iid) {
 		return itemDao.getItemTagIId(iid);
@@ -92,8 +102,8 @@ public class ItemServiceImpl implements ItemService{
 	}
 
 	@Override
-	public void tagDeleted(Integer[] itidsToDelete) {
-		itemDao.tagDeleted(itidsToDelete);
+	public void tagDeleted(int itid) {
+		itemDao.tagDeleted(itid);
 	}
-
+	
 }

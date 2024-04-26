@@ -160,23 +160,66 @@ public class ItemController {
 	    return "Success";
 	}
 
-	
 	@PostMapping("/update")
 	public String ItemUpdate(@RequestBody ItemRequest itemRequest) {
+		String img1 = (itemRequest.getImg1() == null || itemRequest.getImg1().equals(""))? itemService.getItemIId(itemRequest.getIid()).getImg1():itemRequest.getImg1();
+		String img2 = (itemRequest.getImg2() == null || itemRequest.getImg2().equals(""))? itemService.getItemIId(itemRequest.getIid()).getImg2():itemRequest.getImg2();
+		String img3 = (itemRequest.getImg3() == null || itemRequest.getImg3().equals(""))? itemService.getItemIId(itemRequest.getIid()).getImg3():itemRequest.getImg3();
 	    // 상품 정보 업데이트
 	    Item item = Item.builder()
 	            .name(itemRequest.getName())
 	            .category(itemRequest.getCategory())
-	            .img1(itemRequest.getImg1())
-	            .img2(itemRequest.getImg2())
-	            .img3(itemRequest.getImg3())
+	            .img1(img1)
+	            .img2(img2)
+	            .img3(img3)
 	            .content(itemRequest.getContent())
 	            .price(itemRequest.getPrice())
 	            .iid(itemRequest.getIid())
 	            .build();
 	    itemService.updateItem(item);
-	    
-	 // 옵션 및 갯수 업데이트 또는 추가
+
+	    // DB에 있는 ioid 및 itid를 가져옵니다.
+	    int[] ioid = itemService.getItemOptionIoid(itemRequest.getIid());
+	    int[] itid = itemService.getItemTagItid(itemRequest.getIid());
+
+	    // 요청된 ioid 및 itid를 가져옵니다.
+	    Integer[] requestedIoids = itemRequest.getIoid();
+	    Integer[] requestedItids = itemRequest.getItid();
+	    // 누락된 ioid에 대한 삭제 작업을 수행합니다.
+	    if (requestedIoids != null) {
+	        for (int i = 0; i < ioid.length; i++) {
+	            boolean found = false;
+	            for (int j = 0; j < requestedIoids.length; j++) {
+	                if (ioid[i] == requestedIoids[j]) {
+	                    found = true;
+	                    break;
+	                }
+	            }
+	            if (!found) {
+	                // ioid[i]를 삭제하는 작업을 수행합니다.
+	                itemService.optionDeleted(ioid[i]);
+	            }
+	        }
+	    }
+
+	    // 누락된 itid에 대한 삭제 작업을 수행합니다.
+	    if (requestedItids != null) {
+	        for (int i = 0; i < itid.length; i++) {
+	            boolean found = false;
+	            for (int j = 0; j < requestedItids.length; j++) {
+	                if (itid[i] == requestedItids[j]) {
+	                    found = true;
+	                    break;
+	                }
+	            }
+	            if (!found) {
+	                // itid[i]를 삭제하는 작업을 수행합니다.
+	                itemService.tagDeleted(itid[i]);
+	            }
+	        }
+	    }
+
+	    // 옵션 및 갯수 업데이트 또는 추가
 	    String[] options = itemRequest.getOption();
 	    int[] counts = itemRequest.getCount();
 	    Integer[] ioids = itemRequest.getIoid();
@@ -202,8 +245,7 @@ public class ItemController {
 	        }
 	    }
 
-
-	 // 태그 업데이트 또는 추가
+	    // 태그 업데이트 또는 추가
 	    String[] tags = itemRequest.getTag();
 	    Integer[] itids = itemRequest.getItid();
 
@@ -232,15 +274,6 @@ public class ItemController {
 	            }
 	        }
 	    }
-	    // 옵션 및 태그 삭제
-//	    int[] ioidsToDelete = itemRequest.getIoid();
-//	    int[] itidsToDelete = itemRequest.getItid();
-//	    if (ioidsToDelete != null) {
-//	        itemService.optionDeleted(ioidsToDelete); // ioid가 itemRequest에 없는 옵션 삭제
-//	    }
-//	    if (itidsToDelete != null) {
-//	        itemService.tagDeleted(itidsToDelete); // itid가 itemRequest에 없는 태그 삭제
-//	    }
 
 	    return null;
 	}

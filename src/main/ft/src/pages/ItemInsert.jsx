@@ -133,12 +133,15 @@ export default function ItemInsert() {
           <Button variant='contained' onClick={handleAddTag} style={{ marginBottom: '10px', padding: '5px 10px', minWidth: 'unset' }}>추가</Button>
         </div>
         <div style={{ textAlign: 'left' , marginLeft:50, marginBottom: '10px'}}>
+          <img src={form.img1} alt={form.img1} style={{ width: '70%', height: 400 }} />
           <input type="file" accept="image/*" onChange={(e) => handleUpload('img1', e.target.files[0])} />
         </div>
         <div style={{ textAlign: 'left' , marginLeft:50, marginBottom: '10px'}}>
+          <img src={form.img2} alt={form.img2} style={{ width: '70%', height: 400 }} />
           <input type="file" accept="image/*" onChange={(e) => handleUpload('img2', e.target.files[0])} />
         </div>
         <div style={{ textAlign: 'left' , marginLeft:50, marginBottom: '10px'}}>
+          <img src={form.img3} alt={form.img3} style={{ width: '70%', height: 400 }} />
           <input type="file" accept="image/*" onChange={(e) => handleUpload('img3', e.target.files[0])} />
         </div>
         <Button type='submit' variant='contained' style={{ marginTop: '10px' }}>등록</Button>

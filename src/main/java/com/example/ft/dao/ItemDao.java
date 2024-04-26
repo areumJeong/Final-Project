@@ -40,8 +40,11 @@ public interface ItemDao {
 	void saleItem(Item item);
 	
 	// itemOption
+	@Select("select ioid from itemOption where iId=#{iid} and isDeleted=0")
+	int[] getItemOptionIoid(int iid);
+	
 	@Select("select * from itemOption where iId=#{iid} and isDeleted=0")
-	 List<ItemOption> getItemOptionIId(int iid);
+	List<ItemOption> getItemOptionIId(int iid);
 	
 	@Insert("insert into itemoption values (default, #{iid}, #{option}, #{count}, default)")
 	void optionInsert(ItemOption itemOption);
@@ -50,11 +53,14 @@ public interface ItemDao {
 	void optionUpdate(ItemOption itemOption);	
 	
 	@Update("update itemoption set isDeleted=1 where ioid=#{ioid}")
-	void optionDeleted(Integer[] ioidsToDelete);
+	void optionDeleted(int ioid);
 	
 	// itemTag
+	@Select("select itid from itemTag where iId=#{iid} and isDeleted=0")
+	int[] getItemTagItid(int iid);
+
 	@Select("select * from itemTag where iId=#{iid} and isDeleted=0")
-	 List<ItemTag> getItemTagIId(int iid);
+	List<ItemTag> getItemTagIId(int iid);
 	
 	@Insert("insert into itemtag values (default, #{iid}, #{tag}, default)")
 	void tagInsert(ItemTag itemTag);
@@ -63,5 +69,5 @@ public interface ItemDao {
 	void tagUpdate(ItemTag itemTag);
 	
 	@Update("update itemtag set isDeleted=1 where itid=#{itid}")
-	void tagDeleted(Integer[] itidsToDelete);
+	void tagDeleted(int itid);
 }

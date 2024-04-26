@@ -120,7 +120,7 @@ export default function ItemDetail() {
         console.error('장바구니 추가 실패:', error);
       });
   };
-
+  
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={7} style={{ padding:50, textAlign: 'center' }}>
@@ -188,16 +188,16 @@ export default function ItemDetail() {
               boxShadow={2}
               bgcolor="#f5f5f5"
               border="1px solid #ccc"
-              style={{width:'65%', marginTop:5}}
+              style={{ width: '65%', marginTop: 5, minHeight: 50 }} // 높이를 최소값으로 지정
             >
-              <Typography variant="body1">
+              <Typography variant="body1" style={{ flexGrow: 1 }}>
                 {option.option}
               </Typography>
               <Button onClick={() => decreaseQuantity(index)}>-</Button>
               <Input
                 value={option.count}
                 readOnly
-                style={{ width: `${(option.count.toString().length + 1) * 10}px`}}
+                style={{ width: `${(option.count.toString().length + 1) * 10}px`, margin: '0 5px' }} // 왼쪽 오른쪽 마진 추가
                 disableUnderline 
               />
               <Button onClick={() => increaseQuantity(index)}>+</Button>

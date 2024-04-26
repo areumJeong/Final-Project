@@ -92,12 +92,41 @@ export default function ItemUpdate() {
     }));
   }
 
+  // 옵션/갯수 삭제 핸들러
+  const handleRemoveOptionAndCount = (index) => {
+    const newOptions = [...form.option];
+    newOptions.splice(index, 1);
+    const newCounts = [...form.count];
+    newCounts.splice(index, 1);
+    const newOptionsIds = [...options];
+    newOptionsIds.splice(index, 1);
+    setForm(prevForm => ({
+      ...prevForm,
+      option: newOptions,
+      count: newCounts
+    }));
+    setOptions(newOptionsIds);
+  }
+
   // 태그 추가 핸들러
   const handleAddTag = () => {
     setForm(prevForm => ({
       ...prevForm,
       tag: [...prevForm.tag, '']
     }));
+  }
+
+  // 태그 삭제 핸들러
+  const handleRemoveTag = (index) => {
+    const newTags = [...form.tag];
+    newTags.splice(index, 1);
+    const newTagsIds = [...tags];
+    newTagsIds.splice(index, 1);
+    setForm(prevForm => ({
+      ...prevForm,
+      tag: newTags
+    }));
+    setTags(newTagsIds);
   }
 
   // 이미지 업로드 핸들러
@@ -123,10 +152,6 @@ export default function ItemUpdate() {
     const count = form.count.map(cnt => typeof cnt === 'string' ? cnt.trim() === '' ? 0 : parseInt(cnt) : cnt);
     const tag = form.tag.map(t => t.trim() === '' ? 0 : t);
 
-    // ioid와 itid 값을 가져오기
-    const ioids = options.map(option => option.ioid || 0); // id 값이 없으면 0으로 설정
-    const itids = tags.map(tag => tag.itid || 0); // id 값이 없으면 0으로 설정
-
     // 폼 데이터 생성
     const requestData = {
       iid: form.id,
@@ -140,8 +165,8 @@ export default function ItemUpdate() {
       option: option,
       count: count,
       tag: tag,
-      ioid: ioids, // 옵션의 ID 배열
-      itid: itids // 태그의 ID 배열
+      ioid: options.map(option => option.ioid || 0), // 옵션의 ID 배열
+      itid: tags.map(tag => tag.itid || 0) // 태그의 ID 배열
     };
 
     // 서버에 폼 데이터 전송
@@ -171,32 +196,36 @@ export default function ItemUpdate() {
               <TextField label='내용' name='content' value={form.content} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
             </div>
             <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
-              <label>옵션: </label>
+            <label style={{marginBottom: '10px'}}>옵션/갯수: </label>
               {form.option.map((opt, index) => (
-                <TextField key={index} label={`옵션 ${index + 1}`} value={opt} onChange={(e) => handleOptionChange(index, e)} style={{ marginRight: '10px', width: '20%', fontSize: '10px' }} />
+                <div key={index} style={{marginTop: '10px'}}>
+                  <TextField label={`옵션 ${index + 1}`} value={opt} onChange={(e) => handleOptionChange(index, e)} style={{ marginRight: '10px', width: '20%', fontSize: '10px' }} />
+                  <TextField label={`갯수 ${index + 1}`} value={form.count[index]} onChange={(e) => handleCountChange(index, e)} style={{ marginRight: '10px', width: '20%' }} />
+                  <Button variant='contained' onClick={() => handleRemoveOptionAndCount(index)}>X</Button>
+                </div>
               ))}
-              <Button variant='contained' onClick={handleAddOptionAndCount} style={{ marginBottom: '10px', padding: '5px 10px', minWidth: 'unset' }}>옵션/갯수 추가</Button>
-            </div>
-            <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
-              <label>갯수: </label>
-              {form.count.map((cnt, index) => (
-                <TextField key={index} label={`갯수 ${index + 1}`} value={cnt} onChange={(e) => handleCountChange(index, e)} style={{ marginRight: '10px', width: '20%' }} />
-              ))}
+              <Button variant='contained' onClick={handleAddOptionAndCount} style={{ marginTop: '10px', marginBottom: '10px', padding: '5px 10px', minWidth: 'unset' }}>옵션/갯수 추가</Button>
             </div>
             <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
               <label>태그: </label>
               {form.tag.map((tag, index) => (
-                <TextField key={index} label={`태그 ${index + 1}`} value={tag} onChange={(e) => handleTagChange(index, e)} style={{ marginRight: '10px', width: '20%' }} />
+                <div key={index} style={{marginTop: '10px'}}>
+                  <TextField label={`태그 ${index + 1}`} value={tag} onChange={(e) => handleTagChange(index, e)} style={{ marginRight: '10px', width: '20%' }} />
+                  <Button variant='contained' onClick={() => handleRemoveTag(index)}>X</Button>
+                </div>
               ))}
-              <Button variant='contained' onClick={handleAddTag} style={{ marginBottom: '10px', padding: '5px 10px', minWidth: 'unset' }}>추가</Button>
+              <Button variant='contained' onClick={handleAddTag} style={{ marginTop: '10px', marginBottom: '10px', padding: '5px 10px', minWidth: 'unset' }}>태그 추가</Button>
             </div>
             <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
+              <img src={form.img1} alt={form.img1} style={{ width: '70%', height: 400 }} />
               <input type="file" accept="image/*" onChange={(e) => handleUpload('img1', e.target.files[0])} />
             </div>
             <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
+              <img src={form.img2} alt={form.img2} style={{ width: '70%', height: 400 }} />
               <input type="file" accept="image/*" onChange={(e) => handleUpload('img2', e.target.files[0])} />
             </div>
             <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
+              <img src={form.img3} alt={form.img3} style={{ width: '70%', height: 400 }} />
               <input type="file" accept="image/*" onChange={(e) => handleUpload('img3', e.target.files[0])} />
             </div>
             <Button type='submit' variant='contained' style={{ marginTop: '10px' }}>수정</Button>

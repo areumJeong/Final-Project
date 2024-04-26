@@ -25,19 +25,23 @@ public interface ItemService {
 	
 	// itemOtion
 	List<ItemOption> getItemOptionIId(int iid);
+	
+	int[] getItemOptionIoid(int iid);
 
 	void optionInsert(ItemOption itemOption);
 	
 	void optionUpdate(ItemOption itemOption);	
 	
-	void optionDeleted(Integer[] ioidsToDelete);
+	void optionDeleted(int ioidsToDelete);
 	
 	// itemTag
+	int[] getItemTagItid(int iid);
+	
 	List<ItemTag> getItemTagIId(int iid);
 	
 	void tagInsert(ItemTag itemTag);
 	
 	void tagUpdate(ItemTag itemTag);
 	
-	void tagDeleted(Integer[] itidsToDelete);
+	void tagDeleted(int itid);
 }
