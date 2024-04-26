@@ -1,20 +1,24 @@
 package com.example.ft.controller;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import org.json.simple.JSONObject;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +28,7 @@ import com.example.ft.entity.Item;
 import com.example.ft.entity.ItemOption;
 import com.example.ft.entity.ItemRequest;
 import com.example.ft.entity.ItemTag;
+import com.example.ft.entity.SaleData;
 import com.example.ft.service.ItemService;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
@@ -52,6 +57,8 @@ public class ItemController {
 			jObj.put("regDate", item.getRegDate());
 			jObj.put("isDeleted", item.getIsDeleted());
 			jObj.put("totalSta", item.getTotalSta());
+			jObj.put("company", item.getCompany());
+			jObj.put("cost", item.getCost());
 			jArr.add(jObj);
 		}
 		return jArr;
@@ -75,6 +82,8 @@ public class ItemController {
 			jObj.put("regDate", item.getRegDate());
 			jObj.put("isDeleted", item.getIsDeleted());
 			jObj.put("totalSta", item.getTotalSta());
+			jObj.put("company", item.getCompany());
+			jObj.put("cost", item.getCost());
 			jArr.add(jObj);
 		}
 		return jArr;
@@ -96,6 +105,8 @@ public class ItemController {
 		jItem.put("regDate", item.getRegDate());
 		jItem.put("isDeleted", item.getIsDeleted());
 		jItem.put("totalSta", item.getTotalSta());
+		jItem.put("company", item.getCompany());
+		jItem.put("cost", item.getCost());
 		
 		List<ItemOption> itemOptionlist = itemService.getItemOptionIId(iid);
 		JSONArray jArrOption = new JSONArray();
@@ -134,7 +145,7 @@ public class ItemController {
 	            .name(itemRequest.getName()).category(itemRequest.getCategory())
 	            .img1(itemRequest.getImg1()).img2(itemRequest.getImg2())
 	            .img3(itemRequest.getImg3()).content(itemRequest.getContent())
-	            .price(itemRequest.getPrice())
+	            .price(itemRequest.getPrice()).company(itemRequest.getCompany()).cost(itemRequest.getCost())
 	            .build();
 	    itemService.insertItem(item);
 	    String[] option = itemRequest.getOption();
@@ -175,6 +186,8 @@ public class ItemController {
 	            .content(itemRequest.getContent())
 	            .price(itemRequest.getPrice())
 	            .iid(itemRequest.getIid())
+	            .company(itemRequest.getCompany())
+	            .cost(itemRequest.getCost())
 	            .build();
 	    itemService.updateItem(item);
 
@@ -278,18 +291,31 @@ public class ItemController {
 	    return null;
 	}
 	
-	@PostMapping("/delete")
-	public String ItemDelete(int iid) {
-		itemService.deleteItem(iid);
-		return null;
+	@DeleteMapping("/delete/{iid}")
+	public ResponseEntity<String> deleteItem(@PathVariable int iid) {
+	    itemService.deleteItem(iid);
+	    return ResponseEntity.ok("Item delete");
 	}
 	
 	@PostMapping("/sale")
-	public String saleItem(int salePrice, LocalDateTime saleDate, int iid) {
-		Item item = Item.builder()
-						.salePrice(salePrice).saleDate(saleDate).iid(iid).build();
-		itemService.saleItem(item);
-		return null;
+    public String saleItem(@RequestBody SaleData saleData) {
+        // SaleData 객체에서 필요한 정보를 추출하여 처리
+        int iid = saleData.getIid();
+        int salePrice = saleData.getSalePrice();
+        ZonedDateTime saleDate = saleData.getSaleDate();
+        LocalDateTime saleDateLDT = saleDate.toLocalDateTime();
+
+	    // Item 객체 생성
+	    Item item = Item.builder()
+	                    .salePrice(salePrice)
+	                    .saleDate(saleDateLDT)
+	                    .iid(iid)
+	                    .build();
+
+	    // itemService를 사용하여 Item 객체 처리
+	    itemService.saleItem(item);
+
+	    return null;
 	}
 	
 	

@@ -42,9 +42,9 @@ export default function ItemDetail() {
         const formattedOptions = options ? options.map(option => ({
           ioid: option.ioid,
           option: option.option,
-          stock: option.count, // 재고갯수
-          count: 0, // 수량
-          price: option.price, // 가격
+          stock: option.count, 
+          count: 0, 
+          price: option.price, 
         })) : [];
         setOptions(formattedOptions);
 
@@ -130,17 +130,17 @@ export default function ItemDetail() {
           <span 
             key={index}
             style={{ 
-              display: "inline-block", // 인라인 요소를 블록 요소로 변경하여 가로로 나열되도록 합니다
-              borderRadius: "999px", // 동그란 모양을 만듭니다
-              padding: "2px 8px", // 작은 크기로 조정합니다
-              marginRight: "5px", // 태그 사이의 간격을 조절합니다
-              fontSize: "0.7rem", // 글자 크기를 조정합니다
-              fontWeight: "bold", // 글자를 진하게 설정합니다
-              color: "black", // 텍스트 색상을 검정색으로 지정합니다
-              backgroundColor: "lightgrey", // 배경색을 회색으로 지정합니다
-              border: "1px solid grey", // 테두리 스타일을 설정합니다
+              display: "inline-block", 
+              borderRadius: "999px",
+              padding: "2px 8px", 
+              marginRight: "5px",
+              fontSize: "0.7rem", 
+              fontWeight: "bold", 
+              color: "black", 
+              backgroundColor: "lightgrey", 
+              border: "1px solid grey", 
             }}
-            onClick={() => {/* 클릭 이벤트 처리 */}}
+            onClick={() => {}}
           >
             #{tag.tag}
           </span>
@@ -155,9 +155,9 @@ export default function ItemDetail() {
         </Typography>
         <div style={{ marginBottom: '10px' }}>
           <span id="nowPrice" style={item.salePrice && new Date(item.saleDate) > new Date() ? { textDecoration: 'line-through', lineHeight: '1.5', fontSize: 'small' } : {}}>
-            {item.saleDate && new Date(item.saleDate) > new Date() ? `${item.price}원` : ''}
+            {item.saleDate && new Date(item.saleDate) > new Date() && item.price ? `${item.price.toLocaleString()}원` : ''}
           </span><br/>
-          <span id="currentPrice">{item.saleDate && new Date(item.saleDate) > new Date() ? item.salePrice : item.price}</span><span>원</span>
+          <span id="currentPrice">{item.saleDate && new Date(item.saleDate) > new Date() ? (item.salePrice ? item.salePrice.toLocaleString() : '') : (item.price ? item.price.toLocaleString() : '')}</span><span>원</span>
         </div>
         <div style={{ marginBottom: '10px' }}>
           <Select
@@ -188,7 +188,7 @@ export default function ItemDetail() {
               boxShadow={2}
               bgcolor="#f5f5f5"
               border="1px solid #ccc"
-              style={{ width: '65%', marginTop: 5, minHeight: 50 }} // 높이를 최소값으로 지정
+              style={{ width: '65%', marginTop: 5, minHeight: 50 }} 
             >
               <Typography variant="body1" style={{ flexGrow: 1 }}>
                 {option.option}
@@ -197,7 +197,7 @@ export default function ItemDetail() {
               <Input
                 value={option.count}
                 readOnly
-                style={{ width: `${(option.count.toString().length + 1) * 10}px`, margin: '0 5px' }} // 왼쪽 오른쪽 마진 추가
+                style={{ width: `${(option.count.toString().length + 1) * 10}px`, margin: '0 5px' }} 
                 disableUnderline 
               />
               <Button onClick={() => increaseQuantity(index)}>+</Button>

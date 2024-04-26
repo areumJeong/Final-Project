@@ -27,4 +27,6 @@ public class ItemRequest {
     private String[] option; // 옵션
     private int[] count; // 갯수
     private String[] tag; // 태그
+    private String company;
+	private int cost;
 }

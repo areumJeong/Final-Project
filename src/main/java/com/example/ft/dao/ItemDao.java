@@ -25,12 +25,12 @@ public interface ItemDao {
 	List<Item> getSearchItemList(String query);
 	
 	@Insert("insert into item values (default, #{name}, #{category}, #{img1}, #{img2}, #{img3},"
-			+ " #{content}, #{price}, default, default, default, default, default)")
+			+ " #{content}, #{price}, default, default, default, default, default, #{company}, #{cost})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="iid", before=false, resultType=int.class)
 	void insertItem(Item item);
 	
 	@Update("update item set name=#{name}, category=#{category}, img1=#{img1}, img2=#{img2}, img3=#{img3},"
-			+ " content=#{content}, price=#{price} where iid=#{iid}")
+			+ " content=#{content}, company=#{company}, cost=#{cost}, price=#{price} where iid=#{iid}")
 	void updateItem(Item item);	
 	
 	@Update("update item set isDeleted=1 where iid=#{iid}")

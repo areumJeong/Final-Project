@@ -6,21 +6,22 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { uploadImage } from "../api/cloudinary";
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function ItemUpdate() {
-  const [form, setForm] = useState({ id: '', name: '', category: '', img1: '', img2: '', img3: '', content: '', price: '', option: [''], count: [''], tag: [''] });
+  const [form, setForm] = useState({ id: '', name: '', category: '', img1: '', img2: '', img3: '', content: '', price: '', company: '', cost: '', option: [''], count: [''], tag: [''] });
   const { iid } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [options, setOptions] = useState([]);
   const [tags, setTags] = useState([]);
-  
+  const navigate = useNavigate();
 
   // 초기값을 받아오는 useEffect
   useEffect(() => {
     axios.get(`/ft/item/detail/${iid}`)
       .then(response => {
         const { item, options: fetchedOptions, tags: fetchedTags } = response.data;
-
+  
         // 상품 정보를 폼에 채움
         setForm({
           id: item.iid,
@@ -31,19 +32,21 @@ export default function ItemUpdate() {
           img3: item.img3,
           content: item.content,
           price: item.price,
-          option: fetchedOptions.map(option => option.option), // 옵션 목록만 가져와서 배열로 설정
-          count: fetchedOptions.map(option => option.count), // 갯수 목록만 가져와서 배열로 설정
-          tag: fetchedTags.map(tag => tag.tag), // 태그 목록만 가져와서 배열로 설정
+          company: item.company, // 여기서 company 추가
+          cost: item.cost, // 여기서 cost 추가
+          option: fetchedOptions.map(option => option.option),
+          count: fetchedOptions.map(option => option.count),
+          tag: fetchedTags.map(tag => tag.tag),
         });
-
+  
         setOptions(fetchedOptions);
         setTags(fetchedTags);
-
+  
         setIsLoading(false);
       })
       .catch(err => console.log(err))
   }, [iid]);
-
+  
   // 폼 변경 핸들러
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -143,7 +146,7 @@ export default function ItemUpdate() {
     }
   }
 
-// 폼 전송 핸들러
+  // 폼 전송 핸들러
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -162,6 +165,8 @@ export default function ItemUpdate() {
       img3: form.img3,
       content: form.content,
       price: form.price,
+      company: form.company,
+      cost: form.cost,
       option: option,
       count: count,
       tag: tag,
@@ -173,6 +178,7 @@ export default function ItemUpdate() {
     axios.post(`/ft/item/update`, requestData)
       .then(res => {
         console.log(res);
+        navigate(-1);
       })
       .catch(error => {
         console.error('Error:', error);
@@ -194,6 +200,12 @@ export default function ItemUpdate() {
             </div>
             <div>
               <TextField label='내용' name='content' value={form.content} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
+            </div>
+            <div>
+              <TextField label='제조사' name='company' value={form.company} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
+            </div>
+            <div>
+              <TextField label='원가' name='cost' value={form.cost} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
             </div>
             <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
             <label style={{marginBottom: '10px'}}>옵션/갯수: </label>
@@ -217,15 +229,15 @@ export default function ItemUpdate() {
               <Button variant='contained' onClick={handleAddTag} style={{ marginTop: '10px', marginBottom: '10px', padding: '5px 10px', minWidth: 'unset' }}>태그 추가</Button>
             </div>
             <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
-              <img src={form.img1} alt={form.img1} style={{ width: '70%', height: 400 }} />
+              <img src={form.img1} alt={form.img1} style={{ width: '70%', height: 400 }} /><br/>
               <input type="file" accept="image/*" onChange={(e) => handleUpload('img1', e.target.files[0])} />
             </div>
             <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
-              <img src={form.img2} alt={form.img2} style={{ width: '70%', height: 400 }} />
+              <img src={form.img2} alt={form.img2} style={{ width: '70%', height: 400 }} /><br/>
               <input type="file" accept="image/*" onChange={(e) => handleUpload('img2', e.target.files[0])} />
             </div>
             <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
-              <img src={form.img3} alt={form.img3} style={{ width: '70%', height: 400 }} />
+              <img src={form.img3} alt={form.img3} style={{ width: '70%', height: 400 }} /><br/>
               <input type="file" accept="image/*" onChange={(e) => handleUpload('img3', e.target.files[0])} />
             </div>
             <Button type='submit' variant='contained' style={{ marginTop: '10px' }}>수정</Button>

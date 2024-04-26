@@ -30,4 +30,6 @@ public class Item {
 	private LocalDateTime regDate;
 	private int isDeleted;
 	private int totalSta;
+	private String company;
+	private int cost;
 }
