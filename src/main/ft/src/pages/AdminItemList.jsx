@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CountDown from "../components/CountDown";
-import CustomModal from "../components/CustomModal";
+import SaleModal from "../components/SaleModal";
 
 export default function AdminItemList() {
   const [isLoading, setIsLoading] = useState(true);
@@ -119,7 +119,7 @@ export default function AdminItemList() {
                       <Typography variant="h6" style={{ display: 'inline-block', lineHeight: '1.2', maxHeight: '2.4em', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {item.name || '\u00A0'}
                       </Typography>
-                      <Typography variant="body2">제조사: {item.company || '\u00A0'}원</Typography>
+                      <Typography variant="body2">제조사: {item.company || '\u00A0'}</Typography>
                       <Typography variant="body2">원가: {item.cost ? item.cost.toLocaleString() + '원' : '\u00A0'}</Typography>
                       <Typography variant="body2">정가: {item.price ? item.price.toLocaleString() + '원' : '\u00A0'}</Typography>
                       <Typography variant="body2">할인금액:
@@ -175,7 +175,7 @@ export default function AdminItemList() {
         ))}
       </Grid>
       {/* 모달 */}
-      <CustomModal open={modalOpen} onClose={closeModal} iid={selectedItemId} price={selectedPrice} cost={selectedCost} /> 
+      <SaleModal open={modalOpen} onClose={closeModal} iid={selectedItemId} price={selectedPrice} cost={selectedCost} /> 
     </>
   )
 }

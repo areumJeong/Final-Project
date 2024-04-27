@@ -10,6 +10,7 @@ import axios from 'axios';
 import { Typography } from '@mui/material';
 import CountDown from "../components/CountDown";
 import Rating from "../components/Rating";
+import { useNavigate } from 'react-router-dom';
 
 export default function ItemDetail() {
   const { iid } = useParams();
@@ -19,6 +20,7 @@ export default function ItemDetail() {
   const [tags, setTags] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`/ft/item/detail/${iid}`)
@@ -125,7 +127,7 @@ export default function ItemDetail() {
     <Grid container spacing={2}>
       <Grid item xs={12} md={7} style={{ padding:50, textAlign: 'center' }}>
         <img src={item.img1} alt={item.img1} style={{ width: '80%', height: 400 }} />
-        <Rating item={item} />
+        <Rating item={item} strSize={22}/>
         {tags.map((tag, index) => (
           <span 
             key={index}
@@ -140,7 +142,7 @@ export default function ItemDetail() {
               backgroundColor: "lightgrey", 
               border: "1px solid grey", 
             }}
-            onClick={() => {}}
+            onClick={() => navigate(`/itemlist/${tag.tag}`)}
           >
             #{tag.tag}
           </span>
@@ -153,11 +155,11 @@ export default function ItemDetail() {
         <Typography variant="body1" gutterBottom>
           <CountDown saleDate={item.saleDate} />
         </Typography>
-        <div style={{ marginBottom: '10px' }}>
+        <div style={{ marginBottom: '10px' }} >
           <span id="nowPrice" style={item.salePrice && new Date(item.saleDate) > new Date() ? { textDecoration: 'line-through', lineHeight: '1.5', fontSize: 'small' } : {}}>
-            {item.saleDate && new Date(item.saleDate) > new Date() && item.price ? `${item.price.toLocaleString()}원` : ''}
+            {item.saleDate && new Date(item.saleDate) > new Date() && item.price ? `${item.price}원` : ''}
           </span><br/>
-          <span id="currentPrice">{item.saleDate && new Date(item.saleDate) > new Date() ? (item.salePrice ? item.salePrice.toLocaleString() : '') : (item.price ? item.price.toLocaleString() : '')}</span><span>원</span>
+          <span id="currentPrice">{item.saleDate && new Date(item.saleDate) > new Date() ? (item.salePrice ? item.salePrice : '') : (item.price ? item.price : '')}</span><span>원</span>
         </div>
         <div style={{ marginBottom: '10px' }}>
           <Select

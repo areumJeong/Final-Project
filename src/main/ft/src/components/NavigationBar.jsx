@@ -24,7 +24,8 @@ import WhatshotIcon from '@mui/icons-material/Whatshot';
 import BedroomChildIcon from '@mui/icons-material/BedroomChild';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom'; // useHistory 추가
+import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 import '../css/nav.css';
 
 const Search = styled('div')(({ theme }) => ({
@@ -65,8 +66,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-
 export default function NavigationBar() {
+    const navigate = useNavigate(); // useNavigate 훅을 사용하여 네비게이션 함수 가져오기
 
     const iconMap = {
         '특가': <WhatshotIcon />,
@@ -75,8 +76,6 @@ export default function NavigationBar() {
     };
 
     const [open, setOpen] = React.useState(false);
-
-
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
@@ -106,8 +105,6 @@ export default function NavigationBar() {
         // 세션 상태를 로그아웃 상태로 변경
         setIsLoggedIn(false);
     };
-
-    // 변경: AccountCircle 아이콘을 세션 로그인 상태에 따라 다르게 렌더링
 
     const DrawerList = (
         <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
@@ -145,6 +142,15 @@ export default function NavigationBar() {
         justifyContent: 'center',
     });
 
+    // 검색 버튼 클릭 시 실행되는 함수
+    const handleSearch = (event) => {
+        event.preventDefault(); // 기본 이벤트 방지
+        const searchQuery = event.target.elements.search.value.trim(); // 검색어 추출
+        if (searchQuery) {
+            navigate(`/itemlist/${searchQuery}`); // navigate 함수로 페이지 이동
+        }
+    };
+
     return (
         <Box sx={{ flexGrow: 1, marginBottom: 2 }}>
             <StyledAppBar position="static">
@@ -165,15 +171,18 @@ export default function NavigationBar() {
                         <Link to={'/'} className='mainPageLink'>이건 링크임</Link>
                     </Typography>
                     <Box sx={{ flexGrow: 0.5 }} />
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="검색"
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </Search>
+                    <form onSubmit={handleSearch}> 
+                        <Search>
+                            <SearchIconWrapper>
+                                <SearchIcon />
+                            </SearchIconWrapper>
+                            <StyledInputBase
+                                name="search" // 검색어 필드의 이름 설정
+                                placeholder="검색"
+                                inputProps={{ 'aria-label': 'search' }}
+                            />
+                        </Search>
+                    </form>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton
                             size="large"
@@ -191,6 +200,8 @@ export default function NavigationBar() {
                                     aria-label="account of current user"
                                     aria-haspopup="true"
                                     color="inherit"
+                                    component={Link}
+                                    to="/account" // 로그인 상태에 따라 연결할 URL 변경
                                 >
                                     <AccountCircle />
                                 </IconButton>

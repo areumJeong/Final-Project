@@ -1,5 +1,4 @@
 import React from "react";
-import ItemList from "./pages/ItemList";
 import ItemInsert from "./pages/ItemInsert";
 import { Outlet } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext';
@@ -16,7 +15,6 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <NavigationBar/>
         <Outlet />
-        {/* <ItemInsert /> */}
       </QueryClientProvider>
       
     </>

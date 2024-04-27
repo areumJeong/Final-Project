@@ -4,7 +4,7 @@ import { Button, Modal, Typography, Grid, TextField } from "@mui/material";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-export default function CustomModal({ open, onClose, iid, cost, price}) {
+export default function SaleModal({ open, onClose, iid, cost, price}) {
   const [salePrice, setSalePrice] = useState('');
   const [saleDate, setSaleDate] = useState(new Date());
 
