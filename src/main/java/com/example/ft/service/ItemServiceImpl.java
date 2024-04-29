@@ -54,6 +54,11 @@ public class ItemServiceImpl implements ItemService{
 		itemDao.saleItem(item);
 	}
 
+	@Override
+	public void totalSta(Item item) {
+		itemDao.totalSta(item);
+	}
+	
 	// itemOption
 	@Override
 	public int[] getItemOptionIoid(int iid) {

@@ -23,6 +23,8 @@ public interface ItemService {
 	
 	void saleItem(Item item);
 	
+	void totalSta(Item item);
+	
 	// itemOtion
 	List<ItemOption> getItemOptionIId(int iid);
 	

@@ -1,5 +1,5 @@
 .itemDetail {
-  padding: 20px;
+  padding: 2%;
 }
 
 .itemDetail img {
@@ -8,14 +8,14 @@
 }
 
 .itemDetail .rating {
-  margin-bottom: 10px;
+  margin-bottom: 1%;
 }
 
 .itemDetail .tag {
   display: inline-block;
   border-radius: 999px;
-  padding: 2px 8px;
-  margin-right: 5px;
+  padding: 1% 4%;
+  margin-right: 2%;
   font-size: 0.7rem;
   font-weight: bold;
   color: black;
@@ -32,11 +32,11 @@
 .itemDetail #nowPrice {
   text-decoration: line-through;
   line-height: 1.5;
-  font-size: small;
+  font-size: 0.7rem;
 }
 
 .itemDetail .option-button {
-  margin: 0 5px;
+  margin: 0 2%;
 }
 
 .itemDetail .total-price {
@@ -44,7 +44,7 @@
 }
 
 .itemDetail .action-button {
-  margin-right: 5px;
+  margin-right: 2%;
 }
 
 .itemDetail .action-button:last-child {

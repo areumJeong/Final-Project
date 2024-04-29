@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @Slf4j  //log로 값을 출력
-@Controller   // 이건 Controller 꼭 필요한 기능
+@RestController   // 이건 Controller 꼭 필요한 기능
 @RequestMapping("/board") // localhost:8090/ft/board  식으로 오게 하는것
 @RequiredArgsConstructor  // final을 사용하려면 필요
 public class BoardController {
@@ -93,7 +94,7 @@ public class BoardController {
 			Item item = Item.builder()
 						.iid(boardData.getIid()).totalSta(totalSta)
 						.build();
-			itemService.updateItem(item);
+			itemService.totalSta(item);
 			
 		}
 		return "등록되었습니다.";
@@ -116,7 +117,7 @@ public class BoardController {
 			Item item = Item.builder()
 					.iid(boardData.getIid()).totalSta(totalSta)
 					.build();
-			itemService.updateItem(item);
+			itemService.totalSta(item);
 		}
 		return "수정되었습니다.";
 	}

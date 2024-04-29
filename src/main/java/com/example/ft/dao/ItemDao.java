@@ -39,6 +39,9 @@ public interface ItemDao {
 	@Update("update item set salePrice=#{salePrice}, saleDate=#{saleDate} where iid=#{iid}")
 	void saleItem(Item item);
 	
+	@Update("update item set totalSta=#{totalSta} where iid=#{iid}")
+	void totalSta(Item item);
+	
 	// itemOption
 	@Select("select ioid from itemOption where iId=#{iid} and isDeleted=0")
 	int[] getItemOptionIoid(int iid);

@@ -11,6 +11,8 @@ import { Typography } from '@mui/material';
 import CountDown from "../components/CountDown";
 import Rating from "../components/Rating";
 import { useNavigate } from 'react-router-dom';
+import ReviewForm from "../components/ReviewForm";
+import StarRating from "../components/StarRating"
 
 export default function ItemDetail() {
   const { iid } = useParams();
@@ -21,6 +23,10 @@ export default function ItemDetail() {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
+  const [isNavFixed, setIsNavFixed] = useState(false);
+  const [activeSection, setActiveSection] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     axios.get(`/ft/item/detail/${iid}`)
@@ -122,11 +128,112 @@ export default function ItemDetail() {
         console.error('장바구니 추가 실패:', error);
       });
   };
+
+  // 섹션으로 스크롤 이동 함수
+  useEffect(() => {
+    const handleScroll = () => {
+      const nav = document.querySelector('nav');
+      const navOffsetTop = nav.offsetTop;
+
+      if (window.scrollY >= navOffsetTop) {
+        setIsNavFixed(true);
+      } else {
+        setIsNavFixed(false);
+      }
+
+      const sections = document.querySelectorAll('section');
+      let currentSectionId = null;
+
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop - nav.clientHeight; 
+        const sectionBottom = sectionTop + section.offsetHeight;
+
+        if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+          currentSectionId = section.id;
+        }
+      });
+
+      setActiveSection(currentSectionId);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const handleSectionClick = (id) => {
+    const section = document.getElementById(id);
+    const sectionTop = section.offsetTop - document.querySelector('nav').clientHeight; // Adjusted for nav height
+    window.scrollTo({ top: sectionTop, behavior: 'smooth' });
+  };
+
+  // 리뷰모달
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    // 모달을 닫을 때마다 데이터를 다시 가져오기
+    axios.get(`/ft/board/list/review`)
+      .then(jArr => {
+        const reviews = jArr.data;
+        if (reviews) {
+          const formattedReviews = reviews.map(review => ({
+            bid: review.bid,
+            iid: review.iid,
+            email: review.email,
+            type: review.type,
+            typeQnA: review.typeQnA,
+            title: review.title,
+            regDate: review.regDate,
+            content: review.content,
+            img: review.img,
+            sta: review.sta,
+          }));
+          setReviews(formattedReviews);
+        } else {
+          // 데이터가 없을 때의 처리
+          setReviews([]);
+        }
+        setIsLoading(false);
+      })
+      .catch(err => console.log(err))
+  };
+  // 리뷰 데이터 get
+  useEffect(() => {
+    axios.get(`/ft/board/list/review`)
+      .then(jArr => {
+        const reviews = jArr.data;
+        if (reviews) {
+          const formattedReviews = reviews.map(review => ({
+            bid: review.bid,
+            iid: review.iid,
+            email: review.email,
+            type: review.type,
+            typeQnA: review.typeQnA,
+            title: review.title,
+            regDate: review.regDate,
+            content: review.content,
+            img: review.img,
+            sta: review.sta,
+          }));
+          setReviews(formattedReviews);
+        } else {
+          // 데이터가 없을 때의 처리
+          setReviews([]);
+        }
+        setIsLoading(false);
+      })
+      .catch(err => console.log(err))
+  }, []); 
   
   return (
     <Grid container spacing={2} className="itemDetail">
       <Grid item xs={12} md={7} style={{ padding:50, textAlign: 'center' }}>
-        <img src={item.img1} alt={item.img1} style={{ width: '80%', height: 400 }} />
+        <img src={item.img1} alt={item.img1} style={{ width: '80%', height: 380 }} />
         <Rating item={item} strSize={22}/>
         {tags.map((tag, index) => (
           <span 
@@ -214,9 +321,60 @@ export default function ItemDetail() {
         <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5 }} onClick={handleAddToCart}>장바구니</Button>
         <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5 }}>찜</Button>
       </Grid>
-      <Grid item xs={12} md={12} style={{ padding:50, textAlign: 'center' }}>
-        <img src={item.img2} alt={item.img2} style={{ width: '90%' }} />
-        <img src={item.img2} alt={item.img2} style={{ width: '90%' }} />
+      <nav style={{ backgroundColor: '#f8f9fa', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', padding: '10px 0', textAlign: 'center', width: '100%', position: isNavFixed ? 'sticky' : 'relative', top: isNavFixed ? 0 : 'auto', left: 0, zIndex: 1000 }}>
+        <ul style={{ display: 'flex', justifyContent: 'center', listStyleType: 'none', padding: 0 }}>
+          {['detail', 'review', 'qna'].map((id) => (
+            <li key={id} style={{ margin: '0 20px' }}>
+              <button onClick={() => handleSectionClick(id)} style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', fontWeight: 'bold', padding: '12px 16px', borderRadius: '8px', fontSize: 'calc(14px + 0.5vw)', letterSpacing: '1px', textTransform: 'uppercase', transition: 'color 0.3s ease', position: 'relative', margin: '0 10px' }}>
+                <span style={{ position: 'absolute', left: 0, bottom: '-4px', width: '100%', height: '2px', backgroundColor: id === activeSection ? '#000' : 'transparent' }}></span>
+                <span style={{ position: 'relative', zIndex: 1 }}>{id === 'detail' ? <span>상세정보</span> : id === 'review' ? <span >리뷰&후기</span> : id === 'qna' ? <span >문의</span> : id}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+        <section id="detail">
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12} style={{ padding: 50, textAlign: 'center' }}>
+              <img src={item.img2} alt={item.img2} style={{ width: '90%' }} />
+              <img src={item.img2} alt={item.img2} style={{ width: '90%' }} />
+            </Grid>
+          </Grid>
+        </section>
+      </Grid>
+
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+        <section id="review">
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12} style={{ padding: 50 }}>
+              <Button variant="contained" color="primary" size="small" style={{ marginRight: 10 }} onClick={() => openModal(iid)}>리뷰작성</Button>
+              <ReviewForm isOpen={isModalOpen} handleClose={closeModal} iid={iid} />
+              {reviews.map((review, index) => (
+                <div key={index}>
+                {review.img ? 
+                  <img src={review.img} alt={review.img} style={{width: '18%'}}/> : ''
+                }
+                  <p>{review.content}</p>
+                  <p>{review.regDate}</p>
+                  <StarRating rating={review.sta} />
+                  <p>{review.sta / 10 + '점'}</p>
+                  <p>{review.email}</p>
+                </div>
+              ))}
+            </Grid>
+          </Grid>
+        </section>
+      </Grid>
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+        <section id="qna">
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12} style={{ padding: 50 }}>
+              <h2>Q&A Section</h2>
+            </Grid>
+          </Grid>
+        </section>
       </Grid>
     </Grid>
   )

@@ -17,13 +17,13 @@ public interface ReviewDao {
 	Review getReviewByVid(int vid);
 	
 	@Select("SELECT b.*, r.sta from board b JOIN review r ON b.bid = r.bid WHERE b.type=#{type} and"
-			+ " b.isDeleted=0 and b.isDeleted=0")
+			+ " b.isDeleted=0 and b.isDeleted=0 order by b.regDate desc")
 	List<Board> getReviewList(String type);
 	
 	@Select("SELECT SUM(r.sta) / COUNT(*) from board b JOIN review r ON b.bid = r.bid where b.iid=#{iid}")
 	int totalStaIid(int iid);
 	
-	@Insert("insert into review values (default, #{sta}, #{bid}, default")
+	@Insert("insert into review values (default, #{sta}, #{bid}, default)")
 	void insertReview(Review review);  
 	
 	@Update("update review set sta=#{sta} where vid=#{vid}")

@@ -9,19 +9,14 @@ import Footer from "./components/Footer";
 
 const queryClient = new QueryClient();
 
-function App() {
+export default function App() {
   return (
-
     <>
       <QueryClientProvider client={queryClient}>
         <NavigationBar/>
         <Outlet />
         <Footer />
       </QueryClientProvider>
-      
     </>
-
   );
 }
-
-export default App;
