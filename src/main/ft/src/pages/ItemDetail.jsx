@@ -124,7 +124,7 @@ export default function ItemDetail() {
   };
   
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} className="itemDetail">
       <Grid item xs={12} md={7} style={{ padding:50, textAlign: 'center' }}>
         <img src={item.img1} alt={item.img1} style={{ width: '80%', height: 400 }} />
         <Rating item={item} strSize={22}/>

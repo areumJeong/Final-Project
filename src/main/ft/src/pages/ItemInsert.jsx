@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { uploadImage } from "../api/cloudinary";
 import { useNavigate } from 'react-router-dom';
+import '../css/itemInsert.css'; // CSS 파일 import
 
 export default function ItemInsert() {
   const [form, setForm] = useState({ name: '', category: '', img1: '', img2: '', img3: '', content: '', price: '', option: [], count: [], tag: [], company: '', cost: '' });
@@ -100,61 +101,64 @@ export default function ItemInsert() {
   }
 
   return (
-    <div style={{ textAlign: 'center' }}>
-      <Card style={{ width: '80%', display: 'inline-block' }}>
-        <CardContent style={{ width: '90%', display: 'inline-block', textAlign: 'center' }}>
+    <div className='itemInsert'>
+      <Card className='itemInsert-card'>
+        <CardContent className='card-content'>
           <form onSubmit={handleSubmit}>
             <div>
-              <TextField label='상품명' name='name' value={form.name} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
+              <TextField label='상품명' name='name' value={form.name} onChange={handleChange} style={{marginBottom:10, width: '90%'}} />
             </div>
             <div>
-              <TextField label='가구종류' name='category' value={form.category} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
+              <TextField label='가구종류' name='category' value={form.category} onChange={handleChange} style={{marginBottom:10, width: '90%'}}  />
             </div>
             <div>
-              <TextField label='가격' name='price' value={form.price} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
+              <TextField label='가격' name='price' value={form.price} onChange={handleChange} style={{marginBottom:10, width: '90%'}}  />
             </div>
             <div>
-              <TextField label='내용' name='content' value={form.content} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
+              <TextField label='내용' name='content' value={form.content} onChange={handleChange} style={{marginBottom:10, width: '90%'}}  />
             </div>
             <div>
-              <TextField label='회사명' name='company' value={form.company} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
+              <TextField label='회사명' name='company' value={form.company} onChange={handleChange} style={{marginBottom:10, width: '90%'}}  />
             </div>
             <div>
-              <TextField label='원가' name='cost' value={form.cost} onChange={handleChange} style={{ marginBottom: '10px', width: '90%' }} />
+              <TextField label='원가' name='cost' value={form.cost} onChange={handleChange} style={{marginBottom:10, width: '90%'}}  />
             </div>
-            <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
+            <div className='options-container'>
               <label>옵션: </label>
-              {form.option.map((opt, index) => (
-                <TextField key={index} label={`옵션 ${index + 1}`} value={opt} onChange={(e) => handleOptionChange(index, e)} style={{ marginRight: '10px', width: '20%', fontSize: '10px' }} />
-              ))}
-              <Button variant='contained' onClick={handleAddOptionAndCount} style={{ marginBottom: '10px', padding: '5px 10px', minWidth: 'unset' }}>옵션/갯수 추가</Button>
-            </div>
-            <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
-              <label>갯수: </label>
-              {form.count.map((cnt, index) => (
-                <TextField key={index} label={`갯수 ${index + 1}`} value={cnt} onChange={(e) => handleCountChange(index, e)} style={{ marginRight: '10px', width: '20%' }} />
-              ))}
-            </div>
-            <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
-              <label>태그: </label>
-              {form.tag.map((tag, index) => (
-                <TextField key={index} label={`태그 ${index + 1}`} value={tag} onChange={(e) => handleTagChange(index, e)} style={{ marginRight: '10px', width: '20%' }} />
-              ))}
+                {form.option.map((opt, index) => (
+                  <TextField key={index} label={`옵션 ${index + 1}`} value={opt} onChange={(e) => handleOptionChange(index, e)} style={{ marginRight: '10px', width: '20%', fontSize: '10px' }} />
+                ))}
+                <Button variant='contained' onClick={handleAddOptionAndCount} style={{ marginBottom: '10px', padding: '5px 10px', minWidth: 'unset' }}>옵션/갯수 추가</Button>
+              </div>
+              <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
+                <label>갯수: </label>
+                {form.count.map((cnt, index) => (
+                  <TextField key={index} label={`갯수 ${index + 1}`} value={cnt} onChange={(e) => handleCountChange(index, e)} style={{ marginRight: '10px', width: '20%' }} />
+                ))}
+              </div>
+              <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
+                <label>태그: </label>
+                {form.tag.map((tag, index) => (
+                  <TextField key={index} label={`태그 ${index + 1}`} value={tag} onChange={(e) => handleTagChange(index, e)} style={{ marginRight: '10px', width: '20%' }} />
+                ))}
               <Button variant='contained' onClick={handleAddTag} style={{ marginBottom: '10px', padding: '5px 10px', minWidth: 'unset' }}>추가</Button>
             </div>
-            <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
-              <img src={form.img1} alt={form.img1} style={{ width: '70%', height: 400 }} />
+            <div className='images-container'>
+              <img src={form.img1} alt={form.img1} className='form-image' />
+              <br/>
               <input type="file" accept="image/*" onChange={(e) => handleUpload('img1', e.target.files[0])} />
             </div>
-            <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
-              <img src={form.img2} alt={form.img2} style={{ width: '70%', height: 400 }} />
+            <div className='images-container'>
+              <img src={form.img2} alt={form.img2} className='form-image' />
+              <br/>
               <input type="file" accept="image/*" onChange={(e) => handleUpload('img2', e.target.files[0])} />
             </div>
-            <div style={{ textAlign: 'left', marginLeft: 50, marginBottom: '10px' }}>
-              <img src={form.img3} alt={form.img3} style={{ width: '70%', height: 400 }} />
+            <div className='images-container'>
+              <img src={form.img3} alt={form.img3} className='form-image' />
+              <br/>
               <input type="file" accept="image/*" onChange={(e) => handleUpload('img3', e.target.files[0])} />
             </div>
-            <Button type='submit' variant='contained' style={{ marginTop: '10px' }}>등록</Button>
+            <Button type='submit' variant='contained' className='form-button'>등록</Button>
           </form>
         </CardContent>
       </Card>

@@ -1,0 +1,58 @@
+.itemList {
+  padding: 0 20px;
+}
+
+.itemList .admin-button {
+  margin-bottom: 20px;
+}
+
+.itemList .paper-item {
+  padding: 20px;
+  height: 320px;
+  cursor: pointer;
+}
+
+.itemList .item-image {
+  width: 100%;
+  height: 200px;
+}
+
+.itemList .countdown-timer {
+  display: inline-block;
+  line-height: 1.2;
+  max-height: 2.4em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemList .item-name {
+  display: inline-block;
+  line-height: 1.2;
+  max-height: 2.4em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemList .item-rating {
+  margin-top: 10px;
+}
+
+.itemList .item-price {
+  margin-top: 10px;
+}
+
+.itemList .sale-details {
+  margin-top: 10px;
+}
+
+.itemList .strike-through {
+  text-decoration: line-through;
+}
+
+.itemList .price {
+  margin-right: 10px;
+}
+
+.itemList .sale-price {
+  margin-right: 10px;
+}
