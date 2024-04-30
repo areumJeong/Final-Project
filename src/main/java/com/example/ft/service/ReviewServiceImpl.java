@@ -17,8 +17,8 @@ public class ReviewServiceImpl implements ReviewService {
 	private final ReviewDao reviewDao;
 
 	@Override
-	public List<Board> getReviewList(String type) {
-		return reviewDao.getReviewList(type);
+	public List<Board> getReviewList(String type, int iid) {
+		return reviewDao.getReviewList(type, iid);
 	}
 
 	@Override

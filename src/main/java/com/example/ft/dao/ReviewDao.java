@@ -17,8 +17,8 @@ public interface ReviewDao {
 	Review getReviewByVid(int vid);
 	
 	@Select("SELECT b.*, r.sta from board b JOIN review r ON b.bid = r.bid WHERE b.type=#{type} and"
-			+ " b.isDeleted=0 and b.isDeleted=0 order by b.regDate desc")
-	List<Board> getReviewList(String type);
+			+ " b.isDeleted=0 and b.iid=#{iid} order by b.regDate desc")
+	List<Board> getReviewList(String type, int iid);
 	
 	@Select("SELECT SUM(r.sta) / COUNT(*) from board b JOIN review r ON b.bid = r.bid where b.iid=#{iid}")
 	int totalStaIid(int iid);

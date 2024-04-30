@@ -40,11 +40,11 @@ public class BoardController {
 	private final ReviewService reviewService; 
 	private final ItemService itemService;
 	
-	@GetMapping("/list/{type}")
-	public JSONArray list(@PathVariable String type) {
+	@GetMapping("/list/{type}/{iid}")
+	public JSONArray list(@PathVariable String type, @PathVariable int iid) {
 		JSONArray jArr = new JSONArray();   
 		if (type.equals("review")) {
-			List<Board> list = reviewService.getReviewList(type);
+			List<Board> list = reviewService.getReviewList(type, iid);
 			for(Board board : list) {
 				JSONObject jObj = new JSONObject();
 				jObj.put("bid",board.getBid());
@@ -60,7 +60,7 @@ public class BoardController {
 				jArr.add(jObj);
 			}
 		} else {
-			List<Board> list = boardService.getBoardList(type);
+			List<Board> list = boardService.getBoardList(type, iid);
 			for(Board board : list) {
 				JSONObject jObj = new JSONObject();
 				jObj.put("bid",board.getBid());

@@ -8,7 +8,7 @@ public interface BoardService {
 	
 	Board getBoardByBid(int bid);   //bid 값으로 원하는 게시물 찾겠다
 	
-	List<Board> getBoardList(String type); // 모든 게시물을 리스트로 찾겠다
+	List<Board> getBoardList(String type, int iid); // 모든 게시물을 리스트로 찾겠다
 	
 	void insertBoard(Board board);  // 게시물 작성할 때 사용
 	

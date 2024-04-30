@@ -29,4 +29,5 @@ public class ItemRequest {
     private String[] tag; // 태그
     private String company;
 	private int cost;
+	private String email;
 }

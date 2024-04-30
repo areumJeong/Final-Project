@@ -21,12 +21,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListIcon from '@mui/icons-material/List';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
-import BedroomChildIcon from '@mui/icons-material/BedroomChild';
-import LoginIcon from '@mui/icons-material/Login';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { Link, useHistory } from 'react-router-dom'; // useHistory 추가
-import { useNavigate } from 'react-router-dom'; // useNavigate 추가
+import MenuItem from '@mui/material/MenuItem';
+import Grid from '@mui/material/Grid';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 import '../css/nav.css';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { Collapse } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -66,20 +67,22 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
+
 export default function NavigationBar() {
     const navigate = useNavigate(); // useNavigate 훅을 사용하여 네비게이션 함수 가져오기
+    const [openDrawer, setDrawerOpen] = React.useState(false);
+    const [openList, setListOpen] = React.useState(false);
 
-    const iconMap = {
-        '특가': <WhatshotIcon />,
-        '기획전': <BedroomChildIcon />,
-        '카테고리': <ListIcon />
-    };
 
-    const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (newOpen) => () => {
-        setOpen(newOpen);
+        setDrawerOpen(newOpen);
     };
+    const toggleList = (newOpen) => () => {
+        setListOpen(newOpen);
+    };
+
+
 
     const [isLoggedIn, setIsLoggedIn] = React.useState(false); // 기본적으로 로그아웃 상태
 
@@ -106,20 +109,64 @@ export default function NavigationBar() {
         setIsLoggedIn(false);
     };
 
+    // 변경: AccountCircle 아이콘을 세션 로그인 상태에 따라 다르게 렌더링
+
     const DrawerList = (
-        <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+        <Box sx={{ width: 350 }} role="presentation">
             <List>
-                {['특가', '기획전', '카테고리'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
+                <ListItem disablePadding>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <WhatshotIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="특가" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton onClick={toggleList(!openList)}>
+                        <ListItemIcon>
+                            <ListIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="카테고리" />
+                        {openList ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                </ListItem>
+                <Collapse in={openList} unmountOnExit>
+                    <List component="div" disablePadding>
+                        <ListItemButton sx={{ pl: 4 }}>
                             <ListItemIcon>
-                                {iconMap[text]}
+                                <WhatshotIcon />
                             </ListItemIcon>
-                            <ListItemText primary={text} />
+                            <ListItemText primary="의자" />
                         </ListItemButton>
-                    </ListItem>
-                ))}
+                        <ListItemButton sx={{ pl: 4 }}>
+                            <ListItemIcon>
+                                <WhatshotIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="책상" />
+                        </ListItemButton>
+                        <ListItemButton sx={{ pl: 4 }}>
+                            <ListItemIcon>
+                                <WhatshotIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="책상" />
+                        </ListItemButton>
+                        <ListItemButton sx={{ pl: 4 }}>
+                            <ListItemIcon>
+                                <WhatshotIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="책상" />
+                        </ListItemButton>
+                        <ListItemButton sx={{ pl: 4 }}>
+                            <ListItemIcon>
+                                <WhatshotIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="책상" />
+                        </ListItemButton>
+                    </List>
+                </Collapse>
             </List>
+            <Divider />
             <Divider />
             <List>
                 {['주문내역', '내 정보'].map((text, index) => (
@@ -157,7 +204,7 @@ export default function NavigationBar() {
                 <Toolbar>
                     <div>
                         <Button onClick={toggleDrawer(true)} color="inherit"><MenuIcon /></Button>
-                        <Drawer open={open} onClose={toggleDrawer(false)}>
+                        <Drawer open={openDrawer} onClose={toggleDrawer(false)} BackdropProps={{invisible: true}}>
                             {DrawerList}
                         </Drawer>
                     </div>
@@ -194,39 +241,50 @@ export default function NavigationBar() {
                         </IconButton>
                         {isLoggedIn ? (
                             <>
-                                <IconButton
-                                    size="large"
-                                    edge="end"
-                                    aria-label="account of current user"
-                                    aria-haspopup="true"
-                                    color="inherit"
-                                    component={Link}
-                                    to="/account" // 로그인 상태에 따라 연결할 URL 변경
-                                >
-                                    <AccountCircle />
-                                </IconButton>
-                                <IconButton
-                                    size="large"
-                                    edge="end"
-                                    aria-label="account of current user"
-                                    aria-haspopup="true"
-                                    color="inherit"
-                                    onClick={handleLogout}
-                                >
-                                    <LogoutIcon />
-                                </IconButton>
+                                <Grid container alignItems="center" spacing={1}>
+                                    <Grid item xd={4}>
+                                        <MenuItem
+                                            size="small"
+                                            color="inherit"
+                                            onClick={handleLogout}
+                                        >
+                                            <Typography variant="body2">로그아웃</Typography>
+                                        </MenuItem>
+                                    </Grid>
+                                    <Grid item xd={4}>
+                                        <MenuItem
+                                            size="large"
+                                            color="inherit"
+                                            onClick={handleLogout}
+                                        >
+                                            <Typography variant="body2">마이페이지</Typography>
+                                        </MenuItem>
+                                    </Grid>
+                                </Grid>
                             </>
                         ) : (
-                            <IconButton
-                                size="large"
-                                edge="end"
-                                aria-label="account of current user"
-                                aria-haspopup="true"
-                                color="inherit"
-                                onClick={handleLogin} 
-                            >
-                                <LoginIcon />
-                            </IconButton>
+                            <>
+                                <Grid container alignItems="center" spacing={1}>
+                                    <Grid item xd={4}>
+                                        <MenuItem
+                                            size="small"
+                                            color="inherit"
+                                            onClick={handleLogin}
+                                        >
+                                            <Typography variant="body2">로그인</Typography>
+                                        </MenuItem>
+                                    </Grid>
+                                    <Grid item xd={4}>
+                                        <MenuItem
+                                            size="small"
+                                            color="inherit"
+                                            onClick={handleLogin}
+                                        >
+                                            <Typography variant="body2">회원가입</Typography>
+                                        </MenuItem>
+                                    </Grid>
+                                </Grid>
+                            </>
                         )}
 
                     </Box>

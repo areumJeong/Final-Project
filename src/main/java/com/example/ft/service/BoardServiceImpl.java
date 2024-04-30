@@ -21,9 +21,8 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<Board> getBoardList(String type) {
-		
-		return boardDao.getBoardList(type);
+	public List<Board> getBoardList(String type, int iid) {
+		return boardDao.getBoardList(type, iid);
 	}
 
 	@Override

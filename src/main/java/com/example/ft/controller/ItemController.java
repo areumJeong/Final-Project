@@ -29,7 +29,9 @@ import com.example.ft.entity.ItemOption;
 import com.example.ft.entity.ItemRequest;
 import com.example.ft.entity.ItemTag;
 import com.example.ft.entity.SaleData;
+import com.example.ft.entity.Wish;
 import com.example.ft.service.ItemService;
+import com.example.ft.service.WishService;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @Slf4j // log로 값을 출력
@@ -38,6 +40,7 @@ import com.example.ft.service.ItemService;
 @RequiredArgsConstructor
 public class ItemController {
 	private final ItemService itemService;
+	private final WishService wishService;
 	
 	@GetMapping("/list")
 	public JSONArray list() {
@@ -64,33 +67,8 @@ public class ItemController {
 		return jArr;
 	}
 	
-	@GetMapping("/search")
-	public JSONArray getSearchItemList(String query) {
-		List<Item> list = itemService.getSearchItemList(query);
-		JSONArray jArr = new JSONArray();
-		for(Item item : list) {
-			JSONObject jObj = new JSONObject(); 
-			jObj.put("iid", item.getIid());
-			jObj.put("name", item.getName());
-			jObj.put("category", item.getCategory());
-			jObj.put("img1", item.getImg1());
-			jObj.put("img2", item.getImg2());
-			jObj.put("content", item.getContent());
-			jObj.put("price", item.getPrice());
-			jObj.put("salePrice", item.getSalePrice());
-			jObj.put("saleDate", item.getSaleDate());
-			jObj.put("regDate", item.getRegDate());
-			jObj.put("isDeleted", item.getIsDeleted());
-			jObj.put("totalSta", item.getTotalSta());
-			jObj.put("company", item.getCompany());
-			jObj.put("cost", item.getCost());
-			jArr.add(jObj);
-		}
-		return jArr;
-	}
-	
-	@GetMapping("/detail/{iid}")
-	public JSONObject getItemDetail(@PathVariable int iid) {
+	@GetMapping("/detail/{iid}/{email}")
+	public JSONObject getItemDetail(@PathVariable int iid,@PathVariable String email) {
 		Item item = itemService.getItemIId(iid);
 		JSONObject jItem = new JSONObject();
 		jItem.put("iid", item.getIid());
@@ -130,12 +108,17 @@ public class ItemController {
 			jObj.put("isDeleted", tag.getIsDeleted());
 			jArrTag.add(jObj);
 		}
+		Wish wish = wishService.getWish(iid, email);
+		int value = 0;
+		if (wish != null) {
+			value = wish.getValue();	
+		}
 		
 		JSONObject response = new JSONObject();
 	    response.put("item", jItem);
 	    response.put("options", jArrOption);
 	    response.put("tags", jArrTag);
-	    
+	    response.put("value", value);
 		return response;
 	}
 	

@@ -13,6 +13,9 @@ import Rating from "../components/Rating";
 import { useNavigate } from 'react-router-dom';
 import ReviewForm from "../components/ReviewForm";
 import StarRating from "../components/StarRating"
+import InquiryContent from "../components/InquiryContent";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export default function ItemDetail() {
   const { iid } = useParams();
@@ -27,12 +30,14 @@ export default function ItemDetail() {
   const [activeSection, setActiveSection] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const [qnAs, setQnAs] = useState([]);
+  const [iswish, setIsWish] = useState(false);
+  const email = 'email';  // 임시값
 
   useEffect(() => {
-    axios.get(`/ft/item/detail/${iid}`)
+    axios.get(`/ft/item/detail/${iid}/${email}`)
       .then(response => {
-        const { item, options, tags } = response.data;
-
+        const { item, options, tags, value } = response.data;
         const formattedItem = {
           iid: item.iid,
           name: item.name,
@@ -61,6 +66,13 @@ export default function ItemDetail() {
           tag: tag.tag,
         })) : [];
         setTags(formattedTags);
+        
+        console.log(value);
+        if (value === 1){
+          setIsWish(true)
+        } else{
+          setIsWish(false)
+        }
 
         setIsLoading(false);
       })
@@ -118,7 +130,6 @@ export default function ItemDetail() {
       iid: item.iid,
       ioid: option.ioid,
       count: option.count,
-      totalPrice: document.getElementById('currentPrice').innerText
     }));
     axios.post('/ft/api/carts', cartItems)
       .then(response => {
@@ -177,7 +188,7 @@ export default function ItemDetail() {
   const closeModal = () => {
     setIsModalOpen(false);
     // 모달을 닫을 때마다 데이터를 다시 가져오기
-    axios.get(`/ft/board/list/review`)
+    axios.get(`/ft/board/list/review/${iid}`)
       .then(jArr => {
         const reviews = jArr.data;
         if (reviews) {
@@ -201,10 +212,54 @@ export default function ItemDetail() {
         setIsLoading(false);
       })
       .catch(err => console.log(err))
+
+      // 아이템 디테일 데이터 가져오기
+    axios.get(`/ft/item/detail/${iid}/${email}`)
+    .then(response => {
+      const { item, options, tags, value } = response.data;
+      const formattedItem = {
+        iid: item.iid,
+        name: item.name,
+        category: item.category,
+        img1: item.img1,
+        img2: item.img2,
+        img3: item.img3,
+        price: item.price,
+        saleDate: item.saleDate,
+        salePrice: item.salePrice,
+        totalSta: item.totalSta,
+      };
+      setItem(formattedItem);
+
+      const formattedOptions = options ? options.map(option => ({
+        ioid: option.ioid,
+        option: option.option,
+        stock: option.count, 
+        count: 0, 
+        price: option.price, 
+      })) : [];
+      setOptions(formattedOptions);
+
+      const formattedTags = tags ? tags.map(tag => ({
+        itid: tag.itid,
+        tag: tag.tag,
+      })) : [];
+      setTags(formattedTags);
+      
+      console.log(value);
+      if (value === 1){
+        setIsWish(true)
+      } else{
+        setIsWish(false)
+      }
+
+      setIsLoading(false);
+    })
+    .catch(err => console.log(err));
   };
   // 리뷰 데이터 get
   useEffect(() => {
-    axios.get(`/ft/board/list/review`)
+    axios.get(`/ft/board/list/review/${iid}`)
       .then(jArr => {
         const reviews = jArr.data;
         if (reviews) {
@@ -229,11 +284,97 @@ export default function ItemDetail() {
       })
       .catch(err => console.log(err))
   }, []); 
-  
+
+  // 문의 모달
+  const [isInquiryModalOpen, setIsInquiryModalOpen] = useState(false);
+
+  const openInquiryModal = () => {
+    setIsInquiryModalOpen(true);
+  };
+
+  const closeInquiryModal = () => {
+    setIsInquiryModalOpen(false);
+    axios.get(`/ft/board/list/QnA/${iid}`)
+      .then(jArr => {
+        const qnas = jArr.data;
+        if (qnas) {
+          const formattedReviews = qnas.map(qnas => ({
+            bid: qnas.bid,
+            iid: qnas.iid,
+            email: qnas.email,
+            type: qnas.type,
+            typeQnA: qnas.typeQnA,
+            title: qnas.title,
+            regDate: qnas.regDate,
+            content: qnas.content,
+            img: qnas.img,
+            sta: qnas.sta,
+          }));
+          setQnAs(formattedReviews);
+        } else {
+          // 데이터가 없을 때의 처리
+          setQnAs([]);
+        }
+        setIsLoading(false);
+      })
+      .catch(err => console.log(err))
+  };
+
+  // 문의 데이터 get
+  useEffect(() => {
+    axios.get(`/ft/board/list/QnA/${iid}/${email}`)
+      .then(jArr => {
+        const qnas = jArr.data;
+        if (qnas) {
+          const formattedQnA = qnas.map(qna => ({
+            bid: qna.bid,
+            iid: qna.iid,
+            email: qna.email,
+            type: qna.type,
+            typeQnA: qna.typeQnA,
+            title: qna.title,
+            regDate: qna.regDate,
+            content: qna.content,
+            img: qna.img,
+          }));
+          setQnAs(formattedQnA);
+        } else {
+          // 데이터가 없을 때의 처리
+          setQnAs([]);
+        }
+        setIsLoading(false);
+      })
+      .catch(err => console.log(err))
+  }, []);
+  // 찜기능
+  const handleLikeClick = () => {
+    axios.post(`/ft/wish/click`, {
+      iid: iid,
+      email: email
+    })
+    .then(response => {
+      // 서버로부터 응답 받은 데이터를 처리
+      const value = response.data;
+      // 서버에서 반환된 value 값이 1인 경우 좋아요 표시, 0인 경우 좋아요 해제
+      if (value === 1) {
+        // setLikeCount(prevCount => prevCount + 1); // 좋아요 수 증가
+        setIsWish(true); // 좋아요 표시
+      } else if (value === 0) {
+        // setLikeCount(prevCount => prevCount - 1); // 좋아요 수 감소
+        setIsWish(false); // 좋아요 해제
+      }
+    })
+    .catch(error => {
+      console.error('Error while updating like count:', error);
+    });
+  };
+
   return (
     <Grid container spacing={2} className="itemDetail">
-      <Grid item xs={12} md={7} style={{ padding:50, textAlign: 'center' }}>
-        <img src={item.img1} alt={item.img1} style={{ width: '80%', height: 380 }} />
+      <Grid item md={1} sx={{ placeItems: 'center', display: { xs: 'none',  lg: 'flex' }, }}>
+      </Grid>
+      <Grid item xs={12}  md={5}  style={{ padding:50, textAlign: 'center' }}>
+        <img src={item.img1} alt={item.img1} style={{ width:'100%' , height: 380, }} />
         <Rating item={item} strSize={22}/>
         {tags.map((tag, index) => (
           <span 
@@ -255,6 +396,8 @@ export default function ItemDetail() {
           </span>
         ))}
       </Grid>
+      <Grid item md={1} sx={{ placeItems: 'center', display: { xs: 'none', lg: 'flex' }, }}>
+      </Grid>
       <Grid item xs={12} md={5} style={{padding:50}}>
         <Typography variant="h5" gutterBottom>
           {item.name}
@@ -264,7 +407,7 @@ export default function ItemDetail() {
         </Typography>
         <div style={{ marginBottom: '10px' }} >
           <span id="nowPrice" style={item.salePrice && new Date(item.saleDate) > new Date() ? { textDecoration: 'line-through', lineHeight: '1.5', fontSize: 'small' } : {}}>
-            {item.saleDate && new Date(item.saleDate) > new Date() && item.price ? `${item.price}원` : ''}
+          {item.saleDate && new Date(item.saleDate) > new Date() && item.price ? `${item.price}원` : ''}
           </span><br/>
           <span id="currentPrice">{item.saleDate && new Date(item.saleDate) > new Date() ? (item.salePrice ? item.salePrice : '') : (item.price ? item.price : '')}</span><span>원</span>
         </div>
@@ -319,7 +462,11 @@ export default function ItemDetail() {
         </Typography>
         <Button variant="contained" color="primary" style={{ marginBottom: '10px' }}>구매하기</Button>
         <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5 }} onClick={handleAddToCart}>장바구니</Button>
-        <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5 }}>찜</Button>
+        <br/>
+        <Button variant="contained" color="primary" style={{ marginBottom: '10px', }}>공유하기</Button>
+        <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5, backgroundColor: 'transparent', color: 'black', }} onClick={handleLikeClick}>
+          찜 {iswish ? <FavoriteIcon style={{ color: 'red', width: 18 }} /> : <FavoriteBorderIcon style={{width:18}}/>}
+        </Button>
       </Grid>
       <nav style={{ backgroundColor: '#f8f9fa', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', padding: '10px 0', textAlign: 'center', width: '100%', position: isNavFixed ? 'sticky' : 'relative', top: isNavFixed ? 0 : 'auto', left: 0, zIndex: 1000 }}>
         <ul style={{ display: 'flex', justifyContent: 'center', listStyleType: 'none', padding: 0 }}>
@@ -371,7 +518,20 @@ export default function ItemDetail() {
         <section id="qna">
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12} style={{ padding: 50 }}>
-              <h2>Q&A Section</h2>
+              <Button variant="contained" color="primary" style={{ marginBottom: '20px' }} onClick={() => openInquiryModal(iid)}>문의하기</Button>
+              <InquiryContent isOpen={isInquiryModalOpen} handleClose={closeInquiryModal} iid={iid}/>
+              {qnAs.map((qna, index) => (
+                <div key={index}>
+                {qna.img ? 
+                  <img src={qna.img} alt={qna.img} style={{width: '18%'}}/> : ''
+                }
+                  <p>{qna.typeQnA}</p>
+                  <p>{qna.title}</p>
+                  <p>{qna.content}</p>
+                  <p>{qna.regDate}</p>
+                  <p>{qna.email}</p>
+                </div>
+              ))}
             </Grid>
           </Grid>
         </section>

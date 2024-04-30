@@ -7,7 +7,7 @@ import com.example.ft.entity.Review;
 
 public interface ReviewService {
 
-	List<Board> getReviewList(String type);
+	List<Board> getReviewList(String type, int iid);
 	
 	int totalStaIid(int iid);
 	

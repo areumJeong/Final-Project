@@ -17,8 +17,8 @@ public interface BoardDao {
 	Board getBoardByBid(int bid);    // 돌려받는 값 
 	// 테이블이름이 뭐냐?,board에서 조건where bid에서 가져오는데 그리고 삭제된거는 가져오지마
 	
-	@Select("select * from where isDeleted=0 and type=#{type} order by regDate desc")
-	List<Board> getBoardList(String type);
+	@Select("select * from board where isDeleted=0 and type=#{type} and iid=#{iid} order by regDate desc")
+	List<Board> getBoardList(String type, int iid);
 
 	@Insert("insert into  Board values (default, #{iid}, #{email}, #{type},"
 			+ " #{typeQnA}, #{title}, default, #{content}, #{img}, default)")
