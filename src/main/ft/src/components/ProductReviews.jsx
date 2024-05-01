@@ -8,7 +8,7 @@ import axios from 'axios';
 import Rating from './Rating';
 import ImgModal from './ImgModal';
 import ReviewEditModal from './ReviewEditModal'; // 추가: 리뷰 수정 모달
-import ItemDetail from '../pages/ItemDetail';
+
 // CSS
 const styles = {
   container: {
@@ -90,7 +90,7 @@ const RatingOptions = ({ commentCounts, increaseCommentCount }) => {
 };
 
 
-const ProductReviews = ({reviews, item}) => {
+const ProductReviews = ({reviews, item, reloadData}) => {
   const [selectedRating] = useState(null);
   const [commentCounts, setCommentCounts] = useState({
     5: 0,
@@ -151,7 +151,8 @@ const ProductReviews = ({reviews, item}) => {
   // 추가: 리뷰 수정 모달 닫기
   const handleCloseEditModal = () => {
     setEditModalOpen(false);
-    // 수정이 완료되면 리뷰 목록을 다시 불러올 수 있도록 하거나 상태를 업데이트할 수 있습니다.
+    // 데이터 다시 불러오기
+    reloadData(); // 이렇게 호출하면 부모 컴포넌트로 신호를 보냄
   };
 
   return (

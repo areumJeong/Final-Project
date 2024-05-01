@@ -384,6 +384,35 @@ export default function ItemDetail() {
     });
   };
 
+  const reloadData = () => {
+    axios.get(`/ft/board/list/review/${iid}`)
+      .then(jArr => {
+        const reviews = jArr.data;
+        if (reviews) {
+          const formattedReviews = reviews.map(review => ({
+            bid: review.bid,
+            iid: review.iid,
+            email: review.email,
+            type: review.type,
+            typeQnA: review.typeQnA,
+            title: review.title,
+            regDate: review.regDate,
+            content: review.content,
+            img: review.img,
+            sta: review.sta,
+            vid: review.vid,
+          }));
+          setReviews(formattedReviews);
+          setReviewCount(formattedReviews.length);
+        } else {
+          // 데이터가 없을 때의 처리
+          setReviews([]);
+        }
+        setIsLoading(false);
+      })
+      .catch(err => console.log(err))
+  };
+
   return (
     <Grid container spacing={2} className="itemDetail">
       <Grid item md={1} sx={{ placeItems: 'center', display: { xs: 'none',  lg: 'flex' }, }}>
@@ -512,7 +541,7 @@ export default function ItemDetail() {
             <Grid item xs={12} style={{ padding: 50 }}>
               <Button variant="contained" color="primary" size="small" style={{ marginRight: 10 }} onClick={() => openModal(iid)}>리뷰작성</Button>
               <ReviewForm isOpen={isModalOpen} handleClose={closeModal} iid={iid} /> 
-              <ProductReviews reviews={reviews} item={item}/>
+              <ProductReviews reloadData={reloadData} reviews={reviews} item={item}/>
             </Grid>
           </Grid>
         </section>
