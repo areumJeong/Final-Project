@@ -13,7 +13,7 @@ import com.example.ft.entity.Board;
 @Mapper
 public interface BoardDao {
 
-	@Select("select * from board where bid={bid} and isDeleted=0")   
+	@Select("select * from board where bid=#{bid} and isDeleted=0")   
 	Board getBoardByBid(int bid);    // 돌려받는 값 
 	// 테이블이름이 뭐냐?,board에서 조건where bid에서 가져오는데 그리고 삭제된거는 가져오지마
 	
@@ -26,7 +26,7 @@ public interface BoardDao {
 	void insertBoard(Board board);
 	
 	@Update("update Board set iid=#{iid}, type=#{type}, typeQnA=#{typeQnA}, title=#{title},"
-			+ " content=#{content}, img=#{img}, totalSta=#{totalSta} where bid=#{bid}")  // 변경할 수 있는것들
+			+ " content=#{content}, img=#{img} where bid=#{bid}")  // 변경할 수 있는것들
 	void updateBoard(Board board);
 	
 	@Update("update Board set isDeleted=1 where bid=#{bid}")

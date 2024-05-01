@@ -16,6 +16,8 @@ import StarRating from "../components/StarRating"
 import InquiryContent from "../components/InquiryContent";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import ProductReviews from "../components/ProductReviews";
+import ProductQnA from "../components/ProductQnA";
 
 export default function ItemDetail() {
   const { iid } = useParams();
@@ -30,8 +32,11 @@ export default function ItemDetail() {
   const [activeSection, setActiveSection] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const [reviewsCount, setReviewCount] = useState(0);
   const [qnAs, setQnAs] = useState([]);
+  const [qnAsCount, setQnAsCount] = useState(0);
   const [iswish, setIsWish] = useState(false);
+
   const email = 'email';  // 임시값
 
   useEffect(() => {
@@ -66,8 +71,7 @@ export default function ItemDetail() {
           tag: tag.tag,
         })) : [];
         setTags(formattedTags);
-        
-        console.log(value);
+
         if (value === 1){
           setIsWish(true)
         } else{
@@ -203,8 +207,10 @@ export default function ItemDetail() {
             content: review.content,
             img: review.img,
             sta: review.sta,
+            vid: review.vid,
           }));
           setReviews(formattedReviews);
+          setReviewCount(formattedReviews.length);
         } else {
           // 데이터가 없을 때의 처리
           setReviews([]);
@@ -274,8 +280,10 @@ export default function ItemDetail() {
             content: review.content,
             img: review.img,
             sta: review.sta,
+            vid: review.vid,
           }));
           setReviews(formattedReviews);
+          setReviewCount(formattedReviews.length);
         } else {
           // 데이터가 없을 때의 처리
           setReviews([]);
@@ -298,7 +306,7 @@ export default function ItemDetail() {
       .then(jArr => {
         const qnas = jArr.data;
         if (qnas) {
-          const formattedReviews = qnas.map(qnas => ({
+          const formattedQnA = qnas.map(qnas => ({
             bid: qnas.bid,
             iid: qnas.iid,
             email: qnas.email,
@@ -310,7 +318,8 @@ export default function ItemDetail() {
             img: qnas.img,
             sta: qnas.sta,
           }));
-          setQnAs(formattedReviews);
+          setQnAs(formattedQnA);
+          setQnAsCount(formattedQnA.length);
         } else {
           // 데이터가 없을 때의 처리
           setQnAs([]);
@@ -322,7 +331,7 @@ export default function ItemDetail() {
 
   // 문의 데이터 get
   useEffect(() => {
-    axios.get(`/ft/board/list/QnA/${iid}/${email}`)
+    axios.get(`/ft/board/list/QnA/${iid}`)
       .then(jArr => {
         const qnas = jArr.data;
         if (qnas) {
@@ -338,14 +347,20 @@ export default function ItemDetail() {
             img: qna.img,
           }));
           setQnAs(formattedQnA);
+          setQnAsCount(formattedQnA.length);
         } else {
           // 데이터가 없을 때의 처리
           setQnAs([]);
         }
         setIsLoading(false);
       })
-      .catch(err => console.log(err))
-  }, []);
+      .catch(err => {
+        console.error('Error fetching QnA:', err);
+        setIsLoading(false);
+        // 사용자에게 메시지 표시
+        // 예를 들어, 에러 상태를 관리하는 state를 추가하여 에러 메시지를 화면에 렌더링할 수 있습니다.
+      });
+    }, []);
   // 찜기능
   const handleLikeClick = () => {
     axios.post(`/ft/wish/click`, {
@@ -380,6 +395,7 @@ export default function ItemDetail() {
           <span 
             key={index}
             style={{ 
+              cursor: 'pointer',
               display: "inline-block", 
               borderRadius: "999px",
               padding: "2px 8px", 
@@ -474,13 +490,12 @@ export default function ItemDetail() {
             <li key={id} style={{ margin: '0 20px' }}>
               <button onClick={() => handleSectionClick(id)} style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', fontWeight: 'bold', padding: '12px 16px', borderRadius: '8px', fontSize: 'calc(14px + 0.5vw)', letterSpacing: '1px', textTransform: 'uppercase', transition: 'color 0.3s ease', position: 'relative', margin: '0 10px' }}>
                 <span style={{ position: 'absolute', left: 0, bottom: '-4px', width: '100%', height: '2px', backgroundColor: id === activeSection ? '#000' : 'transparent' }}></span>
-                <span style={{ position: 'relative', zIndex: 1 }}>{id === 'detail' ? <span>상세정보</span> : id === 'review' ? <span >리뷰&후기</span> : id === 'qna' ? <span >문의</span> : id}</span>
+                <span style={{ position: 'relative', zIndex: 1 }}>{id === 'detail' ? <span>상세정보</span> : id === 'review' ? <span >리뷰&후기({reviewsCount})</span> : id === 'qna' ? <span >문의({qnAsCount})</span> : id}</span>
               </button>
             </li>
           ))}
         </ul>
       </nav>
-      
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <section id="detail">
           <Grid container spacing={2} justifyContent="center">
@@ -491,25 +506,13 @@ export default function ItemDetail() {
           </Grid>
         </section>
       </Grid>
-
-      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12} >
         <section id="review">
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12} style={{ padding: 50 }}>
               <Button variant="contained" color="primary" size="small" style={{ marginRight: 10 }} onClick={() => openModal(iid)}>리뷰작성</Button>
-              <ReviewForm isOpen={isModalOpen} handleClose={closeModal} iid={iid} />
-              {reviews.map((review, index) => (
-                <div key={index}>
-                {review.img ? 
-                  <img src={review.img} alt={review.img} style={{width: '18%'}}/> : ''
-                }
-                  <p>{review.content}</p>
-                  <p>{review.regDate}</p>
-                  <StarRating rating={review.sta} />
-                  <p>{review.sta / 10 + '점'}</p>
-                  <p>{review.email}</p>
-                </div>
-              ))}
+              <ReviewForm isOpen={isModalOpen} handleClose={closeModal} iid={iid} /> 
+              <ProductReviews reviews={reviews} item={item}/>
             </Grid>
           </Grid>
         </section>
@@ -518,20 +521,9 @@ export default function ItemDetail() {
         <section id="qna">
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12} style={{ padding: 50 }}>
-              <Button variant="contained" color="primary" style={{ marginBottom: '20px' }} onClick={() => openInquiryModal(iid)}>문의하기</Button>
+              <ProductQnA posts={qnAs}/>
+              <Button variant="contained" color="primary" style={{ marginBottom: '20px', marginLeft: 40 }} onClick={() => openInquiryModal(iid)}>문의하기</Button>
               <InquiryContent isOpen={isInquiryModalOpen} handleClose={closeInquiryModal} iid={iid}/>
-              {qnAs.map((qna, index) => (
-                <div key={index}>
-                {qna.img ? 
-                  <img src={qna.img} alt={qna.img} style={{width: '18%'}}/> : ''
-                }
-                  <p>{qna.typeQnA}</p>
-                  <p>{qna.title}</p>
-                  <p>{qna.content}</p>
-                  <p>{qna.regDate}</p>
-                  <p>{qna.email}</p>
-                </div>
-              ))}
             </Grid>
           </Grid>
         </section>

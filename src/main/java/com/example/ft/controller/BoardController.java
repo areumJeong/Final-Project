@@ -42,7 +42,7 @@ public class BoardController {
 	
 	@GetMapping("/list/{type}/{iid}")
 	public JSONArray list(@PathVariable String type, @PathVariable int iid) {
-		JSONArray jArr = new JSONArray();   
+		JSONArray jArr = new JSONArray();
 		if (type.equals("review")) {
 			List<Board> list = reviewService.getReviewList(type, iid);
 			for(Board board : list) {
@@ -57,6 +57,7 @@ public class BoardController {
 				jObj.put("content",board.getContent());
 				jObj.put("img",board.getImg());
 				jObj.put("sta",board.getSta());
+				jObj.put("vid",board.getVid());
 				jArr.add(jObj);
 			}
 		} else {
@@ -112,6 +113,7 @@ public class BoardController {
 			Review review = Review.builder()
 							.vid(boardData.getVid()).sta(boardData.getSta())
 							.build();
+			System.out.println(boardData.getVid());
 			reviewService.updateReview(review);
 			int totalSta = reviewService.totalStaIid(boardData.getIid());
 			Item item = Item.builder()
