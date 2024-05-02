@@ -8,6 +8,8 @@ import axios from 'axios';
 import Rating from './Rating';
 import ImgModal from './ImgModal';
 import ReviewEditModal from './ReviewEditModal'; // 추가: 리뷰 수정 모달
+import { selectUserData } from '../api/firebase';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
 
 // CSS
 const styles = {
@@ -93,13 +95,36 @@ const RatingOptions = ({ commentCounts, increaseCommentCount }) => {
 const ProductReviews = ({reviews, item, reloadReviewData}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [selectedRating] = useState(null);
-  const [commentCounts, setCommentCounts] = useState({
-    5: 0,
-    4: 0,
-    3: 0,
-    2: 0,
-    1: 0
-  });
+  const [commentCounts, setCommentCounts] = useState({5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
+  const [currentUserEmail, setCurrentUserEmail] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const auth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUserEmail(user.email);
+      } else {
+        setCurrentUserEmail(null);
+      }
+    });
+  }, [auth]);
+  
+  useEffect(() => {
+    if (currentUserEmail) {
+      const fetchUserInfo = async () => {
+        try {
+          const info = await selectUserData(currentUserEmail);
+          setUserInfo(info);
+          setIsAdmin(info && info.isAdmin === 1);
+        } catch (error) {
+          console.error('사용자 정보를 불러오는 중 에러:', error);
+        }
+      };
+      fetchUserInfo();
+    }
+  }, [currentUserEmail]);
 
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -208,10 +233,12 @@ const ProductReviews = ({reviews, item, reloadReviewData}) => {
             {/* 리뷰 내용 */}
             <div>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1%' }}>
-                <p style={{ marginRight: '1%' }}>{review.email}</p>
+                <p style={{ marginRight: '1%' }}>{`${review.email.split('@')[0].substring(0, 4)}${'*'.repeat(review.email.split('@')[0].length - 4)}`}</p>
                 <p style={{ color: 'rgba(0, 0, 0, 0.5)', fontSize: '12px' }}>{new Date(review.regDate).toLocaleDateString().slice(0, -1)}</p>
                 {/* 수정 버튼 */}
+                {currentUserEmail === review.email ? 
                 <button onClick={() => handleEditReview(review, item)} style={{ marginLeft: 'auto' }}>수정</button>
+                : ""}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1%' }}>
                 <StarRatings rating={review.sta} />

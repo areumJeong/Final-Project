@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef  } from "react";
 import { useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import axios from 'axios';
-import { Typography } from '@mui/material';
+import { Snackbar, Typography } from '@mui/material';
 import CountDown from "../components/CountDown";
 import Rating from "../components/Rating";
 import { useNavigate } from 'react-router-dom';
@@ -42,11 +42,15 @@ export default function ItemDetail() {
   const [userInfo, setUserInfo] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const auth = getAuth();
+  const [isInquiryModalOpen, setIsInquiryModalOpen] = useState(false);
+  const shareLinkRef = useRef(null);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
   useEffect(() => {
     const fetchItemData = async () => {
       try {
-        const response = await axios.get(`/ft/item/detail/${iid}/${userInfo ? userInfo.email : "em"}`);
+        const userEmail = currentUserEmail || 'em'; // 로그인한 사용자의 이메일이 없으면 'em'을 사용
+        const response = await axios.get(`/ft/item/detail/${iid}/${userEmail}`);
         const { item, options, tags, value } = response.data;
         const formattedItem = {
           iid: item.iid,
@@ -61,7 +65,7 @@ export default function ItemDetail() {
           totalSta: item.totalSta,
         };
         setItem(formattedItem);
-
+  
         const formattedOptions = options ? options.map(option => ({
           ioid: option.ioid,
           option: option.option,
@@ -70,42 +74,28 @@ export default function ItemDetail() {
           price: option.price, 
         })) : [];
         setOptions(formattedOptions);
-
+  
         const formattedTags = tags ? tags.map(tag => ({
           itid: tag.itid,
           tag: tag.tag,
         })) : [];
         setTags(formattedTags);
-
+  
         if (value === 1){
           setIsWish(true)
         } else{
           setIsWish(false)
         }
-
+  
         setIsLoading(false);
       } catch (error) {
         console.error('상품 정보를 불러오는 중 에러:', error);
         setIsLoading(false);
       }
     };
-
-    const fetchUserInfo = async () => {
-      try {
-        const user = await onAuthStateChanged(auth);
-        if (user) {
-          const info = await selectUserData(user.email);
-          setUserInfo(info);
-          setIsAdmin(info && info.isAdmin === 1);
-        }
-      } catch (error) {
-        console.error('사용자 정보를 불러오는 중 에러:', error);
-      }
-    };
-
+  
     fetchItemData();
-    fetchUserInfo();
-  }, [iid, auth]);
+  }, [iid, currentUserEmail]);
 
   const increaseQuantity = (index) => {
     const updatedSelectedOptions = [...selectedOptions];
@@ -154,6 +144,11 @@ export default function ItemDetail() {
   }, [selectedOptions]);
 
   const handleAddToCart = () => {
+    if (!userInfo || !userInfo.email) {
+      // 사용자가 로그인되어 있지 않은 경우, 로그인 페이지로 리다이렉트
+      window.location.href = '/signIn'; // 로그인 페이지 URL을 실제로 사용하는 주소로 변경해주세요
+      return;
+    }
     const cartItems = selectedOptions.map(option => ({
       iid: item.iid,
       ioid: option.ioid,
@@ -212,6 +207,11 @@ export default function ItemDetail() {
 
   // 리뷰모달
   const openModal = () => {
+    if (!userInfo || !userInfo.email) {
+      // 사용자가 로그인되어 있지 않은 경우, 로그인 페이지로 리다이렉트
+      window.location.href = '/signIn'; // 로그인 페이지 URL을 실제로 사용하는 주소로 변경해주세요
+      return;
+    }
     setIsModalOpen(true);
   };
 
@@ -250,9 +250,12 @@ export default function ItemDetail() {
   }, []); 
 
   // 문의 모달
-  const [isInquiryModalOpen, setIsInquiryModalOpen] = useState(false);
-
   const openInquiryModal = () => {
+    if (!userInfo || !userInfo.email) {
+      // 사용자가 로그인되어 있지 않은 경우, 로그인 페이지로 리다이렉트
+      window.location.href = '/signIn'; // 로그인 페이지 URL을 실제로 사용하는 주소로 변경해주세요
+      return;
+    }
     setIsInquiryModalOpen(true);
   };
 
@@ -295,6 +298,12 @@ export default function ItemDetail() {
     }, []);
   // 찜기능
   const handleLikeClick = () => {
+    if (!userInfo || !userInfo.email) {
+      // 사용자가 로그인되어 있지 않은 경우, 로그인 페이지로 리다이렉트
+      window.location.href = '/signIn'; // 로그인 페이지 URL을 실제로 사용하는 주소로 변경해주세요
+      return;
+    }
+
     axios.post(`/ft/wish/click`, {
       iid: iid,
       email: userInfo.email
@@ -417,9 +426,7 @@ export default function ItemDetail() {
     .catch(err => console.log(err))
   }
 
-  //
-
-
+  // 유저정보
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -444,8 +451,22 @@ export default function ItemDetail() {
       fetchUserInfo();
     }
   }, [currentUserEmail]);
-  //
+  // 공유하기 노멀링크
+  const handleCopyLink = () => {
+    const shareLink = window.location.href;
+    navigator.clipboard.writeText(shareLink)
+      .then(() => {
+        console.log('링크가 클립보드에 복사되었습니다.');
+        setIsSnackbarOpen(true); // 알람 표시
+      })
+      .catch((error) => {
+        console.error('링크 복사 실패:', error);
+      });
+  };
 
+  const handleCloseSnackbar = () => {
+    setIsSnackbarOpen(false); // 알람 닫기
+  };
   return (
     <Grid container spacing={2} className="itemDetail">
       <Grid item md={1} sx={{ placeItems: 'center', display: { xs: 'none',  lg: 'flex' }, }}>
@@ -541,7 +562,7 @@ export default function ItemDetail() {
         <Button variant="contained" color="primary" style={{ marginBottom: '10px' }}>구매하기</Button>
         <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5 }} onClick={handleAddToCart}>장바구니</Button>
         <br/>
-        <Button variant="contained" color="primary" style={{ marginBottom: '10px', }}>공유하기</Button>
+        <Button variant="contained" color="primary" style={{ marginBottom: '10px' }} onClick={handleCopyLink}>공유하기</Button>
         <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5, backgroundColor: 'transparent', color: 'black', }} onClick={handleLikeClick}>
           찜 {iswish ? <FavoriteIcon style={{ color: 'red', width: 18 }} /> : <FavoriteBorderIcon style={{width:18}}/>}
         </Button>
@@ -590,6 +611,16 @@ export default function ItemDetail() {
           </Grid>
         </section>
       </Grid>
+      <Snackbar
+        open={isSnackbarOpen}
+        autoHideDuration={3000} // 3초 후에 알람이 사라집니다.
+        onClose={handleCloseSnackbar}
+        message="링크가 클립보드에 복사되었습니다."
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      />
     </Grid>
   )
 }

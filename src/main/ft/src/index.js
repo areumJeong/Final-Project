@@ -27,7 +27,7 @@ const router = createBrowserRouter([
       { path: 'itemlist', element: <ItemList /> },
       { path: 'itemlist/:searchQuery', element: <ItemList /> },
       { path: 'admin/item/insert', element: <ItemInsert /> },
-      { path: 'item/detail/:iid/', element: <ItemDetail /> },
+      { path: 'item/detail/:iid', element: <ItemDetail /> },
       { path: 'admin/itemlist', element: <AdminItemList /> },
       { path: 'admin/item/update/:iid', element: <ItemUpdate/> },
       { path: 'cart', element: <CartPage/> },

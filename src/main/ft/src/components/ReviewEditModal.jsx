@@ -4,12 +4,43 @@ import { Button } from 'react-bootstrap';
 import '../css/reviewForm.css';
 import axios from 'axios'; 
 import { uploadImage } from "../api/cloudinary";
+import { selectUserData } from '../api/firebase';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
 
 const ReviewEditModal = ({ open, handleClose, review, item }) => {
   const [editedReview, setEditedReview] = useState('');
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [form, setForm] = useState({ img: '' });
+  const [currentUserEmail, setCurrentUserEmail] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const auth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUserEmail(user.email);
+      } else {
+        setCurrentUserEmail(null);
+      }
+    });
+  }, [auth]);
+  
+  useEffect(() => {
+    if (currentUserEmail) {
+      const fetchUserInfo = async () => {
+        try {
+          const info = await selectUserData(currentUserEmail);
+          setUserInfo(info);
+          setIsAdmin(info && info.isAdmin === 1);
+        } catch (error) {
+          console.error('사용자 정보를 불러오는 중 에러:', error);
+        }
+      };
+      fetchUserInfo();
+    }
+  }, [currentUserEmail]);
 
   useEffect(() => {
     // 리뷰 수정 모달이 열릴 때 기존 리뷰 정보를 폼에 설정
@@ -42,7 +73,7 @@ const ReviewEditModal = ({ open, handleClose, review, item }) => {
       sta: rating * 10,
       img: form.img,
       vid: review.vid,
-      email: 'email', // 현재는 이메일은 하드코딩되어 있습니다.
+      email: userInfo.email, 
     };
 
     axios.post('/ft/board/update', formData)

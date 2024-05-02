@@ -68,7 +68,7 @@ export function loginWithGoogle() {
 export function loginWithKakao(){
   const provider = new OAuthProvider('oidc.kakao');
   
-signInWithPopup(auth, provider)
+  return signInWithPopup(auth, provider)
   .then((result) => {  
     // User is signed in.
     // IdP data available using getAdditionalUserInfo(result)

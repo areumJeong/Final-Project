@@ -1,17 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Typography, Grid, TextField } from "@mui/material";
 import { Button } from 'react-bootstrap';
 import '../css/reviewForm.css';
 import axios from 'axios'; 
 import { uploadImage } from "../api/cloudinary";
-
+import { selectUserData } from '../api/firebase';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
 
 const ReviewFormModal = ({ isOpen, handleClose, iid }) => { // Add iid to props
   const [review, setReview] = useState('');
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [form, setForm] = useState({ img: ''});
+  const [currentUserEmail, setCurrentUserEmail] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const auth = getAuth();
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUserEmail(user.email);
+      } else {
+        setCurrentUserEmail(null);
+      }
+    });
+  }, [auth]);
+  
+  useEffect(() => {
+    if (currentUserEmail) {
+      const fetchUserInfo = async () => {
+        try {
+          const info = await selectUserData(currentUserEmail);
+          setUserInfo(info);
+          setIsAdmin(info && info.isAdmin === 1);
+        } catch (error) {
+          console.error('사용자 정보를 불러오는 중 에러:', error);
+        }
+      };
+      fetchUserInfo();
+    }
+  }, [currentUserEmail]);
 
   const handleReviewChange = (e) => {
     setReview(e.target.value);
@@ -35,7 +64,7 @@ const ReviewFormModal = ({ isOpen, handleClose, iid }) => { // Add iid to props
       content: review,
       sta: (rating == 0) ? 1 * 10 : rating * 10,
       img: form.img,
-      email: 'email',
+      email: userInfo.email,
     };
 
     axios.post('/ft/board/insert', formData)

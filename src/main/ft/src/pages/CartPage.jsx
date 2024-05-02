@@ -10,12 +10,7 @@ const CartPage = ({ email }) => {
     // 장바구니 목록을 받아오는 API 호출
     const fetchCartItems = async () => {
       try {
-        const response = await axios.get(`/ft/api/carts/list/email`);
-        // ex
-        // response.request.status = 400;
-        // if (response.request.status === 400) {
-        //   alert('Re')
-        // }
+        const response = await axios.get(`/ft/api/carts/list/${email}}`);
         console.log(response.request.status); // 200
         console.log(response.request.statusText) // ok
         setCartItems(response.data); // 전체 장바구니 목록을 설정

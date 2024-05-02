@@ -32,6 +32,7 @@ import com.example.ft.entity.SaleData;
 import com.example.ft.entity.Wish;
 import com.example.ft.service.ItemService;
 import com.example.ft.service.WishService;
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @Slf4j // log로 값을 출력
@@ -108,12 +109,13 @@ public class ItemController {
 			jObj.put("isDeleted", tag.getIsDeleted());
 			jArrTag.add(jObj);
 		}
+		System.out.println(iid + email);
 		Wish wish = wishService.getWish(iid, email);
 		int value = 0;
 		if (wish != null) {
 			value = wish.getValue();	
 		}
-		
+		System.out.println(value);
 		JSONObject response = new JSONObject();
 	    response.put("item", jItem);
 	    response.put("options", jArrOption);

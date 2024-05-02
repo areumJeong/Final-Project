@@ -55,7 +55,9 @@ export default function SignUp() {
       // 전화번호 입력 시 '-' 추가
       const telValue = value.replace(/[^0-9]/g, ''); // 숫자 이외의 문자 제거
       const formattedTel = telValue.replace(/(\d{3})(\d{3,4})(\d{4})/, '$1-$2-$3');
-      setUserInfo({ ...userInfo, [name]: formattedTel });
+      if (formattedTel.length <= 13) {
+        setUserInfo({ ...userInfo, [name]: formattedTel });
+      }
     } else {
       setUserInfo({ ...userInfo, [name]: value });
     }
@@ -148,200 +150,199 @@ export default function SignUp() {
 
   return (
     <>
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
 
-          <Typography component="h1" variant="h5">
-            회원가입 - * 표시 입력 필수
-          </Typography>
+            <Typography component="h1" variant="h5">
+              회원가입 - * 표시 입력 필수
+            </Typography>
 
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-        
-            <Grid item xs={12}>
-              {/* 이메일 */}
-              <TextField
-                autoComplete="given-name"
-                name="email"
-                fullWidth
-                id="email"
-                label="이메일 *"
-                autoFocus
-                value={userInfo.email}
-                onChange={handleChange}
-                onBlur={handleEmailBlur}
-              />
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+              <Grid container spacing={2}>
+
+                <Grid item xs={12}>
+                  {/* 이메일 */}
+                  <TextField
+                    autoComplete="given-name"
+                    name="email"
+                    fullWidth
+                    id="email"
+                    label="이메일 *"
+                    autoFocus
+                    value={userInfo.email}
+                    onChange={handleChange}
+                    onBlur={handleEmailBlur}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    name="password"
+                    label="비밀번호 *"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                    value={userInfo.password}
+                    onChange={handleChange}
+                  />
+                </Grid>
+
+                {/* 비밀번호 확인 */}
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    name="confirmPassword"
+                    label="비밀번호 확인 *"
+                    type="password"
+                    id="confirmPassword"
+                    autoComplete="confirmPassword"
+                    value={userInfo.confirmPassword}
+                    onChange={handleChange}
+                  />
+                </Grid>
+
+                {/* 이름 */}
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    id="name"
+                    label="이름 *"
+                    name="name"
+                    autoComplete="name"
+                    value={userInfo.name}
+                    onChange={handleChange}
+                  />
+                </Grid>
+
+                {/*우편번호찾기*/}
+                <Grid item xs={12}>
+                  <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 1 }}
+                    onClick={() => openPostcode({ onComplete: handleComplete })}
+                  >
+                    우편번호 찾기
+                  </Button>
+                </Grid>
+
+                {/*우편번호*/}
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    id="addr"
+                    label="우편번호 *"
+                    name="addr"
+                    autoComplete="sample6_postcode"
+                    value={userInfo.addr}
+                    readOnly
+                  />
+                </Grid>
+
+                {/*상세주소*/}
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    name='detailAddr'
+                    label="상세주소 *"
+                    type="text"
+                    id="sample6_detailAddress"
+                    autoComplete="sample6_deailAddress"
+                    value={userInfo.detailAddr}
+                    onChange={handleChange}
+                  />
+                </Grid>
+
+                {/*전화번호*/}
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    name="tel"
+                    label="전화번호 *"
+                    type="tel"
+                    id="tel"
+                    maxLength="13"
+                    value={userInfo.tel}
+                    onChange={handleChange}
+                  />
+                </Grid>
+
+                {/*배송시 요청사항*/}
+                <Grid item xs={12} style={{ display: 'none' }}>
+                  <TextField
+                    fullWidth
+                    name="req"
+                    label="배송시 요청사항"
+                    id="req"
+                    maxLength="13"
+                    value={userInfo.req = "조심히 와주세요"}
+                    hidden
+                    onChange={handleChange}
+                  />
+                </Grid>
+
+                {/* 기본 배송 여부 선택 */}
+                <Grid item xs={12}>
+                  <RadioGroup
+                    row
+                    name='def'
+                    value={userInfo.def}
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel
+                      value="Y"
+                      control={<Radio />}
+                      label="예"
+                      checked={userInfo.def === "Y"}
+                    />
+                    <FormControlLabel
+                      value="N"
+                      control={<Radio />}
+                      label="아니요"
+                      checked={userInfo.def === "N"}
+                    />
+                  </RadioGroup>
+                </Grid>
+              </Grid>
+            </Box>
+
+            {/* 사용자 등록 버튼 */}
+            <Button fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>
+              사용자 등록
+            </Button>
+
+            {/* 이미 계정이 있으신가요? */}
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link to="/SignIn" variant="body2" style={{ marginRight: '10px' }}>
+                  계정이 있으신가요? 로그인
+                </Link>
+                <Button onClick={handleGoogle} startIcon={<img src="img/googlelogo.png" alt="구글 로고" style={{ width: '36px', marginRight: '8px' }} />}>
+                  
+                </Button>
+                <Button onClick={handleKakao} startIcon={<img src="img/kakaologo.png" alt="카카오 로고" style={{ width: '36px', marginRight: '8px' }} />}>
+                  
+                </Button>
+                {/* <Button onClick={handleNaver} startIcon={<img src="img/naver-logo.jpg" alt="네이버 로고" style={{ width: '36px', marginRight: '8px' }} />}>
+                  네이버 로그인
+                </Button> */}
+              </Grid>
             </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                name="password"
-                label="비밀번호 *"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                value={userInfo.password}
-                onChange={handleChange}
-              />
-            </Grid>
-
-            {/* 비밀번호 확인 */}
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                name="confirmPassword"
-                label="비밀번호 확인 *"
-                type="password"
-                id="confirmPassword"
-                autoComplete="confirmPassword"
-                value={userInfo.confirmPassword}
-                onChange={handleChange}
-              />
-            </Grid>
-
-            {/* 이름 */}
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                id="name"
-                label="이름 *"
-                name="name"
-                autoComplete="name"
-                value={userInfo.name}
-                onChange={handleChange}
-              />
-            </Grid>
-
-            {/*우편번호찾기*/}
-            <Grid item xs={12}>
-              <Button
-                type="button"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 1 }}
-                onClick={() => openPostcode({ onComplete: handleComplete })}
-              >
-                우편번호 찾기
-              </Button>
-            </Grid>
-
-            {/*우편번호*/}
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                id="addr"
-                label="우편번호 *"
-                name="addr"
-                autoComplete="sample6_postcode"
-                value={userInfo.addr}
-                readOnly
-              />
-            </Grid>
-
-            {/*상세주소*/}
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                name='detailAddr'
-                label="상세주소 *"
-                type="text"
-                id="sample6_detailAddress"
-                autoComplete="sample6_deailAddress"
-                value={userInfo.detailAddr}
-                onChange={handleChange}
-              />
-            </Grid>
-
-            {/*전화번호*/}
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                name="tel"
-                label="전화번호 *"
-                type="tel"
-                id="tel"
-                maxLength="13"
-                value={userInfo.tel}
-                onChange={handleChange}
-              />
-            </Grid>
-
-            {/*배송시 요청사항*/}
-            <Grid item xs={12} style={{display:'none'}}>
-              <TextField
-                fullWidth
-                name="req"
-                label="배송시 요청사항"
-                id="req"
-                maxLength="13"
-                value={userInfo.req = "조심히 와주세요"}
-                hidden
-                onChange={handleChange}
-              />
-            </Grid>
-
-        {/* 기본 배송 여부 선택 */}
-        <Grid item xs={12}>
-      <RadioGroup 
-        row
-        name='def' 
-        value={userInfo.def} 
-        onChange={handleChange}
-      >
-        <FormControlLabel 
-          value="Y" 
-          control={<Radio />} 
-          label="예" 
-          checked={userInfo.def === "Y"} 
-        />
-        <FormControlLabel 
-          value="N" 
-          control={<Radio />} 
-          label="아니요" 
-          checked={userInfo.def === "N"} 
-        />
-      </RadioGroup>
-    </Grid>
-          </Grid>
-        </Box>
-
-        {/* 사용자 등록 버튼 */}
-  <Button fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>
-    사용자 등록
-  </Button>
-
-  {/* 이미 계정이 있으신가요? */}
-  <Grid container justifyContent="flex-end">
-    <Grid item>
-
-    <Link to="/SignIn" variant="body2" style={{ marginRight: '10px' }}>
-      계정이 있으신가요? 로그인
-    </Link>    
-
-     {/* 구글 로그인 */}
-    <IconButton onClick={handleGoogle} aria-label="Google 로그인">
-      <GoogleIcon />
-    </IconButton>
-    {/* 카카오 */}
-      <button onClick={handleKakao}>카카오 로그인</button>     
-    </Grid>
-  </Grid>
-
-
-</Box>
-      <Copyright sx={{ mt: 5 }} />
-    </Container>
-    </ThemeProvider >
+          </Box>
+          <Copyright sx={{ mt: 5 }} />
+        </Container>
+      </ThemeProvider >
     </>
   )
 };

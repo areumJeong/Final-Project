@@ -13,6 +13,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 // 디자인
 function Copyright(props) {
@@ -40,6 +41,9 @@ export default function UserUpdate() {
   const [detailAddr, setDetailAddr] = useState('');
   const [tel, setTel] = useState('');
   const [req, setReq] = useState('');
+
+  const [messageType, setMessageType] = useState('');
+  const [customMessage, setCustomMessage] = useState('');
 
   // 현재 페이지의 URL 정보를 가져오기 위해 useLocation 훅 사용
   const location = useLocation();
@@ -88,7 +92,8 @@ export default function UserUpdate() {
   // 사용자 정보 업데이트 함수
   const handleUpdate = async () => {
     // 필수 정보가 모두 입력되었는지 확인
-    if (!email || !password || !confirmPassword || !name || !addr || !detailAddr || !tel) {
+    if (!email || !password || !confirmPassword || !name
+      || !addr || !detailAddr || !tel) {
       alert('모든 필수 정보를 입력해주세요.');
       return;
     }
@@ -150,6 +155,14 @@ export default function UserUpdate() {
 
     // 상태 업데이트
     setTel(updatedTel);
+  };
+
+  const handleMessageChange = (e) => {
+    const selectedMessageType = e.target.value;
+    setMessageType(selectedMessageType);
+    if (selectedMessageType !== '직접 입력') {
+      setCustomMessage('');
+    }
   };
 
   return (
@@ -252,35 +265,60 @@ export default function UserUpdate() {
                 </Grid>
 
                 <Grid item xs={12}>
+                  <FormControl fullWidth style={{ marginBottom: '5px' }}>
+                    <InputLabel id="message-label">-- 선택하세요 --</InputLabel>
+                    <Select
+                      labelId="message-label"
+                      id="message"
+                      value={messageType}
+                      onChange={(e) => {
+                        const selectedMessageType = e.target.value;
+                        setMessageType(selectedMessageType);
+                        // 선택한 메시지 유형이 '직접 입력'이 아니면 req를 선택한 메시지로 설정
+                        if (selectedMessageType !== '직접 입력') {
+                          setReq(selectedMessageType);
+                        }
+                      }}
+                      label="-- 선택하세요 --"
+                    >
+                      <MenuItem value="">-- 선택하세요 --</MenuItem>
+                      <MenuItem value="배송 전 연락바랍니다.">배송 전 연락바랍니다.</MenuItem>
+                      <MenuItem value="경비실에 맡겨주세요.">경비실에 맡겨주세요.</MenuItem>
+                      <MenuItem value="집앞에 놔주세요.">집앞에 놔주세요.</MenuItem>
+                      <MenuItem value="택배함에 놔주세요.">택배함에 놔주세요.</MenuItem>
+                      <MenuItem value="부재시 핸드폰으로 연락주세요.">부재시 핸드폰으로 연락주세요.</MenuItem>
+                      <MenuItem value="부재시 경비실에 맡겨주세요.">부재시 경비실에 맡겨주세요.</MenuItem>
+                      <MenuItem value="부재시 집 앞에 놔주세요.">부재시 집 앞에 놔주세요.</MenuItem>
+                      <MenuItem value="직접 입력">직접 입력</MenuItem>
+                    </Select>
+                  </FormControl>
                   <TextField
                     fullWidth
                     label="Delivery Request *"
-                    value={req}
+                    value={req} // 선택한 값이 req로 전달되도록 수정
                     onChange={(e) => setReq(e.target.value)} // 배송 요청 입력 시 상태 업데이트
                   />
                 </Grid>
-
               </Grid>
-
               {/* 사용자 정보 업데이트 버튼 */}
-<Button
-  fullWidth
-  variant="contained"
-  sx={{ mt: 3, mb: 1 }} // 간격 조정
-  onClick={handleUpdate}
->
-  Update
-</Button>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 1 }} // 간격 조정
+                onClick={handleUpdate}
+              >
+                Update
+              </Button>
 
-{/* 취소 버튼 */}
-<Button
-  fullWidth
-  variant="contained"
-  sx={{ mt: 3, mb: 2 }} // 간격 조정
-  onClick={handleCancel}
->
-  Cancel
-</Button>
+              {/* 취소 버튼 */}
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }} // 간격 조정
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
             </Box>
             <Copyright sx={{ mt: 5 }} />
           </Box>

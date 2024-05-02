@@ -20,7 +20,7 @@ export async function Items() {
 
 export async function getItemDetail(iid) {
   try {
-    const response = await axios.get(`/ft/item/detail/${iid}`);
+    const response = await axios.get(`/ft/item/detail/${iid}/em`);
     const { item, options, tags } = response.data;
 
     const formattedItem = {

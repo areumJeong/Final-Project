@@ -12,6 +12,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Stack from '@mui/material/Stack';
+
 
 function Copyright(props) {
   return (
@@ -63,6 +65,7 @@ export default function SignIn() {
     try {
       await loginWithGoogle();
       console.log("구글 로그인 성공");
+      navigate(-1);
     } catch (error) {
       // 로그인 실패 시 오류 메시지 표시
       alert('구글 로그인에 실패했습니다.');
@@ -75,6 +78,7 @@ export default function SignIn() {
     try {
       await loginWithKakao();
       console.log("카카오 로그인 성공");
+      navigate(-1);
     } catch (error) {
       // 로그인 실패 시 오류 메시지 표시
       alert('카카오 로그인에 실패했습니다.');
@@ -154,20 +158,17 @@ export default function SignIn() {
             </Box>
 
             {/* 소셜 로그인 버튼 */}
-          
             <Grid container justifyContent="center" spacing={2}>
               {/* 구글 로그인 버튼 */}
               <Grid item>
-                <IconButton onClick={handleGoogle} aria-label="Google 로그인">
-                  <GoogleIcon />
-                </IconButton>
-              </Grid>
-              
-              {/* 카카오 로그인 버튼 */}
-              <Grid item>
-                <Button onClick={handleKakao}>
-                  카카오 로그인
-                </Button>
+                <Stack direction="row">
+                  <Button onClick={handleGoogle} aria-label="Google 로그인">
+                    <img src="img/googlelogo.png" alt="Google Logo" style={{ width: 30 }} />
+                  </Button>
+                  <Button onClick={handleKakao}>
+                    <img src="img/kakaologo.png" alt="Kakao Logo" style={{ width: 30 }} />
+                  </Button>
+                </Stack>
               </Grid>
             </Grid>
 

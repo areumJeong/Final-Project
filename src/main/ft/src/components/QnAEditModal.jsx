@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Button, TextField, Select, MenuItem, FormControl, InputLabel, Checkbox, FormControlLabel, Modal } from '@mui/material';
 import axios from 'axios';
 import { uploadImage } from "../api/cloudinary";
+import { selectUserData } from '../api/firebase';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
 
 export default function QnAEditModal({ isOpen, handleClose, posts }) {
   const [inquiry, setInquiry] = useState('');
@@ -10,7 +12,36 @@ export default function QnAEditModal({ isOpen, handleClose, posts }) {
   const [isPrivate, setIsPrivate] = useState(false);
   const [receiveNotification, setReceiveNotification] = useState(false);
   const [form, setForm] = useState({ img: '' });
-  // Set default values when the component mounts
+  const [currentUserEmail, setCurrentUserEmail] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const auth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUserEmail(user.email);
+      } else {
+        setCurrentUserEmail(null);
+      }
+    });
+  }, [auth]);
+  
+  useEffect(() => {
+    if (currentUserEmail) {
+      const fetchUserInfo = async () => {
+        try {
+          const info = await selectUserData(currentUserEmail);
+          setUserInfo(info);
+          setIsAdmin(info && info.isAdmin === 1);
+        } catch (error) {
+          console.error('사용자 정보를 불러오는 중 에러:', error);
+        }
+      };
+      fetchUserInfo();
+    }
+  }, [currentUserEmail]);
+
   useEffect(() => {
     if (posts) {
       setInquiry(posts.content || '');
@@ -32,7 +63,7 @@ export default function QnAEditModal({ isOpen, handleClose, posts }) {
       iid: posts.iid,
       content: inquiry,
       img: form.img,
-      email: 'email',
+      email: userInfo.email,
     };
 
     axios.post('/ft/board/update', formData)

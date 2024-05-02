@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, MenuItem, Select, IconButton, Modal, useMediaQuery, Accordion, AccordionSummary, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ImgModal from './ImgModal';
@@ -7,6 +7,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import QnAEditModal from '../components/QnAEditModal';
 import axios from 'axios';
+import { selectUserData } from '../api/firebase';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
 
 export default function ProductQnA({ posts, reloadQnAData }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,6 +17,36 @@ export default function ProductQnA({ posts, reloadQnAData }) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedPostIndex, setSelectedPostIndex] = useState(null);
   const isMobile = useMediaQuery('(max-width:600px)');
+  const [currentUserEmail, setCurrentUserEmail] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const auth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUserEmail(user.email);
+      } else {
+        setCurrentUserEmail(null);
+      }
+    });
+  }, [auth]);
+  
+  useEffect(() => {
+    if (currentUserEmail) {
+      const fetchUserInfo = async () => {
+        try {
+          const info = await selectUserData(currentUserEmail);
+          setUserInfo(info);
+          setIsAdmin(info && info.isAdmin === 1);
+        } catch (error) {
+          console.error('사용자 정보를 불러오는 중 에러:', error);
+        }
+      };
+      fetchUserInfo();
+    }
+  }, [currentUserEmail]);
+
 
   const handlePageChange = (event, newPage) => {
     setCurrentPage(newPage);
@@ -98,8 +130,9 @@ export default function ProductQnA({ posts, reloadQnAData }) {
                   <TableCell style={{ fontSize: '80%' }}>{post.typeQnA}</TableCell>
                   <TableCell style={{ fontSize: '80%' }}> </TableCell>
                   <TableCell style={{ fontSize: '80%' }}>{post.title}</TableCell>
-                  <TableCell style={{ fontSize: '80%' }}>{post.email}</TableCell>
+                  <TableCell style={{ fontSize: '80%' }}>{`${post.email.split('@')[0].substring(0, 4)}${'*'.repeat(post.email.split('@')[0].length - 4)}`}</TableCell>
                   <TableCell style={{ fontSize: '80%' }}>{new Date(post.regDate).toLocaleDateString().slice(0, -1)}</TableCell>
+                  {currentUserEmail === post.email ? 
                   <TableCell style={{ width: isMobile ? '10%' : '10%', fontWeight: 'bold', fontSize: '80%', textAlign: 'center' }}>
                     <IconButton onClick={(event) => handleEditClick(event, post)} aria-label="edit">
                       <EditIcon />
@@ -108,6 +141,7 @@ export default function ProductQnA({ posts, reloadQnAData }) {
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
+                  : ''}
                 </TableRow>
                 {expandedPost === index && (
                   <TableRow>
