@@ -29,6 +29,8 @@ public interface ItemService {
 	List<ItemOption> getItemOptionIId(int iid);
 	
 	int[] getItemOptionIoid(int iid);
+	
+	ItemOption getItemsOptionIoid(int ioid);
 
 	void optionInsert(ItemOption itemOption);
 	

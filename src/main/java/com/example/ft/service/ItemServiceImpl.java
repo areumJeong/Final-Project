@@ -66,6 +66,11 @@ public class ItemServiceImpl implements ItemService{
 	}
 	
 	@Override
+	public ItemOption getItemsOptionIoid(int ioid) {
+		return itemDao.getItemsOptionIoid(ioid);
+	}
+	
+	@Override
 	public List<ItemOption> getItemOptionIId(int iid) {
 		return itemDao.getItemOptionIId(iid);
 	}

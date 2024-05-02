@@ -90,7 +90,8 @@ const RatingOptions = ({ commentCounts, increaseCommentCount }) => {
 };
 
 
-const ProductReviews = ({reviews, item, reloadData}) => {
+const ProductReviews = ({reviews, item, reloadReviewData}) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [selectedRating] = useState(null);
   const [commentCounts, setCommentCounts] = useState({
     5: 0,
@@ -99,6 +100,20 @@ const ProductReviews = ({reviews, item, reloadData}) => {
     2: 0,
     1: 0
   });
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  const reviewCardStyle = {
+    marginBottom: '2%',
+    paddingBottom: '1%',
+    borderBottom: '1px solid lightgray',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: imageLoaded ? 'auto' : '250px', // 이미지 로드 상태에 따라 높이 조정
+  };
 
   useEffect(() => {
     const newCommentCounts = {};
@@ -152,7 +167,7 @@ const ProductReviews = ({reviews, item, reloadData}) => {
   const handleCloseEditModal = () => {
     setEditModalOpen(false);
     // 데이터 다시 불러오기
-    reloadData(); // 이렇게 호출하면 부모 컴포넌트로 신호를 보냄
+    reloadReviewData(); // 이렇게 호출하면 부모 컴포넌트로 신호를 보냄
   };
 
   return (
@@ -174,6 +189,7 @@ const ProductReviews = ({reviews, item, reloadData}) => {
           />
         </div>
       </Stack>
+      <hr/>
       <div className="bottom-panel" style={{ width: '100%' }}>
         <div className="sort-options" style={{ width: '100%' }}>
           {/* 정렬 옵션 선택 */}
@@ -188,19 +204,23 @@ const ProductReviews = ({reviews, item, reloadData}) => {
       {/* 리뷰 목록 */}
       <div className="reviews" style={{ width: '100%' }}>
         {currentReviews.map(review => (
-          <div key={review.bid} style={{ marginBottom: '2%', paddingBottom: '1%', borderBottom: '1px solid lightgray' }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1%' }}>
-              <p style={{ marginRight: '1%' }}>{review.email}</p>
-              <p style={{ color: 'rgba(0, 0, 0, 0.5)', fontSize: '12px' }}>{new Date(review.regDate).toLocaleDateString().slice(0, -1)}</p>
-              {/* 수정 버튼 */}
-              <button onClick={() => handleEditReview(review, item)} style={{ marginLeft: 'auto' }}>수정</button>
+          <div style={reviewCardStyle}>
+            {/* 리뷰 내용 */}
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1%' }}>
+                <p style={{ marginRight: '1%' }}>{review.email}</p>
+                <p style={{ color: 'rgba(0, 0, 0, 0.5)', fontSize: '12px' }}>{new Date(review.regDate).toLocaleDateString().slice(0, -1)}</p>
+                {/* 수정 버튼 */}
+                <button onClick={() => handleEditReview(review, item)} style={{ marginLeft: 'auto' }}>수정</button>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1%' }}>
+                <StarRatings rating={review.sta} />
+                <span style={{ marginLeft: '0.5%' }}>{review.sta / 10 + '점'}</span>
+              </div>
+              <p style={{ marginBottom: '1%' }}>{review.content}</p>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1%' }}>
-              <StarRatings rating={review.sta} />
-              <span style={{ marginLeft: '0.5%' }}>{review.sta / 10 + '점'}</span>
-            </div>
-            <p style={{ marginBottom: '1%' }}>{review.content}</p>
-            {review.img && <ImgModal img={review.img} />}
+            {/* 이미지 모달 */}
+            {review.img && <ImgModal img={review.img} onLoad={handleImageLoad} />}
           </div>
         ))}
       </div>

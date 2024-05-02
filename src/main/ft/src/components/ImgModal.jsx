@@ -51,7 +51,7 @@ export default function ImgModal(img) {
         </Modal>
       </div>
       <div>
-        <img src={img.img} alt="Gallery" onClick={handleImageClick} style={{ width: 100 }} />
+        <img src={img.img} alt="Gallery" onClick={handleImageClick} style={{ width: 100, cursor: 'pointer', }} />
       </div>
     </>
   );

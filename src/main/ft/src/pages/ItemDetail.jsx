@@ -134,7 +134,9 @@ export default function ItemDetail() {
       iid: item.iid,
       ioid: option.ioid,
       count: option.count,
+      email: 'email',
     }));
+    console.log(cartItems);
     axios.post('/ft/api/carts', cartItems)
       .then(response => {
         console.log('장바구니에 상품이 추가되었습니다.');
@@ -191,7 +193,106 @@ export default function ItemDetail() {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    // 모달을 닫을 때마다 데이터를 다시 가져오기
+    reloadReviewData();
+  };
+  // 리뷰 데이터 get
+  useEffect(() => {
+    axios.get(`/ft/board/list/review/${iid}`)
+      .then(jArr => {
+        const reviews = jArr.data;
+        if (reviews) {
+          const formattedReviews = reviews.map(review => ({
+            bid: review.bid,
+            iid: review.iid,
+            email: review.email,
+            type: review.type,
+            typeQnA: review.typeQnA,
+            title: review.title,
+            regDate: review.regDate,
+            content: review.content,
+            img: review.img,
+            sta: review.sta,
+            vid: review.vid,
+          }));
+          setReviews(formattedReviews);
+          setReviewCount(formattedReviews.length);
+        } else {
+          // 데이터가 없을 때의 처리
+          setReviews([]);
+        }
+        setIsLoading(false);
+      })
+      .catch(err => console.log(err))
+  }, []); 
+
+  // 문의 모달
+  const [isInquiryModalOpen, setIsInquiryModalOpen] = useState(false);
+
+  const openInquiryModal = () => {
+    setIsInquiryModalOpen(true);
+  };
+
+  const closeInquiryModal = () => {
+    setIsInquiryModalOpen(false);
+    reloadQnAData()
+  };
+
+  // 문의 데이터 get
+  useEffect(() => {
+    axios.get(`/ft/board/list/QnA/${iid}`)
+      .then(jArr => {
+        const qnas = jArr.data;
+        if (qnas) {
+          const formattedQnA = qnas.map(qna => ({
+            bid: qna.bid,
+            iid: qna.iid,
+            email: qna.email,
+            type: qna.type,
+            typeQnA: qna.typeQnA,
+            title: qna.title,
+            regDate: qna.regDate,
+            content: qna.content,
+            img: qna.img,
+          }));
+          setQnAs(formattedQnA);
+          setQnAsCount(formattedQnA.length);
+        } else {
+          // 데이터가 없을 때의 처리
+          setQnAs([]);
+        }
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error('Error fetching QnA:', err);
+        setIsLoading(false);
+        // 사용자에게 메시지 표시
+        // 예를 들어, 에러 상태를 관리하는 state를 추가하여 에러 메시지를 화면에 렌더링할 수 있습니다.
+      });
+    }, []);
+  // 찜기능
+  const handleLikeClick = () => {
+    axios.post(`/ft/wish/click`, {
+      iid: iid,
+      email: email
+    })
+    .then(response => {
+      // 서버로부터 응답 받은 데이터를 처리
+      const value = response.data;
+      // 서버에서 반환된 value 값이 1인 경우 좋아요 표시, 0인 경우 좋아요 해제
+      if (value === 1) {
+        // setLikeCount(prevCount => prevCount + 1); // 좋아요 수 증가
+        setIsWish(true); // 좋아요 표시
+      } else if (value === 0) {
+        // setLikeCount(prevCount => prevCount - 1); // 좋아요 수 감소
+        setIsWish(false); // 좋아요 해제
+      }
+    })
+    .catch(error => {
+      console.error('Error while updating like count:', error);
+    });
+  };
+
+  const reloadReviewData = () => {
     axios.get(`/ft/board/list/review/${iid}`)
       .then(jArr => {
         const reviews = jArr.data;
@@ -263,155 +364,34 @@ export default function ItemDetail() {
     })
     .catch(err => console.log(err));
   };
-  // 리뷰 데이터 get
-  useEffect(() => {
-    axios.get(`/ft/board/list/review/${iid}`)
-      .then(jArr => {
-        const reviews = jArr.data;
-        if (reviews) {
-          const formattedReviews = reviews.map(review => ({
-            bid: review.bid,
-            iid: review.iid,
-            email: review.email,
-            type: review.type,
-            typeQnA: review.typeQnA,
-            title: review.title,
-            regDate: review.regDate,
-            content: review.content,
-            img: review.img,
-            sta: review.sta,
-            vid: review.vid,
-          }));
-          setReviews(formattedReviews);
-          setReviewCount(formattedReviews.length);
-        } else {
-          // 데이터가 없을 때의 처리
-          setReviews([]);
-        }
-        setIsLoading(false);
-      })
-      .catch(err => console.log(err))
-  }, []); 
 
-  // 문의 모달
-  const [isInquiryModalOpen, setIsInquiryModalOpen] = useState(false);
-
-  const openInquiryModal = () => {
-    setIsInquiryModalOpen(true);
-  };
-
-  const closeInquiryModal = () => {
-    setIsInquiryModalOpen(false);
+  const reloadQnAData = () => {
     axios.get(`/ft/board/list/QnA/${iid}`)
-      .then(jArr => {
-        const qnas = jArr.data;
-        if (qnas) {
-          const formattedQnA = qnas.map(qnas => ({
-            bid: qnas.bid,
-            iid: qnas.iid,
-            email: qnas.email,
-            type: qnas.type,
-            typeQnA: qnas.typeQnA,
-            title: qnas.title,
-            regDate: qnas.regDate,
-            content: qnas.content,
-            img: qnas.img,
-            sta: qnas.sta,
-          }));
-          setQnAs(formattedQnA);
-          setQnAsCount(formattedQnA.length);
-        } else {
-          // 데이터가 없을 때의 처리
-          setQnAs([]);
-        }
-        setIsLoading(false);
-      })
-      .catch(err => console.log(err))
-  };
-
-  // 문의 데이터 get
-  useEffect(() => {
-    axios.get(`/ft/board/list/QnA/${iid}`)
-      .then(jArr => {
-        const qnas = jArr.data;
-        if (qnas) {
-          const formattedQnA = qnas.map(qna => ({
-            bid: qna.bid,
-            iid: qna.iid,
-            email: qna.email,
-            type: qna.type,
-            typeQnA: qna.typeQnA,
-            title: qna.title,
-            regDate: qna.regDate,
-            content: qna.content,
-            img: qna.img,
-          }));
-          setQnAs(formattedQnA);
-          setQnAsCount(formattedQnA.length);
-        } else {
-          // 데이터가 없을 때의 처리
-          setQnAs([]);
-        }
-        setIsLoading(false);
-      })
-      .catch(err => {
-        console.error('Error fetching QnA:', err);
-        setIsLoading(false);
-        // 사용자에게 메시지 표시
-        // 예를 들어, 에러 상태를 관리하는 state를 추가하여 에러 메시지를 화면에 렌더링할 수 있습니다.
-      });
-    }, []);
-  // 찜기능
-  const handleLikeClick = () => {
-    axios.post(`/ft/wish/click`, {
-      iid: iid,
-      email: email
-    })
-    .then(response => {
-      // 서버로부터 응답 받은 데이터를 처리
-      const value = response.data;
-      // 서버에서 반환된 value 값이 1인 경우 좋아요 표시, 0인 경우 좋아요 해제
-      if (value === 1) {
-        // setLikeCount(prevCount => prevCount + 1); // 좋아요 수 증가
-        setIsWish(true); // 좋아요 표시
-      } else if (value === 0) {
-        // setLikeCount(prevCount => prevCount - 1); // 좋아요 수 감소
-        setIsWish(false); // 좋아요 해제
+    .then(jArr => {
+      const qnas = jArr.data;
+      if (qnas) {
+        const formattedQnA = qnas.map(qnas => ({
+          bid: qnas.bid,
+          iid: qnas.iid,
+          email: qnas.email,
+          type: qnas.type,
+          typeQnA: qnas.typeQnA,
+          title: qnas.title,
+          regDate: qnas.regDate,
+          content: qnas.content,
+          img: qnas.img,
+          sta: qnas.sta,
+        }));
+        setQnAs(formattedQnA);
+        setQnAsCount(formattedQnA.length);
+      } else {
+        // 데이터가 없을 때의 처리
+        setQnAs([]);
       }
+      setIsLoading(false);
     })
-    .catch(error => {
-      console.error('Error while updating like count:', error);
-    });
-  };
-
-  const reloadData = () => {
-    axios.get(`/ft/board/list/review/${iid}`)
-      .then(jArr => {
-        const reviews = jArr.data;
-        if (reviews) {
-          const formattedReviews = reviews.map(review => ({
-            bid: review.bid,
-            iid: review.iid,
-            email: review.email,
-            type: review.type,
-            typeQnA: review.typeQnA,
-            title: review.title,
-            regDate: review.regDate,
-            content: review.content,
-            img: review.img,
-            sta: review.sta,
-            vid: review.vid,
-          }));
-          setReviews(formattedReviews);
-          setReviewCount(formattedReviews.length);
-        } else {
-          // 데이터가 없을 때의 처리
-          setReviews([]);
-        }
-        setIsLoading(false);
-      })
-      .catch(err => console.log(err))
-  };
+    .catch(err => console.log(err))
+  }
 
   return (
     <Grid container spacing={2} className="itemDetail">
@@ -538,10 +518,10 @@ export default function ItemDetail() {
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12} >
         <section id="review">
           <Grid container spacing={2} justifyContent="center">
-            <Grid item xs={12} style={{ padding: 50 }}>
+            <Grid item xs={12} style={{ paddingLeft: 100 , paddingRight: 100 }}>
               <Button variant="contained" color="primary" size="small" style={{ marginRight: 10 }} onClick={() => openModal(iid)}>리뷰작성</Button>
               <ReviewForm isOpen={isModalOpen} handleClose={closeModal} iid={iid} /> 
-              <ProductReviews reloadData={reloadData} reviews={reviews} item={item}/>
+              <ProductReviews reloadReviewData={reloadReviewData} reviews={reviews} item={item}/>
             </Grid>
           </Grid>
         </section>
@@ -549,8 +529,8 @@ export default function ItemDetail() {
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <section id="qna">
           <Grid container spacing={2} justifyContent="center">
-            <Grid item xs={12} style={{ padding: 50 }}>
-              <ProductQnA posts={qnAs}/>
+            <Grid item xs={12} style={{ paddingLeft: 100 , paddingRight: 100  }}>
+              <ProductQnA posts={qnAs} reloadQnAData={reloadQnAData}/>
               <Button variant="contained" color="primary" style={{ marginBottom: '20px', marginLeft: 40 }} onClick={() => openInquiryModal(iid)}>문의하기</Button>
               <InquiryContent isOpen={isInquiryModalOpen} handleClose={closeInquiryModal} iid={iid}/>
             </Grid>

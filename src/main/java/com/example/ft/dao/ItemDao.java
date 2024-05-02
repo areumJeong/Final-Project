@@ -46,6 +46,9 @@ public interface ItemDao {
 	@Select("select ioid from itemOption where iId=#{iid} and isDeleted=0")
 	int[] getItemOptionIoid(int iid);
 	
+	@Select("select * from itemOption where ioid=#{ioid}")
+	ItemOption getItemsOptionIoid(int ioid);
+	
 	@Select("select * from itemOption where iId=#{iid} and isDeleted=0")
 	List<ItemOption> getItemOptionIId(int iid);
 	

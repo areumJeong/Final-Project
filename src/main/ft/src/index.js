@@ -10,6 +10,7 @@ import ItemInsert from './pages/ItemInsert';
 import ItemDetail from './pages/ItemDetail';
 import AdminItemList from './pages/AdminItemList';
 import ItemUpdate from './pages/ItemUpdate';
+import CartPage from './pages/CartPage';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       { path: 'item/detail/:iid/', element: <ItemDetail /> },
       { path: 'admin/itemlist', element: <AdminItemList /> },
       { path: 'admin/item/update/:iid', element: <ItemUpdate/> },
+      { path: 'cart', element: <CartPage/> },
     ]
   }
 ]);
