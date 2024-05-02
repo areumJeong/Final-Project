@@ -44,14 +44,18 @@ export default function ProductQnA({ posts, reloadQnAData }) {
   };
 
   const handleDeleteClick = async (event, post) => {
-    event.stopPropagation();
-    try {
-      const response = await axios.post(`/ft/board/delete/${post.bid}`);
-      console.log('포스트가 성공적으로 삭제되었습니다.', response);
-      reloadQnAData();
-    } catch (error) {
-      console.error('포스트 삭제 중 오류가 발생했습니다.', error);
-    }
+      event.stopPropagation();
+      // confirm 대화 상자를 띄워 사용자에게 확인 요청
+      const confirmDelete = window.confirm('정말로 이 게시물을 삭제하시겠습니까?');
+      if (confirmDelete) {
+          try {
+              const response = await axios.post(`/ft/board/delete/${post.bid}`);
+              console.log('포스트가 성공적으로 삭제되었습니다.', response);
+              reloadQnAData();
+          } catch (error) {
+              console.error('포스트 삭제 중 오류가 발생했습니다.', error);
+          }
+      }
   };
 
   const handleCloseEditModal = () => {

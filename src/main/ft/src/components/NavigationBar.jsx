@@ -28,6 +28,7 @@ import '../css/nav.css';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Collapse } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // useNavigate 추가
+import { useAuthContext } from "../context/AuthContext";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -72,8 +73,11 @@ export default function NavigationBar() {
     const navigate = useNavigate(); // useNavigate 훅을 사용하여 네비게이션 함수 가져오기
     const [openDrawer, setDrawerOpen] = React.useState(false);
     const [openList, setListOpen] = React.useState(false);
+    const { user, logout } = useAuthContext();
 
-
+    const handleLogout = () => {
+        logout(); // 로그아웃 함수 호출
+      };
 
     const toggleDrawer = (newOpen) => () => {
         setDrawerOpen(newOpen);
@@ -103,11 +107,11 @@ export default function NavigationBar() {
         // 세션 상태를 로그아웃 상태로 변경
         setIsLoggedIn(true);
     };
-    const handleLogout = () => {
-        // 로그아웃 로직 수행
-        // 세션 상태를 로그아웃 상태로 변경
-        setIsLoggedIn(false);
-    };
+    // const handleLogout = () => {
+    //     // 로그아웃 로직 수행
+    //     // 세션 상태를 로그아웃 상태로 변경
+    //     setIsLoggedIn(false);
+    // };
 
     // 변경: AccountCircle 아이콘을 세션 로그인 상태에 따라 다르게 렌더링
 
@@ -281,6 +285,7 @@ export default function NavigationBar() {
                                             onClick={handleLogin}
                                         >
                                             <Typography variant="body2">회원가입</Typography>
+                                            <Button variant="outlined" onClick={handleLogout}>로그아웃</Button> {/* 로그아웃 버튼 */}
                                         </MenuItem>
                                     </Grid>
                                 </Grid>

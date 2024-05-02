@@ -11,6 +11,11 @@ import ItemDetail from './pages/ItemDetail';
 import AdminItemList from './pages/AdminItemList';
 import ItemUpdate from './pages/ItemUpdate';
 import CartPage from './pages/CartPage';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import UserInfo from './pages/UserInfo';
+import UserUpdate from './pages/UserUpdate';
+import Kakao from './api/kakao';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +31,11 @@ const router = createBrowserRouter([
       { path: 'admin/itemlist', element: <AdminItemList /> },
       { path: 'admin/item/update/:iid', element: <ItemUpdate/> },
       { path: 'cart', element: <CartPage/> },
+      { path: 'signIn', element: <SignIn/> },
+      { path: 'signUp', element: <SignUp/> },
+      { path: 'userInfo', element: <UserInfo/> },
+      { path: 'userUpdate', element: <UserUpdate/> },
+      { path: 'callback/kakaotalk', element: <Kakao/> },
     ]
   }
 ]);

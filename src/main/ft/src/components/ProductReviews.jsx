@@ -112,7 +112,7 @@ const ProductReviews = ({reviews, item, reloadReviewData}) => {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    height: imageLoaded ? 'auto' : '250px', // 이미지 로드 상태에 따라 높이 조정
+    height: imageLoaded ? 'auto' : '270px', // 이미지 로드 상태에 따라 높이 조정
   };
 
   useEffect(() => {

@@ -32,8 +32,6 @@ public class CartController {
 //			if (user == null) {
 //				return ResponseEntity.status(HttpStatus.Forbidden).body("장바구니에 아이템을 추가하는 중에 오류가 발생했습니다.");
 //			}
-			System.out.println("경로확인");
-			cartItems.forEach(x -> System.out.println(x));
 			for (CartItemRequest item : cartItems) {
 				CartItem existedItem = cartService.findCartItemByIid(item.getIid());
 				if (existedItem != null) {

@@ -12,12 +12,14 @@ import CountDown from "../components/CountDown";
 import Rating from "../components/Rating";
 import { useNavigate } from 'react-router-dom';
 import ReviewForm from "../components/ReviewForm";
-import StarRating from "../components/StarRating"
 import InquiryContent from "../components/InquiryContent";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ProductReviews from "../components/ProductReviews";
 import ProductQnA from "../components/ProductQnA";
+import { selectUserData } from '../api/firebase';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
+
 
 export default function ItemDetail() {
   const { iid } = useParams();
@@ -36,12 +38,15 @@ export default function ItemDetail() {
   const [qnAs, setQnAs] = useState([]);
   const [qnAsCount, setQnAsCount] = useState(0);
   const [iswish, setIsWish] = useState(false);
-
-  const email = 'email';  // 임시값
+  const [currentUserEmail, setCurrentUserEmail] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const auth = getAuth();
 
   useEffect(() => {
-    axios.get(`/ft/item/detail/${iid}/${email}`)
-      .then(response => {
+    const fetchItemData = async () => {
+      try {
+        const response = await axios.get(`/ft/item/detail/${iid}/${userInfo ? userInfo.email : "em"}`);
         const { item, options, tags, value } = response.data;
         const formattedItem = {
           iid: item.iid,
@@ -79,9 +84,28 @@ export default function ItemDetail() {
         }
 
         setIsLoading(false);
-      })
-      .catch(err => console.log(err))
-  }, [iid]);
+      } catch (error) {
+        console.error('상품 정보를 불러오는 중 에러:', error);
+        setIsLoading(false);
+      }
+    };
+
+    const fetchUserInfo = async () => {
+      try {
+        const user = await onAuthStateChanged(auth);
+        if (user) {
+          const info = await selectUserData(user.email);
+          setUserInfo(info);
+          setIsAdmin(info && info.isAdmin === 1);
+        }
+      } catch (error) {
+        console.error('사용자 정보를 불러오는 중 에러:', error);
+      }
+    };
+
+    fetchItemData();
+    fetchUserInfo();
+  }, [iid, auth]);
 
   const increaseQuantity = (index) => {
     const updatedSelectedOptions = [...selectedOptions];
@@ -134,7 +158,7 @@ export default function ItemDetail() {
       iid: item.iid,
       ioid: option.ioid,
       count: option.count,
-      email: 'email',
+      email: userInfo.email,
     }));
     console.log(cartItems);
     axios.post('/ft/api/carts', cartItems)
@@ -273,7 +297,7 @@ export default function ItemDetail() {
   const handleLikeClick = () => {
     axios.post(`/ft/wish/click`, {
       iid: iid,
-      email: email
+      email: userInfo.email
     })
     .then(response => {
       // 서버로부터 응답 받은 데이터를 처리
@@ -321,7 +345,7 @@ export default function ItemDetail() {
       .catch(err => console.log(err))
 
       // 아이템 디테일 데이터 가져오기
-    axios.get(`/ft/item/detail/${iid}/${email}`)
+    axios.get(`/ft/item/detail/${iid}/${userInfo.email}`)
     .then(response => {
       const { item, options, tags, value } = response.data;
       const formattedItem = {
@@ -392,6 +416,35 @@ export default function ItemDetail() {
     })
     .catch(err => console.log(err))
   }
+
+  //
+
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUserEmail(user.email);
+      } else {
+        setCurrentUserEmail(null);
+      }
+    });
+  }, [auth]);
+  
+  useEffect(() => {
+    if (currentUserEmail) {
+      const fetchUserInfo = async () => {
+        try {
+          const info = await selectUserData(currentUserEmail);
+          setUserInfo(info);
+          setIsAdmin(info && info.isAdmin === 1);
+        } catch (error) {
+          console.error('사용자 정보를 불러오는 중 에러:', error);
+        }
+      };
+      fetchUserInfo();
+    }
+  }, [currentUserEmail]);
+  //
 
   return (
     <Grid container spacing={2} className="itemDetail">
