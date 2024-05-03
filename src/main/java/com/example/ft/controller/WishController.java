@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -57,4 +58,35 @@ public class WishController {
 		return value;
 	}
 	
+	@GetMapping("/count/{iid}")
+	public int itemWishCount(@PathVariable int iid) {
+		int itemWishCount = wishService.getWishItemCount(iid);
+		return itemWishCount;
+	}
+	
+	@PostMapping("/list")
+	public JSONArray wishList(@RequestBody Map<String, String> requestBody) {
+	    String email = requestBody.get("email");
+	    List<Item> list = wishService.getWishList(email);
+	    JSONArray jArr = new JSONArray();
+	    for(Item item : list) {
+	        JSONObject jObj = new JSONObject(); 
+	        jObj.put("iid", item.getIid());
+	        jObj.put("name", item.getName());
+	        jObj.put("category", item.getCategory());
+	        jObj.put("img1", item.getImg1());
+	        jObj.put("img2", item.getImg2());
+	        jObj.put("content", item.getContent());
+	        jObj.put("price", item.getPrice());
+	        jObj.put("salePrice", item.getSalePrice());
+	        jObj.put("saleDate", item.getSaleDate());
+	        jObj.put("regDate", item.getRegDate());
+	        jObj.put("isDeleted", item.getIsDeleted());
+	        jObj.put("totalSta", item.getTotalSta());
+	        jObj.put("company", item.getCompany());
+	        jObj.put("cost", item.getCost());
+	        jArr.add(jObj);
+	    }
+	    return jArr;
+	}
 }

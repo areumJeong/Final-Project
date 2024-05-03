@@ -16,12 +16,12 @@ import lombok.ToString;
 @ToString
 @Builder
 public class CartItemRequest {
-   private int iid;
-   private String email;
-   private int ioid;
-   private int count;
+	private int iid;
+	private String email;
+	private int ioid;
+	private int count;
 
-   public CartItem toCartItem(int price, int salePrice, LocalDateTime saleDate, LocalDateTime regDate) {
+	public CartItem toCartItem(int price, int salePrice, LocalDateTime saleDate, LocalDateTime regDate) {
         CartItem cartItem = new CartItem();
         cartItem.setIid(this.iid);
         cartItem.setEmail(this.email);
@@ -34,3 +34,12 @@ public class CartItemRequest {
         return cartItem;
     }
 }
+
+// public class CartOption {
+//     // cart_option
+//     private  int cartOptionId;
+//     private int userId;
+//     private int iid;
+//     private String size;
+//     private String color;
+// }

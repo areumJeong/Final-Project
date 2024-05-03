@@ -275,61 +275,42 @@ export async function deleteUserData(email) {
 }
 /*========================= DAO 끝 =========================*/
 
-/*========================= 인증 상태 확인 ==================*/
+/*========================= 인증 상태, 관리자 확인 끝 ==================*/
 
-// 이건 지워도 됨. onAuthStateChanged 함수를 호출하여 사용자의 인증 상태가 변경될 때 호출되는 콜백 함수 등록
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // 사용자가 로그인된 상태일 때 실행되는 부분
-    console.log(user);
-    const email = user.email; // 사용자의 이메일 가져오기
-    console.log('사용자 이메일:', email);
-
-    // 이후에 이메일을 필요한 곳에서 사용할 수 있음
-  } else {
-    // 사용자가 로그아웃된 상태일 때 실행되는 부분
-    console.log('사용자가 로그아웃되었습니다.');
-  }
-});
-
-// 사용자의 인증 상태가 변경될 때 호출되는 콜백 함수를 등록하고, 해제할 수 있는 unsubscribe 함수 반환
+// # 사용자의 인증 상태가 변경될 때 호출되는 콜백 함수를 등록하고, 해제할 수 있는 unsubscribe 함수 반환
 export function onUserStateChanged(callback) {
   const unsubscribe = onAuthStateChanged(auth, async (user) => {
-    const updatedUser = user ? await getAdmin(user) : null;
-    callback(updatedUser);
+    if (user) {
+      // 사용자가 인증된 경우, 관리자 정보를 가져와서 사용자 객체에 추가
+      const adminUser = user ? await getAdminUser(user) : null;
+      callback(adminUser);
+    } else {
+      // 사용자가 인증되지 않은 경우, 콜백 함수에 null 전달
+      callback(null);
+    }
   });
+
   return unsubscribe; // unsubscribe 함수 반환
 }
 
-/*========================= 인증 상태 확인 끝==================*/
 
-/*========================= 관리자 =========================*/
+// ====================
 
 // # 관리자 가져오기 함수 
-async function getAdmin(user) {
-  return get(ref(database, 'admins'))
-    .then(snapshot => {
-      if (snapshot.exists()) {
-        const admins = snapshot.val();
-        // console.log(admins);
-        const isAdmin = admins.includes(user.uid);
-        return {...user, isAdmin};
-      }
-      return user;
-    });
+
+export async function getAdminUser(user) {
+  try {
+    const snapshot = await get(ref(database, 'admin'));
+    if (snapshot.exists()) {
+      const admins = snapshot.val();
+      // 관리자 여부 확인 후 맞으면 true 
+      const isAdmin = admins.includes(user.email);   
+      return { ...user, isAdmin };
+    }
+    return user;
+  } catch (error) {
+    console.error("Error getting admin user:", error);
+    return user; // 에러 발생 시 기본 사용자 정보 반환
+  }
 }
-
-// 관리자인지 확인하는 함수
-// export async function isAdmin(user) {
-//   try {
-//     const admins = await getAdmin(); // 서버에서 관리자 목록 가져오기
-//     const isAdmin = admins.includes(user.email);
-//     return {...user, isAdmin};
-    
-//   } catch (error) {
-//     console.error("Error checking admin status:", error);
-//     return false; // 에러 발생 시 관리자가 아닌 것으로 처리
-//   }
-// }
-
-/*========================= 관리자 끝 =========================*/
+/*========================= 인증 상태, 관리자 확인 끝==================*/

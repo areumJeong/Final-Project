@@ -14,7 +14,7 @@ import com.example.ft.entity.CartItemRequest;
 @Mapper
 public interface CartDao {
 
-    @Insert("INSERT INTO cart (iid, email, count, totalPrice) VALUES (#{iid}, #{email}, #{count}, #{totalPrice})")
+    @Insert("INSERT INTO cart (iid, email, ioid, count) VALUES (#{iid}, #{email}, #{ioid} , #{count})")
     void addToCart(CartItemRequest CartItem);
 
 //    @Select("SELECT * FROM cart WHERE email = #{email}")

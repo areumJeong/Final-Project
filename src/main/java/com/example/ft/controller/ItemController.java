@@ -35,7 +35,7 @@ import com.example.ft.service.WishService;
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
-@Slf4j // log로 값을 출력
+@Slf4j 
 @RestController
 @RequestMapping("/item")	
 @RequiredArgsConstructor
@@ -109,13 +109,11 @@ public class ItemController {
 			jObj.put("isDeleted", tag.getIsDeleted());
 			jArrTag.add(jObj);
 		}
-		System.out.println(iid + email);
 		Wish wish = wishService.getWish(iid, email);
 		int value = 0;
 		if (wish != null) {
 			value = wish.getValue();	
 		}
-		System.out.println(value);
 		JSONObject response = new JSONObject();
 	    response.put("item", jItem);
 	    response.put("options", jArrOption);
@@ -175,15 +173,12 @@ public class ItemController {
 	            .cost(itemRequest.getCost())
 	            .build();
 	    itemService.updateItem(item);
-
-	    // DB에 있는 ioid 및 itid를 가져옵니다.
+	    
 	    int[] ioid = itemService.getItemOptionIoid(itemRequest.getIid());
 	    int[] itid = itemService.getItemTagItid(itemRequest.getIid());
 
-	    // 요청된 ioid 및 itid를 가져옵니다.
 	    Integer[] requestedIoids = itemRequest.getIoid();
 	    Integer[] requestedItids = itemRequest.getItid();
-	    // 누락된 ioid에 대한 삭제 작업을 수행합니다.
 	    if (requestedIoids != null) {
 	        for (int i = 0; i < ioid.length; i++) {
 	            boolean found = false;
@@ -194,13 +189,11 @@ public class ItemController {
 	                }
 	            }
 	            if (!found) {
-	                // ioid[i]를 삭제하는 작업을 수행합니다.
 	                itemService.optionDeleted(ioid[i]);
 	            }
 	        }
 	    }
 
-	    // 누락된 itid에 대한 삭제 작업을 수행합니다.
 	    if (requestedItids != null) {
 	        for (int i = 0; i < itid.length; i++) {
 	            boolean found = false;
@@ -211,27 +204,25 @@ public class ItemController {
 	                }
 	            }
 	            if (!found) {
-	                // itid[i]를 삭제하는 작업을 수행합니다.
 	                itemService.tagDeleted(itid[i]);
 	            }
 	        }
 	    }
 
-	    // 옵션 및 갯수 업데이트 또는 추가
 	    String[] options = itemRequest.getOption();
 	    int[] counts = itemRequest.getCount();
 	    Integer[] ioids = itemRequest.getIoid();
 	    if (options != null && counts != null) {
 	        for (int i = 0; i < options.length; i++) {
-	            if (i < counts.length && counts[i] > 0) { // 유효한 옵션과 갯수일 경우에만 처리
-	                if (ioids != null && i < ioids.length && ioids[i] != null && ioids[i] != 0) { // 기존 옵션 업데이트
+	            if (i < counts.length && counts[i] > 0) { 
+	                if (ioids != null && i < ioids.length && ioids[i] != null && ioids[i] != 0) { 
 	                    ItemOption itemOption = ItemOption.builder()
 	                            .option(options[i])
 	                            .count(counts[i])
 	                            .ioid(ioids[i])
 	                            .build();
 	                    itemService.optionUpdate(itemOption);
-	                } else { // 새로운 옵션 추가
+	                } else { 
 	                    ItemOption itemOption = ItemOption.builder()
 	                            .iid(itemRequest.getIid())
 	                            .option(options[i])
@@ -243,11 +234,9 @@ public class ItemController {
 	        }
 	    }
 
-	    // 태그 업데이트 또는 추가
 	    String[] tags = itemRequest.getTag();
 	    Integer[] itids = itemRequest.getItid();
 
-	    // itids 배열의 길이가 tags 배열의 길이보다 작으면, itids 배열의 길이를 tags 배열의 길이로 확장하고 0으로 채웁니다.
 	    if (itids != null && itids.length < tags.length) {
 	        Integer[] newItids = Arrays.copyOf(itids, tags.length);
 	        Arrays.fill(newItids, itids.length, tags.length, 0);
@@ -256,14 +245,13 @@ public class ItemController {
 
 	    if (tags != null) {
 	        for (int i = 0; i < tags.length; i++) {
-	            // 기존 태그 업데이트
 	            if (i < itids.length && itids[i] != null && itids[i] != 0) {
 	                ItemTag itemTag = ItemTag.builder()
 	                        .tag(tags[i])
 	                        .itid(itids[i])
 	                        .build();
 	                itemService.tagUpdate(itemTag);
-	            } else { // 새로운 태그 추가
+	            } else { 
 	                ItemTag itemTag = ItemTag.builder()
 	                        .iid(itemRequest.getIid())
 	                        .tag(tags[i])
@@ -284,23 +272,19 @@ public class ItemController {
 	
 	@PostMapping("/sale")
     public String saleItem(@RequestBody SaleData saleData) {
-        // SaleData 객체에서 필요한 정보를 추출하여 처리
         int iid = saleData.getIid();
         int salePrice = saleData.getSalePrice();
         ZonedDateTime saleDate = saleData.getSaleDate();
         LocalDateTime saleDateLDT = saleDate.toLocalDateTime();
 
-	    // Item 객체 생성
 	    Item item = Item.builder()
 	                    .salePrice(salePrice)
 	                    .saleDate(saleDateLDT)
 	                    .iid(iid)
 	                    .build();
 
-	    // itemService를 사용하여 Item 객체 처리
 	    itemService.saleItem(item);
-
-	    return null;
+	    return "Success";
 	}
 	
 	

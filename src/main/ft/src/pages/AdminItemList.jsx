@@ -32,7 +32,7 @@ export default function AdminItemList() {
     const itemIds = list.map(item => item.iid);
     // iid 배열을 사용하여 재고
     itemIds.forEach((iid, idx) => {
-      axios.get(`/ft/item/detail/${iid}`)
+      axios.get(`/ft/item/detail/${iid}/em`)
         .then(response => {
           const { options, tags } = response.data;
           const formattedOptions = options ? options.map(option => ({

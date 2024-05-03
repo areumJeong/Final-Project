@@ -2,25 +2,68 @@ import React, { useEffect, useState } from "react";
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { Button, CardMedia, CardContent, Stack } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { Button, CardContent, CardMedia, Stack } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import CountDown from "../components/CountDown";
-import { Items, getItemDetail } from "../components/Items";
 import Rating from "../components/Rating";
+import axios from 'axios'; // axios 추가
 import '../css/itemList.css'; // 분리된 CSS 파일 import
+import { selectUserData } from '../api/firebase';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
 
 export default function ItemList() {
   const [isLoading, setIsLoading] = useState(true);
   const [list, setList] = useState([]);
-  const [filteredItems, setFilteredItems] = useState([]);
   const navigate = useNavigate();
-  const { searchQuery } = useParams();
+  const [currentUserEmail, setCurrentUserEmail] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const auth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUserEmail(user.email);
+      } else {
+        setCurrentUserEmail(null);
+      }
+    });
+  }, [auth]);
+  
+  useEffect(() => {
+    if (currentUserEmail) {
+      const fetchUserInfo = async () => {
+        try {
+          const info = await selectUserData(currentUserEmail);
+          setUserInfo(info);
+          setIsAdmin(info && info.isAdmin === 1);
+        } catch (error) {
+          console.error('사용자 정보를 불러오는 중 에러:', error);
+        }
+      };
+      fetchUserInfo();
+    }
+  }, [currentUserEmail]);
+
+  const fetchWishList = async () => {
+    try {
+      console.log(userInfo.email);
+      const response = await axios.post('/ft/wish/list', { email: userInfo.email }); // 이메일 데이터 보내기
+      const wishList = response.data;
+      console.log("Wish List:", wishList);
+      setList(wishList)
+    } catch (error) {
+      console.error('Error fetching wish list:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchWishList();
+  }, [userInfo]);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const productList = await Items();
-        setList(productList);
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching product list:', error);
@@ -30,27 +73,16 @@ export default function ItemList() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const lowercaseSearchQuery = searchQuery ? searchQuery.toLowerCase() : ''; 
-    const filtered = list.filter(item => {
-      const itemNameIncludes = item.name && item.name.toLowerCase().includes(lowercaseSearchQuery);
-      const tagsIncludes = item.tags && item.tags.some(tag => tag.tag.toLowerCase().includes(lowercaseSearchQuery));
-      const optionsIncludes = item.options && item.options.some(option => option.option.toLowerCase().includes(lowercaseSearchQuery));
-      return itemNameIncludes || tagsIncludes || optionsIncludes;
-    });
-  
-    setFilteredItems(filtered);
-  }, [searchQuery, list]);
-
   return (
     <>
+      <Button onClick={() => { navigate(`/admin/itemlist/`) }}>어드민</Button>
       <Grid container spacing={2} className="itemList">
-        {filteredItems.map((item, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={index} marginBottom={5}>
+        {list.map((item, index) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={index} marginBottom={10}>
             <Paper className="paper-item" onClick={() => { navigate(`/item/detail/${item.iid}`) }} sx={{ maxWidth: 300, paddingBottom: 0 }}>
               <CardMedia
                 component="img"
-                height="220"
+                height="200"
                 image={item.img1}
                 alt={item.name}
                 sx={{ mb: 1 }} // 이미지 아래 여백 추가

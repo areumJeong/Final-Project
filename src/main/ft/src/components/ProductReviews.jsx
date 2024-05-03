@@ -58,7 +58,7 @@ const RatingOption = ({ option, count, maxCount, increaseCommentCount }) => {
   const barWidth = (count / maxCount) * 100; // 막대 그래프의 너비 계산
 
   return (
-    <div style={{ marginBottom: '1%', width: '100%', marginRight: '1%'}}>
+    <div style={{ marginBottom: '1%', width: '100%', marginRight: '1%' }}>
       <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
         <div style={{ width: '20%', marginRight: '1%' }}>{option}</div>
         <div style={{ width: '100%', position: 'relative', height: '30px', backgroundColor: 'lightgray', borderRadius: '20px' }}>
@@ -82,7 +82,7 @@ const RatingOptions = ({ commentCounts, increaseCommentCount }) => {
             maxCount={maxCount}
             increaseCommentCount={() => increaseCommentCount(rating)}
           />
-          <span style={{marginBottom: '2%',}}>
+          <span style={{ marginBottom: '2%', }}>
             ({commentCounts[rating] !== undefined ? commentCounts[rating] : 0})
           </span>
         </div>
@@ -92,10 +92,10 @@ const RatingOptions = ({ commentCounts, increaseCommentCount }) => {
 };
 
 
-const ProductReviews = ({reviews, item, reloadReviewData}) => {
+const ProductReviews = ({ reviews, item, reloadReviewData }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [selectedRating] = useState(null);
-  const [commentCounts, setCommentCounts] = useState({5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
+  const [commentCounts, setCommentCounts] = useState({ 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
   const [currentUserEmail, setCurrentUserEmail] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -110,7 +110,7 @@ const ProductReviews = ({reviews, item, reloadReviewData}) => {
       }
     });
   }, [auth]);
-  
+
   useEffect(() => {
     if (currentUserEmail) {
       const fetchUserInfo = async () => {
@@ -156,10 +156,14 @@ const ProductReviews = ({reviews, item, reloadReviewData}) => {
   const sortedReviews = reviews.sort((a, b) => {
     if (sortBy === 'latest') {
       return new Date(b.regDate) - new Date(a.regDate);
-    } else if (sortBy === 'highest') { // 추가: 별점 높은 순 정렬
+    } else if (sortBy === 'highest') {
       return b.sta - a.sta;
-    } else if (sortBy === 'lowest') { // 추가: 별점 낮은 순 정렬
+    } else if (sortBy === 'lowest') {
       return a.sta - b.sta;
+    } else if (sortBy === 'img') { // 추가: 사진이 있는 리뷰를 먼저 표시
+      if (a.img && !b.img) return -1;
+      if (!a.img && b.img) return 1;
+      return 0;
     }
   });
 
@@ -206,7 +210,7 @@ const ProductReviews = ({reviews, item, reloadReviewData}) => {
             {/* <button onClick={handleWriteReview} style={{marginTop: '5%'}}>상품 리뷰 작성하기</button> */}
           </div>
         </div>
-        <Divider orientation="vertical" flexItem style={{marginRight: '5%'}}/>
+        <Divider orientation="vertical" flexItem style={{ marginRight: '5%' }} />
         <div className="right-panel" style={{ width: '45%' }}>
           <h2>별점 평가</h2>
           <RatingOptions
@@ -214,14 +218,15 @@ const ProductReviews = ({reviews, item, reloadReviewData}) => {
           />
         </div>
       </Stack>
-      <hr/>
+      <hr />
       <div className="bottom-panel" style={{ width: '100%' }}>
         <div className="sort-options" style={{ width: '100%' }}>
           {/* 정렬 옵션 선택 */}
           <select onChange={handleSortChange} style={{ width: 100 }}>
             <option value="latest">최신순</option>
-            <option value="highest">별점 높은 순</option> {/* 추가: 별점 높은 순 */}
-            <option value="lowest">별점 낮은 순</option> {/* 추가: 별점 낮은 순 */}
+            <option value="highest">별점 높은 순</option>
+            <option value="lowest">별점 낮은 순</option>
+            <option value="img">사진</option>
           </select>
         </div>
       </div>
@@ -236,9 +241,9 @@ const ProductReviews = ({reviews, item, reloadReviewData}) => {
                 <p style={{ marginRight: '1%' }}>{`${review.email.split('@')[0].substring(0, 4)}${'*'.repeat(review.email.split('@')[0].length - 4)}`}</p>
                 <p style={{ color: 'rgba(0, 0, 0, 0.5)', fontSize: '12px' }}>{new Date(review.regDate).toLocaleDateString().slice(0, -1)}</p>
                 {/* 수정 버튼 */}
-                {currentUserEmail === review.email ? 
-                <button onClick={() => handleEditReview(review, item)} style={{ marginLeft: 'auto' }}>수정</button>
-                : ""}
+                {currentUserEmail === review.email ?
+                  <button onClick={() => handleEditReview(review, item)} style={{ marginLeft: 'auto' }}>수정</button>
+                  : ""}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1%' }}>
                 <StarRatings rating={review.sta} />

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.example.ft.entity.Item;
 import com.example.ft.entity.Wish;
 
 @Mapper
@@ -18,8 +19,8 @@ public interface WishDao {
 	@Select("select * from wish where wid=#{wid}")
 	Wish getWishByWid(int wid);
 	
-	@Select("select * from wish where email=#{email} and value=1")
-	List<Wish> getWishList(String email);
+	@Select("select * from wish w JOIN item i ON w.iid = i.iid WHERE w.email=#{email} AND w.value=1")
+	List<Item> getWishList(String email);
 	
 	@Select("select count(*) from wish where iid=#{iid} and value=1")
 	int getWishItemCount(int iid);

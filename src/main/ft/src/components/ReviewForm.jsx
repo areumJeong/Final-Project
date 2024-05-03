@@ -6,8 +6,9 @@ import axios from 'axios';
 import { uploadImage } from "../api/cloudinary";
 import { selectUserData } from '../api/firebase';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
+import CloseIcon from '@mui/icons-material/Close';
 
-const ReviewFormModal = ({ isOpen, handleClose, iid }) => { // Add iid to props
+const ReviewFormModal = ({ isOpen, handleClose, iid }) => {
   const [review, setReview] = useState('');
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
@@ -95,13 +96,13 @@ const ReviewFormModal = ({ isOpen, handleClose, iid }) => { // Add iid to props
     <Modal open={isOpen} onClose={handleClose}>
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: 'white', padding: 20 }}>
         <Typography variant="h5" style={{marginBottom: 10}}>리뷰 작성</Typography>
-        <Button onClick={handleClose} style={{ position: 'absolute', top: 5, right: 5 }}>X</Button>
+        <CloseIcon onClick={handleClose} style={{ position: 'absolute', top: 5, right: 5, cursor: 'pointer', fontSize: 20, color: 'black' }} />
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField label='리뷰' value={review} onChange={handleReviewChange} fullWidth multiline rows={6}/>
             </Grid>
-            <Grid item xs={12} >
+            <Grid item xs={12}>
               <div className="rating">
                 <label style={{ marginTop: 8 }}>평점:</label>
                 {[...Array(5)].map((_, index) => (

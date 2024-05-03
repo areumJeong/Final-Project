@@ -159,7 +159,6 @@ export default function SignIn() {
 
             {/* 소셜 로그인 버튼 */}
             <Grid container justifyContent="center" spacing={2}>
-              {/* 구글 로그인 버튼 */}
               <Grid item>
                 <Stack direction="row">
                   <Button onClick={handleGoogle} aria-label="Google 로그인">

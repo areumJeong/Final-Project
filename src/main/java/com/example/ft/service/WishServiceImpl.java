@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.ft.dao.BoardDao;
 import com.example.ft.dao.WishDao;
+import com.example.ft.entity.Item;
 import com.example.ft.entity.Wish;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class WishServiceImpl implements WishService {
 	}
 
 	@Override
-	public List<Wish> getWishList(String email) {
+	public List<Item> getWishList(String email) {
 		return wishDao.getWishList(email);
 	}
 

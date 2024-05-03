@@ -80,6 +80,7 @@ export default function NavigationBar() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false); // 기본적으로 로그아웃 상태
 
   // ============== user 관련 함수들 =================
+  const isAdmin = user && user.isAdmin == true;
 
   // 로그인 
   const handleLogin = () => {
@@ -146,6 +147,20 @@ export default function NavigationBar() {
             <ListItemIcon>
               <WhatshotIcon />
             </ListItemIcon>
+              {/* Render admin options if user is an admin */}
+      {isAdmin && (
+        <>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <ListIcon />
+              </ListItemIcon>
+              <ListItemText primary="Admin Option 1" />
+            </ListItemButton>
+          </ListItem>
+        </>
+      )}
+
             <ListItemText primary="특가" />
           </ListItemButton>
         </ListItem>
@@ -235,6 +250,7 @@ export default function NavigationBar() {
               {DrawerList}
             </Drawer>
           </div>
+          <Link to={'/wish/list'}>찜</Link>
           <Box sx={{ flexGrow: 1 }} />
           <Typography
             variant="h6"

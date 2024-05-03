@@ -3,14 +3,16 @@ package com.example.ft.service;
 import java.util.List;
 
 import com.example.ft.entity.Board;
+import com.example.ft.entity.Item;
 import com.example.ft.entity.Review;
 import com.example.ft.entity.Wish;
 
 public interface WishService {
+	
 	// 찜이 생성되어있었는지 체크
 	Wish getWish(int iid, String email);
 	// 유저가 찜눌은 아이템을 리스트로 출력
-	List<Wish> getWishList(String email);
+	List<Item> getWishList(String email);
 	// 
 //	Wish getWishByWid(int wid);
 	// 찜 추가

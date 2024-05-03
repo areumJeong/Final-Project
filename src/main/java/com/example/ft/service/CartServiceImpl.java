@@ -23,18 +23,27 @@ public class CartServiceImpl implements CartService {
     	List<CartItem> cartItemList = cartDao.listCartItems(cartItem.getEmail());
     	//	가져온 데이터들의 첫번째로 하드 코딩 했습니다. 이유는 한개씩 추가할거니까요!
     	// 그래서 장바구니에 추가하려는 아이템의 count를 가져와서 stockCount라는 변수에 할당 == 재고
-    	int stockCount = cartItemList.get(0).getCount();
-    	//	cartItem은 내가 요청하고자 하는 데이터 이기에 내가 요청하고자 하는 count를 가져와서 cartItemCount 변수에 할당 == 요청하는 수량
-    	int cartItemCount = cartItem.getCount();
-    	//	만약 재고가 요청하는 수량보다 크거나 같으면 자동으로 재고수량만큼 세팅
-    	if (stockCount > cartItemCount) {
-    		cartItem.setCount(stockCount);
-    		return false;
-    	} else {		// 아니라면 그냥 내가 요청한 수량만큼 세팅
-    		cartItem.setCount(cartItemCount);
-    		cartDao.addToCart(cartItem);
-    		return true;
-    	}
+    	 // cartItemList가 비어있는 경우 처리
+        if (cartItemList.isEmpty()) {
+            // 장바구니에 아무것도 없는 경우
+            cartItem.setCount(cartItem.getCount());
+            cartDao.addToCart(cartItem);
+            return true;
+        }
+
+        // cartItemList가 비어있지 않은 경우
+        int stockCount = cartItemList.get(0).getCount();
+        int cartItemCount = cartItem.getCount();
+
+        // 재고 수량과 요청 수량 비교
+        if (stockCount >= cartItemCount) {
+            cartItem.setCount(stockCount);
+            return false;
+        } else {
+            cartItem.setCount(cartItemCount);
+            cartDao.addToCart(cartItem);
+            return true;
+        }
     }
 
     @Override
