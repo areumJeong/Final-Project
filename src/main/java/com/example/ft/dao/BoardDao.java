@@ -30,5 +30,8 @@ public interface BoardDao {
 	
 	@Update("update Board set isDeleted=1 where bid=#{bid}")
 	void deleteBoard(int bid);
+	
+	@Select("select * from board where type='QnA' and isDeleted=0")
+	List<Board> getQnAList();
 
 }

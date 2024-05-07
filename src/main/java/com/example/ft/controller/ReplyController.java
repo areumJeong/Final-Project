@@ -46,7 +46,7 @@ public class ReplyController {
 	public String replyInsert(@RequestBody Reply replyData) {
 		Reply reply = Reply.builder()
 							.email(replyData.getEmail()).bid(replyData.getBid())
-							.content(replyData.getContent()).iid(replyData.getIid())
+							.content(replyData.getContent())
 							.build();
 		replyService.insertReply(reply);
 		return "Success";

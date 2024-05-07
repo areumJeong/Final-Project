@@ -228,7 +228,6 @@ export async function selectUserData(email) {
   return get(ref(database, `users/${sanitizedEmail}`))
     .then(snapshot => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
         return snapshot.val();
       } 
       return null;

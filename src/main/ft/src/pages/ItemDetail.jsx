@@ -171,7 +171,7 @@ export default function ItemDetail() {
   useEffect(() => {
     const handleScroll = () => {
       const nav = document.querySelector('nav');
-      const navOffsetTop = nav.offsetTop;
+      const navOffsetTop = nav.offsetTop -250;  // 상단 고정되는 시간
 
       if (window.scrollY >= navOffsetTop) {
         setIsNavFixed(true);
@@ -488,7 +488,6 @@ export default function ItemDetail() {
         const response = await axios.get(`/ft/wish/count/${iid}`);
 
         const itemWishCount = response.data;
-        console.log("Item wish count:", itemWishCount);
         setItemWishCount(itemWishCount);
       } catch (error) {
         console.error('아이템 찜 수를 불러오는 중 에러:', error);
@@ -596,7 +595,7 @@ export default function ItemDetail() {
                   boxShadow={2}
                   bgcolor="#f5f5f5"
                   border="1px solid #ccc"
-                  style={{ width: '65%', marginTop: 5, minHeight: 50 }} 
+                  style={{ width: '75%', marginTop: 5, minHeight: 50 }} 
                 >
                   <Typography variant="body1" style={{ flexGrow: 1 }}>
                     {option.option}
@@ -630,7 +629,7 @@ export default function ItemDetail() {
           </CardContent>
         </Card>
       </Grid>
-      <nav style={{ backgroundColor: '#f8f9fa', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', padding: '10px 0', textAlign: 'center', width: '100%', position: isNavFixed ? 'sticky' : 'relative', top: isNavFixed ? 0 : 'auto', left: 0, zIndex: 1000 }}>
+      <nav style={{ backgroundColor: '#f8f9fa', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', padding: '10px 0', textAlign: 'center', width: '100%', position: isNavFixed ? 'sticky' : 'relative', top: isNavFixed ? 120 : 'auto', left: 0, zIndex: 1000 }}>
         <ul style={{ display: 'flex', justifyContent: 'center', listStyleType: 'none', padding: 0 }}>
           {['detail', 'review', 'qna'].map((id) => (
             <li key={id} style={{ margin: '0 20px' }}>
@@ -658,7 +657,7 @@ export default function ItemDetail() {
             <Grid item xs={12} style={{ paddingLeft: 100 , paddingRight: 100 }}>
               <Button variant="contained" color="primary" size="small" style={{ marginRight: 10 }} onClick={() => openModal(iid)}>리뷰작성</Button>
               <ReviewForm isOpen={isModalOpen} handleClose={closeModal} iid={iid} /> 
-              <ProductReviews reloadReviewData={reloadReviewData} reviews={reviews} item={item}/>
+              <ProductReviews reloadReviewData={reloadReviewData} reviews={reviews} item={item} prop={reviews.rid} />
             </Grid>
           </Grid>
         </section>

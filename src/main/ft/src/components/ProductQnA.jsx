@@ -151,9 +151,9 @@ export default function ProductQnA({ posts, reloadQnAData }) {
               </TableCell>
               <TableCell style={{ width: isMobile ? '15%' : '15%', fontWeight: 'bold', fontSize: '80%' }}>답변</TableCell>
               <TableCell style={{ width: isMobile ? '60%' : '40%', fontWeight: 'bold', textAlign: 'center', fontSize: '80%' }} align="center">제목</TableCell>
-              <TableCell style={{ width: isMobile ? '20%' : '17%', fontWeight: 'bold', fontSize: '80%' }}>작성자</TableCell>
+              <TableCell style={{ width: isMobile ? '20%' : '10%', fontWeight: 'bold', fontSize: '80%' }}>작성자</TableCell>
               <TableCell style={{ width: isMobile ? '10%' : '10%', fontWeight: 'bold', fontSize: '80%' }}>작성일</TableCell>
-              <TableCell style={{ width: isMobile ? '10%' : '13%', fontWeight: 'bold', fontSize: '80%', textAlign: 'center', }}><BuildIcon/></TableCell>
+              <TableCell style={{ width: isMobile ? '10%' : '20%', fontWeight: 'bold', fontSize: '80%', textAlign: 'center', }}><BuildIcon/></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

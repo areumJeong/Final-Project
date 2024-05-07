@@ -15,28 +15,28 @@ const footerStyle = {
 function Footer() {
     return (
         <div className='footer-container'>
-            <div class='footer-links'>
+            <div className='footer-links'>
                 <div className='footer-link-wrapper'>
-                    <div class='footer-link-items'>
+                    <div className='footer-link-items'>
                         <h2>About Us</h2>
                         <Link to='/sign-up'>회사 소개</Link>
                         <Link to='/'>연혁</Link>
                     </div>
-                    <div class='footer-link-items'>
+                    <div className='footer-link-items'>
                         <h2>Members</h2>
                         <Link to='/'>로그인</Link>
                         <Link to='/'>회원가입</Link>
                     </div>
-                    <div class='footer-link-items'>
+                    <div className='footer-link-items'>
                         <h2>CS Cenmter</h2>
                         <Link to='/'>1577-1577</Link>
                     </div>
-                    <div class='footer-link-items'>
+                    <div className='footer-link-items'>
                         <h2>My Page</h2>
                         <Link to='/'>주문 조회</Link>
                         <Link to='/'>찜목록</Link>
                     </div>
-                    <div class='footer-link-items'>
+                    <div className='footer-link-items'>
                         <h2>Help</h2>
                         <Link to='/'>공지사항</Link>
                         <Link to='/'>문의</Link>

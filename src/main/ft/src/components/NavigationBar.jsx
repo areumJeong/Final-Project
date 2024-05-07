@@ -21,12 +21,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListIcon from '@mui/icons-material/List';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
-
 import LoginIcon from '@mui/icons-material/Login'; // login icon
 import LogoutIcon from '@mui/icons-material/Logout'; // logout icon
 import PersonAddIcon from '@mui/icons-material/PersonAdd'; // signUp
-
-
 import { Link } from 'react-router-dom';
 import '../css/nav.css';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -143,24 +140,23 @@ export default function NavigationBar() {
     <Box sx={{ width: 350 }} role="presentation">
       <List>
         <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              <WhatshotIcon />
-            </ListItemIcon>
-              {/* Render admin options if user is an admin */}
-      {isAdmin && (
+        {isAdmin && (
         <>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton to={'admin/itemlist'}>
               <ListItemIcon>
-                <ListIcon />
+                <ListIcon/>
               </ListItemIcon>
               <ListItemText primary="Admin Option 1" />
             </ListItemButton>
           </ListItem>
         </>
       )}
-
+          <ListItemButton>
+            <ListItemIcon>
+              <WhatshotIcon />
+            </ListItemIcon>
+              {/* Render admin options if user is an admin */}
             <ListItemText primary="특가" />
           </ListItemButton>
         </ListItem>
@@ -229,6 +225,10 @@ export default function NavigationBar() {
     backgroundColor: 'gray',
     height: '120px',
     justifyContent: 'center',
+    position: 'fixed', // Add this line to make the app bar fixed
+    top: 0, // Add this line to fix the app bar at the top of the viewport
+    width: '100%', // Add this line to make the app bar cover the full width
+    zIndex: 1000, // Add this line to ensure the app bar appears above other content
   });
 
   // 검색 버튼 클릭 시 실행되는 함수
@@ -241,7 +241,7 @@ export default function NavigationBar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, marginBottom: 2 }}>
+    <Box sx={{ flexGrow: 1, marginBottom: 2, paddingTop: '120px' }}>
       <StyledAppBar position="static">
         <Toolbar>
           <div>
