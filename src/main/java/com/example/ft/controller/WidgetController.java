@@ -41,6 +41,7 @@ public class WidgetController {
     @PostMapping("/confirm")
     public ResponseEntity<JSONObject> confirmPayment(@RequestBody String jsonBody) throws Exception {
         logger.info("위젯 정상 진입");
+        
     	JSONParser parser = new JSONParser();
         String orderId;
         String amount;
