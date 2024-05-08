@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef  } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
@@ -10,7 +10,6 @@ import axios from 'axios';
 import { CardContent, CardMedia, Snackbar, Typography } from '@mui/material';
 import CountDown from "../components/CountDown";
 import Rating from "../components/Rating";
-import { useNavigate } from 'react-router-dom';
 import ReviewForm from "../components/ReviewForm";
 import InquiryContent from "../components/InquiryContent";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -53,7 +52,7 @@ export default function ItemDetail() {
       try {
         const userEmail = currentUserEmail || 'em'; // 로그인한 사용자의 이메일이 없으면 'em'을 사용
         const response = await axios.get(`/ft/item/detail/${iid}/${userEmail}`);
-        const { item, options, tags, value } = response.data;
+        const { item, options, value } = response.data;
         const formattedItem = {
           iid: item.iid,
           name: item.name,
@@ -67,7 +66,7 @@ export default function ItemDetail() {
           totalSta: item.totalSta,
         };
         setItem(formattedItem);
-  
+
         const formattedOptions = options ? options.map(option => ({
           ioid: option.ioid,
           option: option.option,
@@ -76,19 +75,8 @@ export default function ItemDetail() {
           price: option.price, 
         })) : [];
         setOptions(formattedOptions);
-  
-        const formattedTags = tags ? tags.map(tag => ({
-          itid: tag.itid,
-          tag: tag.tag,
-        })) : [];
-        setTags(formattedTags);
-  
-        if (value === 1){
-          setIsWish(true)
-        } else{
-          setIsWish(false)
-        }
-  
+
+        setIsWish(value === 1);
         setIsLoading(false);
       } catch (error) {
         console.error('상품 정보를 불러오는 중 에러:', error);
@@ -99,10 +87,13 @@ export default function ItemDetail() {
     fetchItemData();
   }, [iid, currentUserEmail]);
 
-  const increaseQuantity = (index) => {
+  const increaseQuantity = (index, stock) => {
     const updatedSelectedOptions = [...selectedOptions];
-    updatedSelectedOptions[index].count += 1;
-    setSelectedOptions(updatedSelectedOptions);
+    const currentQuantity = updatedSelectedOptions[index].count;
+    if (currentQuantity < stock) { // 최대값 설정
+      updatedSelectedOptions[index].count += 1;
+      setSelectedOptions(updatedSelectedOptions);
+    }
   };
 
   const decreaseQuantity = (index) => {
@@ -146,21 +137,23 @@ export default function ItemDetail() {
   }, [selectedOptions]);
 
   const handleAddToCart = () => {
-    if (!userInfo || !userInfo.email) {
-      // 사용자가 로그인되어 있지 않은 경우, 로그인 페이지로 리다이렉트
-      window.location.href = '/signIn'; // 로그인 페이지 URL을 실제로 사용하는 주소로 변경해주세요
-      return;
-    }
-    const cartItems = selectedOptions.map(option => ({
+    const cartItem = {
       iid: item.iid,
-      ioid: option.ioid,
-      count: option.count,
-      email: userInfo.email,
-    }));
-    console.log(cartItems);
-    axios.post('/ft/api/carts', cartItems)
+      email: currentUserEmail,
+      optionList: selectedOptions,
+    };
+  
+    axios.post('/ft/api/v2/carts', cartItem)
       .then(response => {
-        console.log('장바구니에 상품이 추가되었습니다.');
+        console.log(response);
+        if(response.data) {
+          const addToCartConfirmation = window.confirm('장바구니에 상품이 추가되었습니다.\n장바구니로 이동하시겠습니까?');
+          if (addToCartConfirmation) {
+            navigate('/cart');
+          }
+        } else {
+          alert('이미 장바구니에 있습니다.')
+        }  
       })
       .catch(error => {
         console.error('장바구니 추가 실패:', error);
@@ -577,7 +570,12 @@ export default function ItemDetail() {
               >
                 <MenuItem value='' disabled>옵션 선택</MenuItem>
                 {options.map(option => (
-                  <MenuItem key={option.option} value={option.option} style={{ justifyContent: 'space-between' }}>
+                  <MenuItem 
+                    key={option.option} 
+                    value={option.option} 
+                    style={{ justifyContent: 'space-between' }}
+                    disabled={option.stock === 0}
+                  >
                     <span>{option.option}</span>
                     <span>{option.stock}개</span>
                   </MenuItem>
@@ -606,8 +604,9 @@ export default function ItemDetail() {
                     readOnly
                     style={{ width: `${(option.count.toString().length + 1) * 10}px`, margin: '0 5px' }} 
                     disableUnderline 
+                    inputProps={{ min: 0, max: 5 }}
                   />
-                  <Button onClick={() => increaseQuantity(index)}>+</Button>
+                  <Button onClick={() => increaseQuantity(index, option.stock)}>+</Button>
                   <Button onClick={() => removeOption(index)}>X</Button>
                 </Box>
               ))}
@@ -657,7 +656,7 @@ export default function ItemDetail() {
             <Grid item xs={12} style={{ paddingLeft: 100 , paddingRight: 100 }}>
               <Button variant="contained" color="primary" size="small" style={{ marginRight: 10 }} onClick={() => openModal(iid)}>리뷰작성</Button>
               <ReviewForm isOpen={isModalOpen} handleClose={closeModal} iid={iid} /> 
-              <ProductReviews reloadReviewData={reloadReviewData} reviews={reviews} item={item} prop={reviews.rid} />
+              <ProductReviews reloadReviewData={reloadReviewData} reviews={reviews} item={item} />
             </Grid>
           </Grid>
         </section>

@@ -30,6 +30,8 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Collapse } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 import { useAuthContext } from "../context/AuthContext";
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import { Stack } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -137,13 +139,13 @@ export default function NavigationBar() {
   // 변경: AccountCircle 아이콘을 세션 로그인 상태에 따라 다르게 렌더링
 
   const DrawerList = (
-    <Box sx={{ width: 350 }} role="presentation">
+    <Box sx={{ width: 350,}} role="presentation" >
       <List>
         <ListItem disablePadding>
         {isAdmin && (
         <>
           <ListItem disablePadding>
-            <ListItemButton to={'admin/itemlist'}>
+            <ListItemButton component={Link} to={'admin/itemlist'} onClick={() => setDrawerOpen(false)}>
               <ListItemIcon>
                 <ListIcon/>
               </ListItemIcon>
@@ -152,7 +154,7 @@ export default function NavigationBar() {
           </ListItem>
         </>
       )}
-          <ListItemButton>
+          <ListItemButton onClick={() => setDrawerOpen(false)}>
             <ListItemIcon>
               <WhatshotIcon />
             </ListItemIcon>
@@ -240,8 +242,12 @@ export default function NavigationBar() {
     }
   };
 
+  const handleToCart = () => {
+    navigate('/cart');
+  };
+
   return (
-    <Box sx={{ flexGrow: 1, marginBottom: 2, paddingTop: '120px' }}>
+    <Box sx={{ flexGrow: 1, marginBottom: 2, paddingTop: '103px',  }}>
       <StyledAppBar position="static">
         <Toolbar>
           <div>
@@ -256,7 +262,12 @@ export default function NavigationBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' }, textAlign: 'center', fontWeight: 'bolder' }}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flex: '1'
+            }}
           >
             <Link to={'/'} className='mainPageLink'>FUNiture</Link>
           </Typography>
@@ -274,32 +285,52 @@ export default function NavigationBar() {
               </Search>
             </form>
 
-            <IconButton size="small" color="inherit">
-              <Badge badgeContent={1} color="error">
-                <ShoppingCartIcon />
-              </Badge>
-              <Typography sx={{ marginLeft: '0.5rem' }}>장바구니</Typography>
+            <IconButton size="small" color="inherit" onClick={handleToCart}>
+              <Stack direction="column" alignItems="center">
+                <Badge badgeContent={0} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
+                <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>장바구니</Typography>
+              </Stack>
             </IconButton>
-
             {isLoggedIn ? (
               <>
-                <Button color="inherit" onClick={handleLogout} startIcon={<LogoutIcon />}>
-                  로그아웃
-                </Button>
-                <Button color="inherit" onClick={handleUserInfo}>
-                  마이페이지
-                </Button>
+                <IconButton size="small" color="inherit" onClick={handleLogout}>
+                  <Stack direction="column" alignItems="center">
+                    <LogoutIcon />
+                    <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>로그아웃</Typography>
+                  </Stack>
+                </IconButton>
+                <IconButton size="small" color="inherit" onClick={handleUserInfo}>
+                  <Stack direction="column" alignItems="center">
+                    <AssignmentIndIcon />
+                    <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>마이페이지</Typography>
+                  </Stack>
+                </IconButton>
               </>
             ) : (
               <>
-                <Button color="inherit" onClick={handleLogin} startIcon={<LoginIcon />}>
+                {/* <Button color="inherit" onClick={handleLogin} startIcon={<LoginIcon />}>
                   로그인
                 </Button>
                 <Button color="inherit" onClick={handleSignUp} startIcon={<PersonAddIcon />}>
                   회원가입
-                </Button>
+                </Button> */}
+                <IconButton size="small" color="inherit" onClick={handleLogin}>
+                  <Stack direction="column" alignItems="center">
+                    <LoginIcon />
+                    <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>로그인</Typography>
+                  </Stack>
+                </IconButton>
+                <IconButton size="small" color="inherit" onClick={handleSignUp}>
+                  <Stack direction="column" alignItems="center">
+                    <PersonAddIcon />
+                    <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>회원가입</Typography>
+                  </Stack>
+                </IconButton>
               </>
             )}
+            
           </Box>
         </Toolbar>
       </StyledAppBar>

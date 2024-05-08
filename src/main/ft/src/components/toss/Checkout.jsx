@@ -4,8 +4,8 @@ import { nanoid } from "nanoid";
 
 // 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요.
 // 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
-const widgetClientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
-const customerKey = "nSTq5UFZEKuFmQjrHvNz0";
+const widgetClientKey = process.env.REACT_APP_WIDGET_CLIENT_KEY;
+const customerKey = process.env.REACT_APP_CUSTOMER_KEY;
 // const paymentWidget = PaymentWidget(widgetClientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
 
 export function CheckoutPage() {

@@ -39,24 +39,24 @@ const router = createBrowserRouter([
       { path: 'userUpdate', element: <UserUpdate/> },
       { path: 'callback/kakaotalk', element: <Kakao/> },
       { path: 'wish/list', element: <WishItemList/> },
-      { path: 'admin/itemlist', element: <AdminRoutes /> },
+      { path: 'admin/itemlist', element: <AdminItemLists /> },
       { path: 'admin/item/insert', element: <ItemInsertAdminRoutes /> },
       { path: 'admin/item/update/:iid', element: <ItemUpdateAdminRoutes/> },
-      { path: 'admin/QnAList', element: <AdminQnAList/> },
+      { path: 'admin/QnAlist', element: <AdminQnAList/> },
       { path: 'success', element: <SuccessPage/> },
       { path: 'fail', element: <FailPage/> },
     ]
   }
 ]);
 
+function AdminItemLists() {
+  const { user } = useAuthContext(); 
+  return user && user.isAdmin ? <AdminItemList /> : <ItemList />;
+}
+
 function AdminQnAList() {
   const { user } = useAuthContext();
   return user && user.isAdmin ? <QnAList /> : <ItemList />;
-}
-
-function AdminRoutes() {
-  const { user } = useAuthContext(); 
-  return user && user.isAdmin ? <AdminItemList /> : <ItemList />;
 }
 
 function ItemInsertAdminRoutes() {

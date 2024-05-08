@@ -10,6 +10,7 @@ import CountDown from '../components/CountDown';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AdminCategoryBar from '../components/AdminCategoryBar';
 
 export default function QnAList() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -280,6 +281,7 @@ export default function QnAList() {
 
   return (
     <>
+      <AdminCategoryBar/>
       {selectedItem && ( // 선택된 아이템 정보가 있을 때만 표시
         <Grid container spacing={2} style={{ padding: 10 }}>
           <Grid item xs={12} sm={12} md={12} lg={12}>

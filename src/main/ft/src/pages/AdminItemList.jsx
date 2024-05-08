@@ -7,6 +7,8 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CountDown from "../components/CountDown";
 import SaleModal from "../components/SaleModal";
+import AdminCategoryBar from "../components/AdminCategoryBar";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function AdminItemList() {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,6 +20,8 @@ export default function AdminItemList() {
   const [selectedItemId, setSelectedItemId] = useState(null); 
   const [selectedPrice, setSelectedPrice] = useState(null); 
   const [selectedCost, setSelectedCost] = useState(null); 
+  const [anchorEl, setAnchorEl] = useState(null);
+
   useEffect(() => {
     axios.get('/ft/item/list')
       .then(res => {
@@ -104,7 +108,15 @@ export default function AdminItemList() {
   
   return (
     <>
-      <Button onClick={() => { navigate(`/admin/item/insert`) }}>아이템 추가</Button>
+      <AdminCategoryBar/>
+      <Button
+        onClick={() => navigate(`/admin/item/insert`)}
+        variant="contained"
+        color="primary"
+        startIcon={<AddCircleIcon />}
+      >
+        아이템 추가
+      </Button>
       <Grid container spacing={2}>
         {list.map((item, index) => (
           <Grid item xs={6} sm={6} md={6} lg={6} key={index}>
