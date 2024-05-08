@@ -6,8 +6,6 @@ export function SuccessPage() {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    // 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
-    // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.  
     const requestData = {
       orderId: searchParams.get("orderId"),
       amount: searchParams.get("amount"),
@@ -15,7 +13,7 @@ export function SuccessPage() {
     };
 
     async function confirm() {
-      const response = await fetch("/confirm", {
+      const response = await fetch("ft/confirm", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,17 +29,17 @@ export function SuccessPage() {
         return;
       }
 
-      // 결제 성공 비즈니스 로직을 구현하세요.
+      // 결제 성공 시 처리할 로직을 여기에 추가하세요.
+      // 예: navigate(`/success?orderId=${json.orderId}`);
     }
+
     confirm();
   }, []);
 
   return (
     <div className="result wrapper">
       <div className="box_section">
-        <h2>
-          결제 성공
-        </h2>
+        <h2>결제 성공</h2>
         <p>{`주문번호: ${searchParams.get("orderId")}`}</p>
         <p>{`결제 금액: ${Number(
           searchParams.get("amount")

@@ -20,6 +20,7 @@ import WishItemList from './pages/WishItemList';
 import { useAuthContext } from "./context/AuthContext";
 import QnAList from './pages/QnAList';
 import { SuccessPage } from './components/toss/Success';
+import { FailPage } from './components/toss/Fail';
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
       { path: 'admin/item/update/:iid', element: <ItemUpdateAdminRoutes/> },
       { path: 'admin/QnAList', element: <AdminQnAList/> },
       { path: 'success', element: <SuccessPage/> },
+      { path: 'fail', element: <FailPage/> },
     ]
   }
 ]);
