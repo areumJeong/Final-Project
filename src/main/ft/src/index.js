@@ -21,6 +21,7 @@ import { useAuthContext } from "./context/AuthContext";
 import QnAList from './pages/QnAList';
 import { SuccessPage } from './components/toss/Success';
 import { FailPage } from './components/toss/Fail';
+import { CheckoutPage } from './components/toss/Checkout';
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
       { path: 'admin/QnAlist', element: <AdminQnAList/> },
       { path: 'success', element: <SuccessPage/> },
       { path: 'fail', element: <FailPage/> },
+      { path: 'checkout', element: <CheckoutPage/> },
     ]
   }
 ]);
