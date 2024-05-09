@@ -38,13 +38,14 @@ public interface OrderDao {
 	@Select("select * from `order` where oid=#{oid} and isDeleted=0")
 	Order getOrderByOid(int oid);
 	
-	// 주문 생성
+	// 주문 생성(orderId 추가)
 	@Insert(" INSERT INTO `order` (email, status, name, postCode, addr, detailAddr, tel, req, "
-			+ " way, totalPrice, regDate, isDeleted) " +
+			+ " way, totalPrice, regDate, isDeleted, orderId) " +
 	        " VALUES (#{email}, default, #{name}, #{postCode}, #{addr}, #{detailAddr}, #{tel}, #{req}, "
-	        + " default, #{totalPrice}, default, default)")	
+	        + " default, #{totalPrice}, default, default, #{orderId})")	
 	@Options(useGeneratedKeys = true, keyProperty = "oid") // 생성된 키 반환
 	void insertOrder(Order order);
+	//
 	
 	// 주문 삭제
 	@Update("update `order` set isDeleted = 1 where oid = #{oid}")
@@ -67,5 +68,8 @@ public interface OrderDao {
 	        " VALUES (#{oid}, #{iid}, #{ioid}, #{count}, #{price}, default)")
 	void insertOrderItemWithOid(OrderItem orderItem); // 수정된 부분
 	
-			
+	// 오더ID로 찾아서 status변경
+	@Select("update `order` set status=#{status} where orderId=#{orderId}")
+	void statusCheckUpdate(String status, String orderId);
+	//
 }

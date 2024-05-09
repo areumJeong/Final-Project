@@ -27,7 +27,7 @@ import {
   Select,
   Divider, // 추가
 } from "@mui/material";
-
+import { nanoid } from "nanoid";
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import axios from 'axios';
 import { selectUserData, updateUserData } from '../api/firebase';
@@ -49,11 +49,14 @@ const Order = () => {
   const [currentUserEmail, setCurrentUserEmail] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
 
-
-
-
   const navigate = useNavigate();
   const auth = getAuth();
+
+  const [orderId, setOrderId] = useState(null);
+  
+  useEffect(() => {
+    setOrderId(nanoid())
+  }, [])
 
   // ======== 로그인한 유저정보 불러오기 ==========
   useEffect(() => {
@@ -154,7 +157,8 @@ const Order = () => {
             detailAddr: detailAddr,
             tel: tel,
             req: req,
-            totalPrice: totalPrice // 총 결제 금액 추가
+            totalPrice: totalPrice, // 총 결제 금액 추가
+            orderId: orderId,
         };
     
         const orderItemData = orderItems.map(orderItem => ({
@@ -174,10 +178,6 @@ const Order = () => {
         };
 
         navigate('/checkout', { state: { orderData: data } });
-
-        // 서버로 데이터 전송
-        const response = await axios.post('/ft/order/insert', data);
-        console.log(response);
 
         // 모든 주문이 성공적으로 생성되었을 때 메시지 출력
         alert('주문이 성공적으로 생성되었습니다.');

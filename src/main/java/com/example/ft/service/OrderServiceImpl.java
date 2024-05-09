@@ -55,4 +55,12 @@ public class OrderServiceImpl implements OrderService {
 	public void insertOrderItemWithOid(OrderItem orderItem) {
 	    orderDao.insertOrderItemWithOid(orderItem); // 수정 필요
 	}
+
+	//
+	@Override
+	public void statusCheckUpdate(String orderId) {
+		String status = "주문확인";
+		orderDao.statusCheckUpdate(status, orderId);
+	}
+	//
 }

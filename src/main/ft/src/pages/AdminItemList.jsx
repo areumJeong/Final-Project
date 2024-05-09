@@ -158,6 +158,7 @@ export default function AdminItemList() {
                       <span 
                         key={tagIndex}
                         style={{ 
+                          cursor: 'pointer',
                           display: "inline-block",
                           borderRadius: "999px",
                           padding: "2px 8px",

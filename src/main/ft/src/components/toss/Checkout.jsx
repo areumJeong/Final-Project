@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
-import { nanoid } from "nanoid";
 import { Button, Card, CardContent } from "@mui/material";
+import axios from "axios";
 
 const widgetClientKey = process.env.REACT_APP_WIDGET_CLIENT_KEY;
 const customerKey = process.env.REACT_APP_CUSTOMER_KEY;
@@ -13,12 +13,7 @@ export function CheckoutPage() {
   const [price, setPrice] = useState(0); 
   const location = useLocation();
   const { orderData } = location.state || {};
-  const [orderId, setOrderId] = useState(null);
-  
-  useEffect(() => {
-    setOrderId(nanoid())
-  }, [])
-  console.log(orderId);
+ console.log(orderData.order.orderId);
   useEffect(() => {
     const fetchPaymentWidget = async () => {
       try {
@@ -67,9 +62,11 @@ export function CheckoutPage() {
   
   const handlePaymentRequest = async () => {
     try {
+      const response = await axios.post('/ft/order/insert', orderData);
+      console.log(response);
       // 주문 정보를 이용하여 결제 요청을 보냄
       await paymentWidget?.requestPayment({
-        orderId: orderId,
+        orderId: orderData.order.orderId,
         orderName: `${orderData.orderItems.length > 1 ? '외 ' + (orderData.orderItems.length - 1) + ', ' : ''}${orderData.orderItems[0].name}`, // 주문명을 설정
         customerName: orderData.order.name || "", // 주문자 이름 설정
         customerEmail: orderData.order.email || "", // 주문자 이메일 설정

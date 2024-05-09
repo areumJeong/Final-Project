@@ -33,5 +33,8 @@ public interface OrderService {
 	 * OrderData
 	 */
 	
+	// status 변경하기
+	void statusCheckUpdate(String orderId);
+	//
 //	void insertOrderData(OrderData orderData);
 }

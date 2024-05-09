@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ft.service.BoardService;
 import com.example.ft.service.ItemService;
+import com.example.ft.service.OrderService;
 import com.example.ft.service.ReviewService;
 
 import java.io.*;
@@ -33,7 +34,8 @@ import java.util.Base64;
 @RestController
 @RequiredArgsConstructor
 public class WidgetController {
-
+	private final OrderService orderService;
+	
 	@Value("${widget.secretKey}")
 	private String widgetSecretKey;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -86,9 +88,7 @@ public class WidgetController {
         JSONObject jsonObject = (JSONObject) parser.parse(reader);
         responseStream.close();
 
-        /*
-         * 주문 인서트 구간
-         */
+        orderService.statusCheckUpdate(orderId);
         
         return ResponseEntity.status(code).body(jsonObject);
     }
