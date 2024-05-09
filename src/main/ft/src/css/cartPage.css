@@ -14,12 +14,9 @@
     /* 버튼 아래 여백을 추가하여 줄바꿈이 일어나도록 합니다. */
 }
 
-.td {
-    text-overflow: hidden;
-}
 /* 
-.boxContainer {
-    display: flex;
-    justify-content: space-between;
-    
+.table td {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
 } */

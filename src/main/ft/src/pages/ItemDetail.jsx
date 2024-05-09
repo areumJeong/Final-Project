@@ -52,7 +52,7 @@ export default function ItemDetail() {
       try {
         const userEmail = currentUserEmail || 'em'; // 로그인한 사용자의 이메일이 없으면 'em'을 사용
         const response = await axios.get(`/ft/item/detail/${iid}/${userEmail}`);
-        const { item, options, value } = response.data;
+        const { item, options, tags, value } = response.data;
         const formattedItem = {
           iid: item.iid,
           name: item.name,
@@ -66,6 +66,12 @@ export default function ItemDetail() {
           totalSta: item.totalSta,
         };
         setItem(formattedItem);
+
+        const formattedTags = tags ? tags.map(tag => ({
+          itid: tag.itid,
+          tag: tag.tag,
+        })) : [];
+        setTags(formattedTags);
 
         const formattedOptions = options ? options.map(option => ({
           ioid: option.ioid,
@@ -489,6 +495,41 @@ export default function ItemDetail() {
   
     fetchItemWishCount();
   }, [iid]);
+
+  // =================== order item 관련 ======================
+
+  const handleOrder = () => {
+    if (!userInfo || !userInfo.email) {
+      // 사용자가 로그인되어 있지 않은 경우, 로그인 페이지로 리다이렉트
+      window.location.href = '/signIn'; // 로그인 페이지 URL을 실제로 사용하는 주소로 변경해주세요
+      return;
+    }
+  
+    // Ensure that selectedOptions has at least one option selected
+    if (selectedOptions.length === 0) {
+      alert("옵션을 선택해주세요");
+      return;
+    }
+  
+    const orderItems = selectedOptions.map(option => ({
+      iid: item.iid, // db
+      ioid: option.ioid, // db
+      option: option.option, // db
+      name:item.name, // db
+      img:item.img1, // db
+      count: option.count, // db
+      price: item.salePrice && new Date(item.saleDate) > new Date() ? item.salePrice : item.price
+    }));
+  
+    // orderItems를 로컬 스토리지에 저장
+    localStorage.setItem('orderItems', JSON.stringify(orderItems)); //  객체나 배열을 JSON 문자열로 변환
+    console.log(orderItems);
+    // Order 페이지로 이동할 때 orderItems 상태를 함께 전달
+    navigate("/order", { state: { orderItems } });
+  };    
+  
+    // =================== order item 관련 끝======================
+
   return (
     <Grid container spacing={2} className="itemDetail">
       {/* 왼쪽 여백 */}
@@ -616,7 +657,8 @@ export default function ItemDetail() {
               총 가격: {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
             </Typography>
             {/* 주문 및 장바구니 버튼 */}
-            <Button variant="contained" color="primary" style={{ marginBottom: '10px' }}>주문하기</Button>
+            <Button variant="contained" color="primary" style={{ marginBottom: '10px' }} 
+            onClick={handleOrder}>주문하기</Button> 
             <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5 }} onClick={handleAddToCart}>장바구니</Button>
             <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5, backgroundColor: '#808080' }}>비회원 주문하기</Button>
             <br/>
@@ -645,7 +687,7 @@ export default function ItemDetail() {
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12} style={{ padding: 50, textAlign: 'center' }}>
               <img src={item.img2} alt={item.img2} style={{ width: '90%' }} />
-              <img src={item.img2} alt={item.img2} style={{ width: '90%' }} />
+              <img src={item.img3} alt={item.img3} style={{ width: '90%' }} />
             </Grid>
           </Grid>
         </section>

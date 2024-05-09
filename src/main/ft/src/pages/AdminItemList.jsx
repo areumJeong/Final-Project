@@ -113,14 +113,15 @@ export default function AdminItemList() {
         onClick={() => navigate(`/admin/item/insert`)}
         variant="contained"
         color="primary"
+        style={{marginLeft:10}}
         startIcon={<AddCircleIcon />}
       >
         아이템 추가
       </Button>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} style={{marginBottom:10}}>
         {list.map((item, index) => (
-          <Grid item xs={6} sm={6} md={6} lg={6} key={index}>
-            <Paper style={{ padding: 20 }}>
+          <Grid item xs={12} sm={12} md={12} lg={6} key={index}>
+            <Paper style={{ padding: 20, height:250 }}>
               <table style={{ width: '100%' }}>
                 <tbody>
                   <tr>
@@ -131,6 +132,7 @@ export default function AdminItemList() {
                       <Typography variant="h6" style={{ display: 'inline-block', lineHeight: '1.2', maxHeight: '2.4em', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {item.name || '\u00A0'}
                       </Typography>
+                      <Typography variant="body2">종류: {item.category || '\u00A0'}</Typography>
                       <Typography variant="body2">제조사: {item.company || '\u00A0'}</Typography>
                       <Typography variant="body2">원가: {item.cost ? item.cost.toLocaleString() + '원' : '\u00A0'}</Typography>
                       <Typography variant="body2">정가: {item.price ? item.price.toLocaleString() + '원' : '\u00A0'}</Typography>
@@ -150,7 +152,7 @@ export default function AdminItemList() {
                     <td style={{ verticalAlign: 'top' }}>
                       <Typography variant="h6">재고</Typography>
                       {stock[index]?.map((opt, idx) => (
-                        <Typography key={idx} variant="body2">{opt.option}: {(opt.stock === 0) ? '품절' : opt.stock+'개'}</Typography>
+                        <Typography key={idx} variant="body2" style={{ color: (opt.stock === 0) ? 'red' : 'inherit' }}>{opt.option}: {(opt.stock === 0) ? '품절' : opt.stock+'개'}</Typography>
                       ))}
                      {tags[index]?.map((tag, tagIndex) => (
                       <span 
@@ -174,10 +176,10 @@ export default function AdminItemList() {
                     </td>
                   </tr>
                   <tr>
-                    <td>
+                    <td colSpan={2}>
                       <Button variant="contained" color="primary" size="small" style={{ marginRight: 10 }} onClick={() => { navigate(`/admin/item/update/${item.iid}`) }}>수정</Button>
                       <Button variant="contained" color="primary" size="small" style={{ marginRight: 10 }} onClick={() => openModal(item.iid, item.price, item.cost)}>  세일</Button>
-                      <Button variant="contained" color="secondary" size="small" onClick={() => deleteItem(item.iid)}>삭제</Button>
+                      <Button variant="contained" color="error" size="small" onClick={() => deleteItem(item.iid)}>삭제</Button>
                     </td>
                   </tr>
                 </tbody>

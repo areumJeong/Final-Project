@@ -18,6 +18,8 @@ import {
   Checkbox,
   Input,
   CardMedia,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
 import '../css/cartPage.css';
@@ -31,6 +33,8 @@ const CartPage = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const auth = getAuth();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   // 유저정보
   useEffect(() => {
@@ -89,6 +93,7 @@ const CartPage = () => {
       setSelectedItems((prevItems) => [...prevItems, selectedItem]);
     }
   };
+
   // 전체 선택 버튼
   const handleToggleAllItems = () => {
     if (selectedItems.length === cartItems.length) {
@@ -195,12 +200,14 @@ const CartPage = () => {
 
     return cartItems.map((item) => (
       <TableRow key={`${item.iid}-${item.option}`}>
-        <TableCell>
-          <Checkbox
-            checked={selectedItems.some((selectedItem) => selectedItem.cid === item.cid)}
-            onChange={() => handleToggleItem(item.iid, item.option)}
-          />
-        </TableCell>
+        {!isSmallScreen &&
+          <TableCell>
+            <Checkbox
+              checked={selectedItems.some((selectedItem) => selectedItem.cid === item.cid)}
+              onChange={() => handleToggleItem(item.iid, item.option)}
+            />
+          </TableCell>
+        }
         <TableCell>
           <CardMedia
             component="img"
@@ -213,7 +220,9 @@ const CartPage = () => {
         </TableCell>
         <TableCell>{item.name}</TableCell>
         <TableCell>{item.price}원</TableCell>
-        <TableCell>{item.option}</TableCell>
+        {!isSmallScreen &&
+          <TableCell>{item.option}</TableCell>
+        }
         <TableCell>
           <Input
             type="number"
@@ -225,7 +234,7 @@ const CartPage = () => {
         <TableCell>{item.totalPrice}원</TableCell>
         <TableCell>
           <Button onClick={() => handleDeleteItem(item.cid)} variant="contained" color="error">
-            삭제
+            X
           </Button>
         </TableCell>
       </TableRow>
@@ -233,10 +242,10 @@ const CartPage = () => {
   };
 
   return (
-    <Container 
-    maxWidth="lg"
-    sx={{ mt : 5}}
-    > {/* 컨테이너 너비 조정 */}
+    <Container
+      maxWidth="lg"
+      sx={{ mt: 5 }}
+    >
       <Typography variant="h4" gutterBottom>
         장바구니
       </Typography>
@@ -245,19 +254,21 @@ const CartPage = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
-                  <Checkbox
-                    variant="contained"
-                    color="primary"
-                    onClick={handleToggleAllItems}
-                  >
-                    {selectedItems.length === cartItems.length ? '전체 선택 해제' : '전체 선택'}
-                  </Checkbox>
-                </TableCell>
+                {!isSmallScreen &&
+                  <TableCell sx={{ width: isSmallScreen ? '10%' : '5%' }}>
+                    <Checkbox
+                      variant="contained"
+                      color="primary"
+                      onClick={handleToggleAllItems}
+                    >
+                      {selectedItems.length === cartItems.length ? '전체 선택 해제' : '전체 선택'}
+                    </Checkbox>
+                  </TableCell>
+                }
                 <TableCell>이미지</TableCell>
                 <TableCell>상품명</TableCell>
                 <TableCell>가격</TableCell>
-                <TableCell>옵션</TableCell>
+                {!isSmallScreen && <TableCell>옵션</TableCell>}
                 <TableCell>수량</TableCell>
                 <TableCell>합계</TableCell>
                 <TableCell>삭제</TableCell>
@@ -267,7 +278,7 @@ const CartPage = () => {
             <Box className="boxContainer">
               <Typography
                 variant="subtitle1"
-                sx={{ mt: 1 }}
+                sx={{ mt: 1, whiteSpace: 'nowrap' }}
               >
                 총 상품 가격: {totalCount.toFixed(0)}원
               </Typography>
@@ -276,7 +287,7 @@ const CartPage = () => {
                 color="error"
                 onClick={handleDeleteAllItems}
                 disabled={selectedItems.length === 0}
-                sx={{ marginBottom: 2, mr: 'auto' }}
+                sx={{ marginBottom: 2, mr: 'auto', whiteSpace: 'nowrap' }}
               >
                 전체 삭제
               </Button>

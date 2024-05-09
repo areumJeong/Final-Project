@@ -1,18 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
-import { loadPaymentWidget, ANONYMOUS } from "@tosspayments/payment-widget-sdk";
+import { useLocation, useNavigate } from "react-router-dom";
+import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 import { nanoid } from "nanoid";
+import { Button, Card, CardContent } from "@mui/material";
 
-// 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요.
-// 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
 const widgetClientKey = process.env.REACT_APP_WIDGET_CLIENT_KEY;
 const customerKey = process.env.REACT_APP_CUSTOMER_KEY;
-// const paymentWidget = PaymentWidget(widgetClientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
 
 export function CheckoutPage() {
   const [paymentWidget, setPaymentWidget] = useState(null);
   const paymentMethodsWidgetRef = useRef(null);
-  const [price, setPrice] = useState(50_000);
-
+  const [price, setPrice] = useState(0); 
+  const location = useLocation();
+  const { orderData } = location.state || {};
+  const [orderId, setOrderId] = useState(null);
+  
+  useEffect(() => {
+    setOrderId(nanoid())
+  }, [])
+  console.log(orderId);
   useEffect(() => {
     const fetchPaymentWidget = async () => {
       try {
@@ -27,13 +33,17 @@ export function CheckoutPage() {
   }, []);
 
   useEffect(() => {
-    if (paymentWidget == null) {
+    if (paymentWidget == null || !orderData) {
       return;
     }
 
+    // 주문 총 금액을 계산하여 설정
+    const totalPrice = orderData.order.totalPrice || 0;
+    setPrice(totalPrice);
+
     const paymentMethodsWidget = paymentWidget.renderPaymentMethods(
       "#payment-widget",
-      { value: price },
+      { value: totalPrice },
       { variantKey: "DEFAULT" }
     );
 
@@ -43,7 +53,7 @@ export function CheckoutPage() {
     );
 
     paymentMethodsWidgetRef.current = paymentMethodsWidget;
-  }, [paymentWidget, price]);
+  }, [paymentWidget, orderData]);
 
   useEffect(() => {
     const paymentMethodsWidget = paymentMethodsWidgetRef.current;
@@ -54,30 +64,40 @@ export function CheckoutPage() {
 
     paymentMethodsWidget.updateAmount(price);
   }, [price]);
-
+  
   const handlePaymentRequest = async () => {
-    // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
-    // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
     try {
+      // 주문 정보를 이용하여 결제 요청을 보냄
       await paymentWidget?.requestPayment({
-        orderId: nanoid(),
-        orderName: "토스 티셔츠 외 2건",
-        customerName: "김토스",
-        customerEmail: "customer123@gmail.com",
-        customerMobilePhone: "01012341234",
+        orderId: orderId,
+        orderName: `${orderData.orderItems.length > 1 ? '외 ' + (orderData.orderItems.length - 1) + ', ' : ''}${orderData.orderItems[0].name}`, // 주문명을 설정
+        customerName: orderData.order.name || "", // 주문자 이름 설정
+        customerEmail: orderData.order.email || "", // 주문자 이메일 설정
+        customerMobilePhone: orderData.order.tel ? orderData.order.tel.replace(/-/g, '') : "",// 주문자 전화번호 설정
         successUrl: `${window.location.origin}/success`,
         failUrl: `${window.location.origin}/fail`,
       });
+      
+      
+      // 결제 성공 후 /success 페이지로 이동, orderData도 함께 전달
     } catch (error) {
       console.error("Error requesting payment:", error);
     }
   };
 
   return (
-    <div>
-      <div id="payment-widget" />
-      <div id="agreement" />
-      <button onClick={handlePaymentRequest}>결제하기</button>
+    <div style={{ padding: 50, textAlign: 'center' }}>
+      <Card>
+        <CardContent>
+          <div id="payment-widget" />
+          <div id="agreement" />
+          <div style={{ marginTop: 20 }}>
+            <Button variant="contained" style={{ backgroundColor: 'grey' }} onClick={handlePaymentRequest}>
+              결제하기
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

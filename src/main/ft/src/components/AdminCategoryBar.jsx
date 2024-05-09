@@ -16,7 +16,6 @@ export default function AdminCategoryBar() {
     backgroundColor: '#ffffff',
     color: 'black',
     border: 'none',
-    padding: '0', 
     cursor: 'pointer',
     fontSize: '16px',
     fontWeight: 'bold',
@@ -24,16 +23,19 @@ export default function AdminCategoryBar() {
     height: '63px',
     boxShadow: 'none', 
     borderRadius : 0,
-    margin: 0,
+    margin:'0',
+    padding: '0',
   };
 
   return (
     <Toolbar
       style={{
         backgroundColor: 'white',
-        padding: '0', // 수정된 부분
+        padding: '0', 
+        margin: '0',
         borderBottom: '2px solid red',
         justifyContent: 'center',
+        height: 60 ,
       }}
     >
       <Button
@@ -56,7 +58,7 @@ export default function AdminCategoryBar() {
           color: activeTab === '/admin/QnAlist' ? '#ffffff' : 'black',
         }}
       >
-        문의
+        문의 내역
       </Button>
       <Button
         onClick={() => handleItemClick('/admin/order/list')}
@@ -67,7 +69,7 @@ export default function AdminCategoryBar() {
           color: activeTab === '/admin/order/list' ? '#ffffff' : 'black',
         }}
       >
-        주문
+        주문 내역
       </Button>
       <Button
         onClick={() => handleItemClick('/admin/sales')}
@@ -78,7 +80,7 @@ export default function AdminCategoryBar() {
           color: activeTab === '/admin/sales' ? '#ffffff' : 'black',
         }}
       >
-        판매율
+        통계
       </Button>
     </Toolbar>
   );
