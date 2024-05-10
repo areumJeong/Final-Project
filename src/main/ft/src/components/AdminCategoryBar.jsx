@@ -47,7 +47,7 @@ export default function AdminCategoryBar() {
           color: activeTab === '/admin/itemlist' ? '#ffffff' : 'black',
         }}
       >
-        아이템 정보
+        상품 관리
       </Button>
       <Button
         onClick={() => handleItemClick('/admin/QnAlist')}

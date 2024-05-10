@@ -38,6 +38,7 @@ public class CartItemResponseDto {
                 this.totalPrice = this.price * this.count;
             } else {
                 this.totalPrice = this.salePrice * this.count;
+                this.price = this.salePrice;
             }
         }
     }

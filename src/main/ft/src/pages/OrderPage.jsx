@@ -471,17 +471,10 @@ const Order = () => {
               )}
             </Grid>
 
-            <Divider
-              sx={{ mt: 2, mb: 2 }}
-            />
-            <Button
-              variant='contained'
-              fullWidth
-            // onClick={redirectItem}
-            >
-              쇼핑 계속하기
-            </Button>
-          </Grid>
+              <Divider
+                sx={{ mt: 2, mb: 2 }}
+              />
+            </Grid>
 
           <Grid item xs={12} sm={4}>
             <Typography variant="h4" sx={{ marginBottom: 2 }}>

@@ -20,7 +20,9 @@ export default function AdminItemList() {
   const [selectedItemId, setSelectedItemId] = useState(null); 
   const [selectedPrice, setSelectedPrice] = useState(null); 
   const [selectedCost, setSelectedCost] = useState(null); 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedSalePrice, setSelectedSalePrice] = useState(null); 
+  const [selectedSaleDate, setSelectedSaleDate] = useState(null); 
+
 
   useEffect(() => {
     axios.get('/ft/item/list')
@@ -69,11 +71,13 @@ export default function AdminItemList() {
   }, [list]);
 
   // 모달 열기 함수
-  const openModal = (iid, price, cost) => {
+  const openModal = (iid, price, cost, salePrice, saleDate) => {
     setModalOpen(true);
     setSelectedItemId(iid); // 선택된 항목의 iid 설정
     setSelectedPrice(price)
     setSelectedCost(cost)
+    setSelectedSalePrice(salePrice)
+    setSelectedSaleDate(saleDate)
   };
 
   // 모달 닫기 함수
@@ -116,7 +120,7 @@ export default function AdminItemList() {
         style={{marginLeft:10}}
         startIcon={<AddCircleIcon />}
       >
-        아이템 추가
+        상품 추가
       </Button>
       <Grid container spacing={2} style={{marginBottom:10}}>
         {list.map((item, index) => (
@@ -179,7 +183,7 @@ export default function AdminItemList() {
                   <tr>
                     <td colSpan={2}>
                       <Button variant="contained" color="primary" size="small" style={{ marginRight: 10 }} onClick={() => { navigate(`/admin/item/update/${item.iid}`) }}>수정</Button>
-                      <Button variant="contained" color="primary" size="small" style={{ marginRight: 10 }} onClick={() => openModal(item.iid, item.price, item.cost)}>  세일</Button>
+                      <Button variant="contained" color="primary" size="small" style={{ marginRight: 10 }} onClick={() => openModal(item.iid, item.price, item.cost, item.salePrice, item.saleDate)}>  세일</Button>
                       <Button variant="contained" color="error" size="small" onClick={() => deleteItem(item.iid)}>삭제</Button>
                     </td>
                   </tr>
@@ -190,7 +194,7 @@ export default function AdminItemList() {
         ))}
       </Grid>
       {/* 모달 */}
-      <SaleModal open={modalOpen} onClose={closeModal} iid={selectedItemId} price={selectedPrice} cost={selectedCost} /> 
+      <SaleModal open={modalOpen} onClose={closeModal} iid={selectedItemId} price={selectedPrice} cost={selectedCost} ordSaleDate={selectedSaleDate} ordSalePrice={selectedSalePrice} /> 
     </>
   )
 }

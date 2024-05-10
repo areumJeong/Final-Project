@@ -44,7 +44,7 @@ export default function ItemList() {
 
   return (
     <>
-      <Grid container spacing={2} className="itemList" style={{marginTop:10}}>
+      <Grid container spacing={2} className="itemList">
         {filteredItems.map((item, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index} marginBottom={5}>
             <Paper className="paper-item" onClick={() => { navigate(`/item/detail/${item.iid}`) }} sx={{ maxWidth: 300, paddingBottom: 0 }}>

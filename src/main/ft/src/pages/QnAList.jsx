@@ -211,6 +211,7 @@ export default function QnAList() {
       const responseReplies = await axios.get(`/ft/reply/list/${post.bid}`);
       const updatedRepliesData = responseReplies.data; // 수정된 답변이 속한 게시물의 답변 목록
       setReplies(updatedRepliesData);
+      setExpandedPost(null);
     } catch (error) {
       console.error('답변을 작성하는 중 에러:', error);
     }
@@ -399,7 +400,7 @@ export default function QnAList() {
                     </Typography>
                   </TableCell>
                   <TableCell style={{ fontSize: '80%' }}>{post.title}</TableCell>
-                  <TableCell style={{ fontSize: '80%' }}>{`${post.email.split('@')[0].substring(0, 4)}${'*'.repeat(post.email.split('@')[0].length - 4)}`}</TableCell>
+                  <TableCell style={{ fontSize: '80%' }}>{`${post.email.split('@')[0]}`}</TableCell>
                   <TableCell style={{ fontSize: '80%' }}>{new Date(post.regDate).toLocaleDateString().slice(0, -1)}</TableCell>
                   {currentUserEmail === post.email ? 
                     <TableCell style={{ width: isMobile ? '10%' : '10%', fontWeight: 'bold', fontSize: '80%', textAlign: 'center' }}>

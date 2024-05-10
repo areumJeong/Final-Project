@@ -247,7 +247,7 @@ export default function NavigationBar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, marginBottom: 2, paddingTop: '103px',  }}>
+    <Box sx={{ flexGrow: 1, marginBottom: 2, paddingTop: '130px',  }}>
       <StyledAppBar position="static">
         <Toolbar>
           <div>
