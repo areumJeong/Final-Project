@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -32,6 +32,8 @@ import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 import { useAuthContext } from "../context/AuthContext";
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import { Stack } from '@mui/material';
+import { selectUserData } from '../api/firebase';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -154,6 +156,8 @@ export default function NavigationBar() {
           </ListItem>
         </>
       )}
+      </ListItem>
+      <ListItem disablePadding>
           <ListItemButton onClick={() => setDrawerOpen(false)}>
             <ListItemIcon>
               <WhatshotIcon />
@@ -246,6 +250,43 @@ export default function NavigationBar() {
     navigate('/cart');
   };
 
+  const wishList = () => {
+    if (!userInfo || !userInfo.email) {
+      // 사용자가 로그인되어 있지 않은 경우, 로그인 페이지로 리다이렉트
+      window.location.href = '/signIn'; 
+      return;
+    }
+    window.location.href = '/wish/list';
+  }
+
+  const [currentUserEmail, setCurrentUserEmail] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const auth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUserEmail(user.email);
+      } else {
+        setCurrentUserEmail(null);
+      }
+    });
+  }, [auth]);
+
+  useEffect(() => {
+    if (currentUserEmail) {
+      const fetchUserInfo = async () => {
+        try {
+          const info = await selectUserData(currentUserEmail);
+          setUserInfo(info);
+        } catch (error) {
+          console.error('사용자 정보를 불러오는 중 에러:', error);
+        }
+      };
+      fetchUserInfo();
+    }
+  }, [currentUserEmail]);
+
   return (
     <Box sx={{ flexGrow: 1, marginBottom: 2, paddingTop: '130px',  }}>
       <StyledAppBar position="static">
@@ -256,7 +297,7 @@ export default function NavigationBar() {
               {DrawerList}
             </Drawer>
           </div>
-          <Link to={'/wish/list'}>찜</Link>
+          <Link onClick={wishList}>찜</Link>
           <Box sx={{ flexGrow: 1 }} />
           <Typography
             variant="h6"

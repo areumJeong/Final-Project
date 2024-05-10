@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.ft.entity.ItemOption;
+import com.example.ft.entity.OrderItem;
 import com.example.ft.service.BoardService;
 import com.example.ft.service.ItemService;
 import com.example.ft.service.OrderService;
@@ -29,12 +31,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class WidgetController {
 	private final OrderService orderService;
+	private final ItemService itemService;
 	
 	@Value("${widget.secretKey}")
 	private String widgetSecretKey;
@@ -89,6 +93,11 @@ public class WidgetController {
         responseStream.close();
 
         orderService.statusCheckUpdate(orderId);
+        int oid = orderService.getOid(orderId);
+        List<OrderItem> orderItemList = orderService.getOrderItems(oid);
+        for (OrderItem item : orderItemList) {
+        	itemService.inventoryCalculation(item.getIoid(), item.getCount());
+        }
         
         return ResponseEntity.status(code).body(jsonObject);
     }

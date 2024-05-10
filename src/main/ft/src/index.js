@@ -23,6 +23,7 @@ import { SuccessPage } from './components/toss/Success';
 import { FailPage } from './components/toss/Fail';
 import { CheckoutPage } from './components/toss/Checkout';
 import Order from './pages/OrderPage';
+import OrderHistoryList from './pages/OrderHistoryList';
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
       { path: 'callback/kakaotalk', element: <Kakao/> },
       { path: 'wish/list', element: <WishItemList/> },
       { path: 'order', element: <Order/> },
+      { path: 'orderHistoryList', element: <OrderHistoryList/> },
       { path: 'admin/itemlist', element: <AdminItemLists /> },
       { path: 'admin/item/insert', element: <ItemInsertAdminRoutes /> },
       { path: 'admin/item/update/:iid', element: <ItemUpdateAdminRoutes/> },

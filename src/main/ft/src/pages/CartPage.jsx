@@ -241,6 +241,41 @@ const CartPage = () => {
     ));
   };
 
+  // =================== order 관련 ======================
+
+
+  // orderpage로 보내주는 역활
+  const handleOrder = async () => {
+
+    if (!userInfo || !userInfo.email) {
+      // 사용자가 로그인되어 있지 않은 경우, 로그인 페이지로 리다이렉트
+      window.location.href = '/signIn'; // 로그인 페이지 URL을 실제로 사용하는 주소로 변경해주세요
+      return;
+    }
+
+    // 넘어갈 데이터들
+    const orderItems = selectedItems.map((item) => ({
+      iid: item.iid, // orderItem
+      img: item.img1, // 띄우기
+      name: item.name, // order
+      ioid: item.ioid,
+      option: item.option, // 띄우기
+      count: item.count, // orderItem
+      price: item.salePrice && new Date(item.saleDate) > new Date() ? item.salePrice : item.price, // orderItem
+      totalPrice: item.totalPrice, // order
+     
+    }));
+
+   // orderItems를 로컬 스토리지에 저장
+   localStorage.setItem('orderItems', JSON.stringify(orderItems)); //  객체나 배열을 JSON 문자열로 변환
+   console.log(orderItems);
+   // Order 페이지로 이동할 때 orderItems 상태를 함께 전달
+   navigate("/order", { state: { orderItems } });
+
+  };
+
+  // =================== order 관련 끝======================
+
   return (
     <Container
       maxWidth="lg"
@@ -299,9 +334,15 @@ const CartPage = () => {
               justifyContent: 'center'
             }}
           >
-            <Button className='linkButton' variant="contained" fullWidth>
-              주문하기
-            </Button>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={handleOrder}
+                disabled={selectedItems.length === 0}
+                sx={{ marginTop: 2 }}
+              >
+                주문하기
+              </Button>
             <Button className='linkButton' variant="contained" fullWidth onClick={() => navigate('/item')}>
               쇼핑 계속하기
             </Button>

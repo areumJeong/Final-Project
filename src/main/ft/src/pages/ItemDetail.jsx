@@ -48,6 +48,10 @@ export default function ItemDetail() {
   const [itemWishCount, setItemWishCount] = useState(0);
 
   useEffect(() => {
+    window.scrollTo(0, 0); // 페이지가 로드될 때마다 맨 위로 스크롤
+  }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 실행
+
+  useEffect(() => {
     const fetchItemData = async () => {
       try {
         const userEmail = currentUserEmail || 'em'; // 로그인한 사용자의 이메일이 없으면 'em'을 사용
@@ -157,9 +161,12 @@ export default function ItemDetail() {
           if (addToCartConfirmation) {
             navigate('/cart');
           }
-        } else {
-          alert('이미 장바구니에 있습니다.')
-        }  
+        } else if(selectedOptions.length === 0) {
+          alert('옵션을 선택해주세요.')   
+        } else{
+          console.log(options);
+          alert('이미 장바구니에 있습니다.')    
+        }
       })
       .catch(error => {
         console.error('장바구니 추가 실패:', error);
@@ -501,7 +508,7 @@ export default function ItemDetail() {
   const handleOrder = () => {
     if (!userInfo || !userInfo.email) {
       // 사용자가 로그인되어 있지 않은 경우, 로그인 페이지로 리다이렉트
-      window.location.href = '/signIn'; // 로그인 페이지 URL을 실제로 사용하는 주소로 변경해주세요
+      window.location.href = '/signIn'; 
       return;
     }
   
@@ -665,7 +672,7 @@ export default function ItemDetail() {
             {/* 공유 및 찜하기 버튼 */}
             <Button variant="contained" color="primary" style={{ marginBottom: '10px' }} onClick={handleCopyLink}>공유하기</Button>
             <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5, backgroundColor: 'transparent', color: 'black', }} onClick={handleLikeClick}>
-              찜 {iswish ? <FavoriteIcon style={{ color: 'red', width: 18 }} /> : <FavoriteBorderIcon style={{width:18}}/>} {itemWishCount}
+              {iswish ? <FavoriteIcon style={{ color: 'red', width: 18 }} /> : <FavoriteBorderIcon style={{width:18}}/>} {itemWishCount}
             </Button>
           </CardContent>
         </Card>

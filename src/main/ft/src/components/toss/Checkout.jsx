@@ -62,26 +62,37 @@ export function CheckoutPage() {
   
   const handlePaymentRequest = async () => {
     try {
-      const response = await axios.post('/ft/order/insert', orderData);
-      console.log(response);
-      // 주문 정보를 이용하여 결제 요청을 보냄
-      await paymentWidget?.requestPayment({
-        orderId: orderData.order.orderId,
-        orderName: `${orderData.orderItems.length > 1 ? '외 ' + (orderData.orderItems.length - 1) + ', ' : ''}${orderData.orderItems[0].name}`, // 주문명을 설정
-        customerName: orderData.order.name || "", // 주문자 이름 설정
-        customerEmail: orderData.order.email || "", // 주문자 이메일 설정
-        customerMobilePhone: orderData.order.tel ? orderData.order.tel.replace(/-/g, '') : "",// 주문자 전화번호 설정
-        successUrl: `${window.location.origin}/success`,
-        failUrl: `${window.location.origin}/fail`,
-      });
-      
-      
-      // 결제 성공 후 /success 페이지로 이동, orderData도 함께 전달
+        // 주문 정보를 서버에 전송하고 응답을 받음
+        const response = await axios.post('/ft/order/insert', orderData);
+        console.log(response);
+        
+        // 주문 정보를 이용하여 결제 요청을 보냄
+        await paymentWidget?.requestPayment({
+            orderId: orderData.order.orderId,
+            orderName: `${orderData.orderItems.length > 1 ? '외 ' + (orderData.orderItems.length - 1) + ', ' : ''}${orderData.orderItems[0].name}`, // 주문명을 설정
+            customerName: orderData.order.name || "", // 주문자 이름 설정
+            customerEmail: orderData.order.email || "", // 주문자 이메일 설정
+            customerMobilePhone: orderData.order.tel ? orderData.order.tel.replace(/-/g, '') : "",// 주문자 전화번호 설정
+            successUrl: `${window.location.origin}/success`,
+            failUrl: `${window.location.origin}/fail`,
+        });
+        
+        // 결제 성공 후 /success 페이지로 이동, orderData도 함께 전달
     } catch (error) {
-      console.error("Error requesting payment:", error);
+        console.error("Error requesting payment:", error);
+        
+        // 에러 처리
+        if (error.message.includes("SDKBridgeError")) {
+            // Bridge 연결이 끊어졌을 때의 처리
+            console.error("Bridge 연결이 끊겼습니다.");
+            // 적절한 에러 메시지 표시 또는 사용자에게 안내
+        } else {
+            // 기타 일반적인 에러 처리
+            // 여기에는 서버로부터 받은 오류나 네트워크 문제 등에 대한 처리를 할 수 있습니다.
+        }
     }
-  };
-
+};
+  
   return (
     <div style={{ padding: 50, textAlign: 'center' }}>
       <Card>

@@ -1,12 +1,14 @@
 package com.example.ft.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.ft.entity.Order;
+import com.example.ft.entity.OrderHistory;
 import com.example.ft.entity.OrderItem;
 import com.example.ft.entity.OrderRequest;
 import com.example.ft.service.OrderService;
@@ -62,27 +64,25 @@ public class OrderController {
 
 	@PostMapping("/insert")
 	public ResponseEntity<?> insertOrder(@RequestBody OrderRequest orderRequest) {
+		Order order = orderService.oderIdCheck(orderRequest.getOrder().getOrderId());
 		try {
-			// 주문 생성
-			System.out.println(orderRequest.getOrder());
-			orderService.insertOrder(orderRequest.getOrder());
-
-			// 주문 생성 후 생성된 oid를 가져와서 주문 아이템을 삽입
-			int oid = orderRequest.getOrder().getOid();
-			System.out.println("oid:" + oid);
-
-			// 주문 아이템을 가져와서 oid를 설정합니다.
-			List<OrderItem> orderItemsData = orderRequest.getOrderItems();
-
-			System.out.println(orderItemsData.isEmpty());
-
-			for (OrderItem orderItem : orderItemsData) {
-				OrderItem newOrderItem = OrderItem.builder().oid(oid).iid(orderItem.getIid()).ioid(orderItem.getIoid())
-						.count(orderItem.getCount()).price(orderItem.getPrice()).build();
-
-				System.out.println(newOrderItem);
-				// 주문 아이템을 삽입합니다.
-				orderService.insertOrderItemWithOid(newOrderItem);
+			if (order == null) {
+				// 주문 생성
+				orderService.insertOrder(orderRequest.getOrder());
+				
+				// 주문 생성 후 생성된 oid를 가져와서 주문 아이템을 삽입
+				int oid = orderRequest.getOrder().getOid();
+				
+				// 주문 아이템을 가져와서 oid를 설정합니다.
+				List<OrderItem> orderItemsData = orderRequest.getOrderItems();
+				
+				for (OrderItem orderItem : orderItemsData) {
+					OrderItem newOrderItem = OrderItem.builder().oid(oid).iid(orderItem.getIid()).ioid(orderItem.getIoid())
+							.count(orderItem.getCount()).price(orderItem.getPrice()).build();
+					
+					// 주문 아이템을 삽입합니다.
+					orderService.insertOrderItemWithOid(newOrderItem);
+				}
 			}
 			return new ResponseEntity<>("Order created successfully", HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -104,13 +104,25 @@ public class OrderController {
 		}
 	}
 
-//	// orderData 주문 생성
-//	@PostMapping("/insertOrderData") // HTTP POST 요청을 처리합니다. 클라이언트가 POST 요청을 보내면 이 메서드가 호출
-//	@ResponseBody // 응답을 HTTP 응답 본문으로 직접 반환
-//	public String insertOrderData(@RequestBody OrderData orderdata) { 
-//		System.out.println(orderdata);
-//		orderService.insertOrderData(orderdata); // 받은 주문 정보를 서비스 계층의 insertOrder 메서드에 전달하여 데이터베이스에 주문을 저장
-//		return "주문이 성공적으로 처리되었습니다.";
-//	}
+	// 특정 사용자의 주문 목록 가져오기
+	@PostMapping("/historyList")
+	public ResponseEntity<?> getOrderListByEmail(@RequestBody Map<String, String> data) { // 이메일 json으로 받음. 그래서 map
+		String email = data.get("email"); // 이메일 가져오기
+		
+		System.out.println(email);
+		if (email == null || email.isEmpty()) {
+			return ResponseEntity.badRequest().body("이메일을 제공해주세요.");
+		}
 
+		// 사용자 이메일을 이용하여 주문 목록을 조회합니다.
+		List<OrderHistory> orderList = orderService.getOrderHistoryList(email);
+
+		System.out.println(orderList);
+
+		if (orderList.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		return ResponseEntity.ok(orderList);
+	}
 }
