@@ -11,7 +11,6 @@ import ApiTest from "./pages/apitest";
 export default function App() {
   return (
     <AuthContextProvider>
-
         <NavigationBar/>
         {/* <ApiTest/> */}
         <Outlet />
