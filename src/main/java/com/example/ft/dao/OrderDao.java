@@ -64,8 +64,8 @@ public interface OrderDao {
 	List<OrderItem> getOrderItemListByOiid(int Oiid);
 	
 	// 주문 내역들 email로 가져오기 - 사용 중
-		@Select(" SELECT o.oid, o.status, o.totalPrice, o.regDate, "
-				+ " oi.count, oi.price, i.name, i.img1, i.iid, itemOption.option " +
+		@Select(" SELECT o.oid, o.status, o.totalPrice, o.regDate, o.way, "
+				+ " oi.count, oi.price, i.name, i.img1, i.iid, itemOption.option  " +
 				" FROM `order` o " +
 				" JOIN orderItem oi ON o.oid = oi.oid " +
 				" JOIN item i ON oi.iid = i.iid " +
@@ -95,5 +95,8 @@ public interface OrderDao {
 	// oid로 oderItem 추출
 	@Select("select * from orderItem where oid=#{oid}")
 	List<OrderItem> getOrderItems(int oid);
+	
+	@Update("update `order` set status=#{status} where oid=#{oid}")
+	void statusUpdate(Order order);
 	//
 }

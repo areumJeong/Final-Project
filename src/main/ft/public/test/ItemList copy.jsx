@@ -1,3 +1,4 @@
+// 일부부만 리액트쿼리로 재동기화 시키는 코드
 import React from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import Grid from '@mui/material/Grid';
@@ -20,13 +21,13 @@ export default function ItemList() {
   );
 }
 
-function ItemListContent({}) {
+function ItemListContent() {
   const navigate = useNavigate();
   const { searchQuery } = useParams();
 
   const { isLoading, data: list, refetch } = useQuery('items', Items, {
-    refetchInterval: 1000, // 5초마다 새로고침
-  });
+    refetchInterval: 5000, // 5초마다 새로고침
+  });  
 
   const lowercaseSearchQuery = searchQuery ? searchQuery.toLowerCase() : ''; 
   const filteredItems = list ? list.filter(item => {

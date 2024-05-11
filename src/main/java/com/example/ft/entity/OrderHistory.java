@@ -25,6 +25,7 @@ public class OrderHistory {
 	private String name;   
 	private String img1;
 	private String option;
-	private LocalDateTime regDate;	
+	private LocalDateTime regDate;
+	private String way;
 	
 }

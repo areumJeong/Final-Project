@@ -108,8 +108,7 @@ public class OrderController {
 	@PostMapping("/historyList")
 	public ResponseEntity<?> getOrderListByEmail(@RequestBody Map<String, String> data) { // 이메일 json으로 받음. 그래서 map
 		String email = data.get("email"); // 이메일 가져오기
-		
-		System.out.println(email);
+
 		if (email == null || email.isEmpty()) {
 			return ResponseEntity.badRequest().body("이메일을 제공해주세요.");
 		}
@@ -117,12 +116,18 @@ public class OrderController {
 		// 사용자 이메일을 이용하여 주문 목록을 조회합니다.
 		List<OrderHistory> orderList = orderService.getOrderHistoryList(email);
 
-		System.out.println(orderList);
-
 		if (orderList.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 
 		return ResponseEntity.ok(orderList);
 	}
+	//
+	@PostMapping("/statusUpdate")
+	public String statusUpdate(@RequestBody Order order) {
+		orderService.statusUpdate(order);
+		return "update";
+	}
+	
+	//
 }

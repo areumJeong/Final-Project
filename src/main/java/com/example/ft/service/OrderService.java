@@ -47,6 +47,7 @@ public interface OrderService {
 	// oid로 orderItem list
 	List<OrderItem> getOrderItems(int oid);
 	
+	void statusUpdate(Order order);
 	//
 //	void insertOrderData(OrderData orderData);
 }

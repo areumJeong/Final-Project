@@ -83,5 +83,10 @@ public class OrderServiceImpl implements OrderService {
 	public List<OrderItem> getOrderItems(int oid) {
 		return orderDao.getOrderItems(oid);
 	}
+
+	@Override
+	public void statusUpdate(Order order) {
+		orderDao.statusUpdate(order);
+	}
 	//
 }

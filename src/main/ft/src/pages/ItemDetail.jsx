@@ -164,7 +164,6 @@ export default function ItemDetail() {
         } else if(selectedOptions.length === 0) {
           alert('옵션을 선택해주세요.')   
         } else{
-          console.log(options);
           alert('이미 장바구니에 있습니다.')    
         }
       })
