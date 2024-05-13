@@ -26,13 +26,13 @@ const TrackerComponent = ({ order }) => {
         const processDeliveryData = (data) => {
             if (data.message) {
                 setDeliveryInfo({
-                    description: '?',
-                    deliveryWorker: '?',
-                    time: '?',
-                    location: '?',
-                    status: '?',
+                    description: '실패했을때 메시지',
+                    deliveryWorker: '실패했을때 메시지',
+                    time: '실패했을때 메시지',
+                    location: '실패했을때 메시지',
+                    status: '실패했을때 메시지',
                     carrierId: order.way,
-                    company: '', // Assuming deliComName is obtained elsewhere
+                    company: '실패했을때 메시지', // Assuming deliComName is obtained elsewhere
                     allProgress: []
                 });
             } else {

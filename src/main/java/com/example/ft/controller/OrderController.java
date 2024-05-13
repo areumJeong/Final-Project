@@ -125,7 +125,11 @@ public class OrderController {
 	//
 	@PostMapping("/statusUpdate")
 	public String statusUpdate(@RequestBody Order order) {
-		orderService.statusUpdate(order);
+		String status = (order.getStatus().equals("배송완료")? "배송완료" : "배송중" );
+		Order orderData = Order.builder()
+								.status(status).oid(order.getOid())
+								.build();
+		orderService.statusUpdate(orderData);
 		return "update";
 	}
 	

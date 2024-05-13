@@ -3,24 +3,8 @@ import { selectUserData } from '../api/firebase';
 import axios from 'axios';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Card,
-  Container,
-  Grid,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Checkbox,
-  Input,
-  CardMedia,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Card, Container, Grid, Typography, Table, TableBody, TableCell, TableHead, TableRow,
+        Checkbox, Input, CardMedia, useMediaQuery, useTheme, } from '@mui/material';
 
 import '../css/cartPage.css';
 

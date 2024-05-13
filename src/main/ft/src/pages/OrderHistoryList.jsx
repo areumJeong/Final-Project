@@ -103,10 +103,8 @@ const OrderHistoryList = () => {
     return acc;
   }, {});
 
-  const DeliveryTracker = (t_invoice) => {
-      const url = 'http://info.sweettracker.co.kr/tracking/5';
-      
-      const t_code = '04';
+  const DeliveryTracker = (t_invoice) => {      
+      const carrier_id = 'kr.cjlogistics';
       
       // 창 크기와 위치를 설정합니다.
       const width = 400;
@@ -114,9 +112,9 @@ const OrderHistoryList = () => {
       const left = (window.innerWidth - width) / 2;
       const top = (window.innerHeight - height) / 2;
       const specs = `width=${width}, height=${height}, left=${left}, top=${top}`;
-      console.log(t_key);
+
       // 새 창을 엽니다.
-      window.open(`${url}?t_key=${t_key}&t_code=${t_code}&t_invoice=${t_invoice}`, '_blank', specs);
+      window.open(`https://tracker.delivery/#/${carrier_id}/${t_invoice}`, "_blank", specs);
   };
 
   return (
@@ -143,7 +141,7 @@ const OrderHistoryList = () => {
                   <TableCell>상품 이미지</TableCell>
                   <TableCell>상품명</TableCell>
                   <TableCell>개수</TableCell>
-                  <TableCell>총 가격</TableCell>
+                  <TableCell>가격</TableCell>
                   <TableCell>주문 날짜</TableCell>
                   <TableCell>배송조회</TableCell>
                   <TableCell>주문취소/반품</TableCell>
