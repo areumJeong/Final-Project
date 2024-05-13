@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { CardMedia, CardContent, Stack, Card } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import CountDown from "../components/CountDown";
-import { Items, getItemDetail } from "../components/Items";
+import { Items, getItemDetail } from "../components/Item/Items";
 import Rating from "../components/Rating";
 import '../css/itemList.css'; 
 
@@ -25,7 +25,7 @@ function ItemListContent() {
   const { searchQuery } = useParams();
 
   const { isLoading, data: list, refetch } = useQuery('items', Items, {
-    refetchInterval: 5000, // 5초마다 새로고침
+    refetchInterval: 60 * 60 * 5,
   });  
 
   // 검색기능
@@ -45,7 +45,7 @@ function ItemListContent() {
           <div>Loading...</div>
         ) : (
           filteredItems.map((item, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={index} marginBottom={5}>
+            <Grid item xs={6} sm={6} md={4} lg={3} key={index} marginBottom={5}>
               <Paper className="paper-item" onClick={() => { navigate(`/item/detail/${item.iid}`) }} sx={{ maxWidth: 300, paddingBottom: 0 }}>
                 {/* 이미지와 함께 CardMedia 및 Typography를 사용하여 SALE을 표시합니다. */}
                 <div style={{ position: 'relative' }}>

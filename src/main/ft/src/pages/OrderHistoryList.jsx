@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
-  Box,
   Container,
   Typography,
   Table,
@@ -13,16 +12,13 @@ import {
   TableContainer,
   Button,
 } from "@mui/material";
-
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { selectUserData } from '../api/firebase';
 import { useNavigate } from 'react-router-dom';
 import TrackerComponent from '../components/TrackerComponent';
-
-const t_key = process.env.REACT_APP_SWEETTRACKER_KEY;
+import { orderHistoryList } from '../api/orderApi';
 
 const OrderHistoryList = () => {
-
   // 사용자 정보 관련 상태
   const [currentUserEmail, setCurrentUserEmail] = useState(null); // 현재 사용자 이메일
   const [userInfo, setUserInfo] = useState(null); // 사용자 정보
@@ -71,9 +67,9 @@ const OrderHistoryList = () => {
       const fetchOrderHistory = async () => {
         try {
           // 현재 사용자 이메일을 서버로 전송하여 해당 사용자의 주문 내역을 요청
-          const response = await axios.post('/ft/order/historyList', { email: currentUserEmail });
+          const response = await orderHistoryList(currentUserEmail);
           // 받은 주문 내역을 상태에 설정
-          setOrders(response.data);
+          setOrders(response);
           console.log(response);
         } catch (error) {
           // 요청 중 에러 발생 시 에러 메시지 출력
