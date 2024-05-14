@@ -62,6 +62,13 @@ public class OrderServiceImpl implements OrderService {
 		return orderDao.getOrderHistoryList(email);
 	}
 	
+	// 주문 했던 것 다 띄우기 - admin용 
+	@Override
+	public List<OrderHistory> getOrderHistoryListForAdmin() {
+		
+		return orderDao.getOrderHistoryListForAdmin();
+	}
+	
 	//
 	@Override
 	public void statusCheckUpdate(String orderId) {
@@ -88,5 +95,18 @@ public class OrderServiceImpl implements OrderService {
 	public void statusUpdate(Order order) {
 		orderDao.statusUpdate(order);
 	}
-	//
+
+	@Override
+	public void orderWayUpdate(int oid, String way) {
+	    // oid로 order 가져오기
+	    Order order = orderDao.getOrderByOid(oid);
+
+	    // way 업데이트
+	    order.setWay(way);
+
+	    // Save the updated order
+	    orderDao.orderWayUpdate(order);
+	}
+
+
 }

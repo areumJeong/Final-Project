@@ -55,3 +55,35 @@ export async function getItemDetail(iid) {
     return null;
   }
 }
+
+// 검색 결과를 가져오는 함수
+export const fetchSearchItems = async (query) => {
+  try {
+    const response = await fetch(`/ft/item/search/${query}`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Error fetching search results: ${error.message}`);
+  }
+};
+
+export async function NewItems() {
+  try {
+    const response = await axios.get('/ft/item/newList');
+    const itemList = response.data;
+    
+    // 각 아이템에 대해 상세 정보(옵션과 태그)를 가져와서 추가합니다.
+    const itemsWithDetail = await Promise.all(itemList.map(async (item) => {
+      const detail = await getItemDetail(item.iid);
+      return { ...item, ...detail }; // 기존 아이템 정보와 상세 정보를 합칩니다.
+    }));
+
+    return itemsWithDetail;
+  } catch (error) {
+    console.error('Error fetching product list:', error);
+    return [];
+  }
+}

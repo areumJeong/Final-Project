@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, MenuItem, Select, useMediaQuery} from '@mui/material';
+import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, MenuItem, Select, useMediaQuery, CircularProgress } from '@mui/material';
 import { selectUserData } from '../api/firebase';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { Items } from '../components/Item/Items'; // 아이템 정보 가져오기
@@ -7,7 +7,6 @@ import AdminCategoryBar from '../components/AdminCategoryBar';
 import SelectedItemInfo from '../components/QnA/SelectedItemInfo';
 import EditModal from '../components/QnA/EditModal';
 import QnAPost from '../components/QnA/QnAPost';
-
 import { fetchQnAList } from '../api/boardApi';
 import { fetchReplies, postReply, updateReply, deleteReply } from '../api/replyApi';
 
@@ -28,6 +27,7 @@ export default function QnAList() {
   const [editContent, setEditContent] = useState(''); // 수정 내용 상태 추가
   const [editReplyId, setEditReplyId] = useState(null); // 수정할 답변 ID 상태 추가
   const [editReply, setEditReply] = useState(null); // 수정할 답변 ID 상태 추가
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -57,6 +57,7 @@ export default function QnAList() {
       try {
         const data = await fetchQnAList(); // QnA 목록 가져오기
         setPosts(data); // 가져온 데이터를 posts 상태에 설정
+        setLoading(false); // Set loading to false when data is fetched
       } catch (error) {
         console.error('데이터를 불러오는 중 에러:', error);
       }
@@ -273,77 +274,85 @@ export default function QnAList() {
     <>
       <AdminCategoryBar/>
       <SelectedItemInfo selectedItem={selectedItem} />
-      <TableContainer style={{ overflow: 'hidden', paddingLeft: 10, paddingRight: 10 }}>
-        <Table style={{ width: '100%' }}>
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ width: isMobile ? '10%' : '10%' }}>
-                <Select
-                  value={selectedType}
-                  onChange={handleTypeChange}
-                  style={{ border: 'none', backgroundColor: 'transparent', boxShadow: 'none', fontWeight: 'bold', width: '100%', fontSize: '100%' }}
-                >
-                  <MenuItem value="전체">전체</MenuItem>
-                  <MenuItem value="결제">결제</MenuItem>
-                  <MenuItem value="상품">상품</MenuItem>
-                  <MenuItem value="배송">배송</MenuItem>
-                  <MenuItem value="환불">환불</MenuItem>
-                  <MenuItem value="교환">교환</MenuItem>
-                </Select>
-              </TableCell>
-              <TableCell style={{ width: isMobile ? '15%' : '15%', fontWeight: 'bold', fontSize: '80%' }}>
-                <Select
-                  value={sortBy}
-                  onChange={handleSortChange}
-                  style={{ border: 'none', backgroundColor: 'transparent', boxShadow: 'none', fontWeight: 'bold', width: '70%', fontSize: '100%' }}
-                >
-                  <MenuItem value="answered">답변순</MenuItem>
-                  <MenuItem value="unanswered">미답변순</MenuItem>
-                </Select>
-              </TableCell>
-              <TableCell style={{ width: isMobile ? '60%' : '40%', fontWeight: 'bold', textAlign: 'center', fontSize: '80%' }} align="center">제목</TableCell>
-              <TableCell style={{ width: isMobile ? '20%' : '17%', fontWeight: 'bold', fontSize: '80%' }}>작성자</TableCell>
-              <TableCell style={{ width: isMobile ? '10%' : '10%', fontWeight: 'bold', fontSize: '80%' }}>작성일</TableCell>
-              <TableCell style={{ width: isMobile ? '10%' : '13%', fontWeight: 'bold', fontSize: '80%', textAlign: 'center', }}>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {currentPosts.map((post, index) => (
-              <QnAPost
-                key={index}
-                post={post}
-                index={index}
-                expandedPost={expandedPost}
-                handlePostClick={handlePostClick}
-                replyStatus={replyStatus}
-                replies={replies}
-                handleOpenEditModal={handleOpenEditModal}
-                handleDeleteReply={handleDeleteReply}
-                handleReplyChange={handleReplyChange}
-                handleReplySubmit={handleReplySubmit}
-                replyContent={replyContent}
-                currentUserEmail={currentUserEmail}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <div className="pagination" style={{ marginTop: '10px', justifyContent: 'center', display: 'flex', paddingBottom: 10}}>
-        <Pagination
-          count={Math.ceil(posts.length / postsPerPage)}
-          page={currentPage}
-          onChange={handlePageChange}
-          disabled={posts.length === 0} // 포스트가 없을 때 페이지네이션 비활성화
-        />
-      </div>
-      <EditModal
-        open={showEditModal}
-        handleClose={handleCloseEditModal}
-        editContent={editContent}
-        handleEditChange={handleEditChange}
-        handleEditSubmit={handleEditSubmit}
-      />
+      {loading ? (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <>
+          <TableContainer style={{ overflow: 'hidden', paddingLeft: 10, paddingRight: 10 }}>
+            <Table style={{ width: '100%' }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{ width: isMobile ? '10%' : '10%' }}>
+                    <Select
+                      value={selectedType}
+                      onChange={handleTypeChange}
+                      style={{ border: 'none', backgroundColor: 'transparent', boxShadow: 'none', fontWeight: 'bold', width: '100%', fontSize: '100%' }}
+                    >
+                      <MenuItem value="전체">전체</MenuItem>
+                      <MenuItem value="결제">결제</MenuItem>
+                      <MenuItem value="상품">상품</MenuItem>
+                      <MenuItem value="배송">배송</MenuItem>
+                      <MenuItem value="환불">환불</MenuItem>
+                      <MenuItem value="교환">교환</MenuItem>
+                    </Select>
+                  </TableCell>
+                  <TableCell style={{ width: isMobile ? '15%' : '15%', fontWeight: 'bold', fontSize: '80%' }}>
+                    <Select
+                      value={sortBy}
+                      onChange={handleSortChange}
+                      style={{ border: 'none', backgroundColor: 'transparent', boxShadow: 'none', fontWeight: 'bold', width: '70%', fontSize: '100%' }}
+                    >
+                      <MenuItem value="answered">답변순</MenuItem>
+                      <MenuItem value="unanswered">미답변순</MenuItem>
+                    </Select>
+                  </TableCell>
+                  <TableCell style={{ width: isMobile ? '60%' : '40%', fontWeight: 'bold', textAlign: 'center', fontSize: '80%' }} align="center">제목</TableCell>
+                  <TableCell style={{ width: isMobile ? '20%' : '17%', fontWeight: 'bold', fontSize: '80%' }}>작성자</TableCell>
+                  <TableCell style={{ width: isMobile ? '10%' : '10%', fontWeight: 'bold', fontSize: '80%' }}>작성일</TableCell>
+                  <TableCell style={{ width: isMobile ? '10%' : '13%', fontWeight: 'bold', fontSize: '80%', textAlign: 'center', }}>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {currentPosts.map((post, index) => (
+                  <QnAPost
+                    key={index}
+                    post={post}
+                    index={index}
+                    expandedPost={expandedPost}
+                    handlePostClick={handlePostClick}
+                    replyStatus={replyStatus}
+                    replies={replies}
+                    handleOpenEditModal={handleOpenEditModal}
+                    handleDeleteReply={handleDeleteReply}
+                    handleReplyChange={handleReplyChange}
+                    handleReplySubmit={handleReplySubmit}
+                    replyContent={replyContent}
+                    currentUserEmail={currentUserEmail}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <div className="pagination" style={{ marginTop: '10px', justifyContent: 'center', display: 'flex', paddingBottom: 10}}>
+            <Pagination
+              count={Math.ceil(posts.length / postsPerPage)}
+              page={currentPage}
+              onChange={handlePageChange}
+              disabled={posts.length === 0} // 포스트가 없을 때 페이지네이션 비활성화
+            />
+          </div>
+          <EditModal
+            open={showEditModal}
+            handleClose={handleCloseEditModal}
+            editContent={editContent}
+            handleEditChange={handleEditChange}
+            handleEditSubmit={handleEditSubmit}
+          />
+        </>
+      )}
     </>
   );
 }

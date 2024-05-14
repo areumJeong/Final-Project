@@ -24,7 +24,6 @@ export default function AdminItemList() {
   const [selectedSalePrice, setSelectedSalePrice] = useState(null); 
   const [selectedSaleDate, setSelectedSaleDate] = useState(null); 
 
-
   useEffect(() => {
     fetchItemListAPI()
       .then(res => {

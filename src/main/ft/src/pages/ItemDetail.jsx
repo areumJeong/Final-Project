@@ -524,27 +524,20 @@ export default function ItemDetail() {
 
   return (
     <Grid container spacing={2} className="itemDetail">
-      {/* 왼쪽 여백 */}
-      <Grid item xs={1} md={1} sx={{ placeItems: 'center', display: { xs: 'none',  lg: 'flex' }, }}>
-      </Grid>
-
-      {/* 상품 이미지 카드 */}
-      <Grid item xs={12} md={5} style={{ padding: 50, textAlign: 'center' }}>
-        <ItemDetailInfo item={item} tags={tags} navigate={navigate}/>
-      </Grid>
-
-      {/* 오른쪽 여백 */}
-      <Grid item md={1} sx={{ placeItems: 'center', display: { xs: 'none', lg: 'flex' }, }}>
-      </Grid>
-
-      {/* 상품 정보 카드 */}
-      <Grid item xs={12} md={5} style={{ padding: 50 }}>
-        <ItemInfo item={item} options={options} handleOptionChange={handleOptionChange}
-          decreaseQuantity={decreaseQuantity} increaseQuantity={increaseQuantity} removeOption={removeOption} 
-          totalPrice={totalPrice} handleOrder={handleOrder} handleAddToCart={handleAddToCart} 
-          handleCopyLink={handleCopyLink} iswish={iswish} itemWishCount={itemWishCount} 
-          handleLikeClick={handleLikeClick} selectedOptions={selectedOptions}
-        />
+      <Grid container spacing={2} className="itemDetail"  sx={{ paddingLeft: { xs: 0, md: 10 } }}>
+        {/* 상품 이미지 카드 */}
+        <Grid item xs={12} md={6} style={{ padding: 50, textAlign: 'center' }}>
+          <ItemDetailInfo item={item} tags={tags} navigate={navigate}/>
+        </Grid>
+        {/* 상품 정보 카드 */}
+        <Grid item xs={12} md={5} style={{ padding: 50 }} > 
+          <ItemInfo item={item} options={options} handleOptionChange={handleOptionChange}
+            decreaseQuantity={decreaseQuantity} increaseQuantity={increaseQuantity} removeOption={removeOption} 
+            totalPrice={totalPrice} handleOrder={handleOrder} handleAddToCart={handleAddToCart} 
+            handleCopyLink={handleCopyLink} iswish={iswish} itemWishCount={itemWishCount} 
+            handleLikeClick={handleLikeClick} selectedOptions={selectedOptions}
+          />
+        </Grid>
       </Grid>
       <nav style={{ backgroundColor: '#f8f9fa', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', padding: '10px 0', textAlign: 'center', width: '100%', position: isNavFixed ? 'sticky' : 'relative', top: isNavFixed ? 120 : 'auto', left: 0, zIndex: 1000 }}>
         <ul style={{ display: 'flex', justifyContent: 'center', listStyleType: 'none', padding: 0 }}>

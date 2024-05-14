@@ -17,7 +17,8 @@ import lombok.ToString;
 @Builder  
 public class OrderHistory {
 	private int iid;
-	private int oid;           
+	private int oid; 
+	private String email;
 	private String status;   
 	private int totalPrice; 
 	private int count;
@@ -27,5 +28,5 @@ public class OrderHistory {
 	private String option;
 	private LocalDateTime regDate;
 	private String way;
-	
+	private int isDeleted;
 }
