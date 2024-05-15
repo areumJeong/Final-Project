@@ -28,7 +28,7 @@ function ItemListSearchContent() {
   const queryClient = new QueryClient();
 
   const { isLoading, data: list } = useQuery(['search', searchQuery], () => fetchSearchItems(searchQuery), {
-    refetchInterval: false,
+    refetchInterval: 5000,
   });
 
   return (

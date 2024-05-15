@@ -19,6 +19,7 @@ import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { selectUserData } from '../api/firebase';
 import { useNavigate } from 'react-router-dom';
 import WayModal from '../components/WayModal';
+import AdminCategoryBar from '../components/AdminCategoryBar';
 
 const AdminOrderHistoryList = () => {
   const [currentUserEmail, setCurrentUserEmail] = useState(null);
@@ -136,10 +137,7 @@ const AdminOrderHistoryList = () => {
 
   return (
     <Container fixed sx={{ mt: 5, mb: 5 }}>
-      <Typography variant="h4" align="center" sx={{ mb: 3 }}>
-        주문 관리
-      </Typography>
-
+      <AdminCategoryBar/>
       <div className="bottom-panel" style={{ width: '100%' }}>
         <div className="sort-options" style={{ width: '100%' }}>
           {/* 정렬 옵션 선택 */}

@@ -136,10 +136,6 @@ const handleDelete = async (orderId) => {
 
   return (
     <Container fixed sx={{ mt: 5, mb: 5 }}>
-      <Typography variant="h4" sx={{ marginBottom: 3 }} style={{textAlign:"center"}}>
-        주문 내역
-      </Typography>
-
       {/* 날짜별로 주문 목록 표시 */}
       {Object.entries(groupedOrdersByDate).map(([date, orders]) => (
         <div key={date}>
@@ -181,52 +177,52 @@ const handleDelete = async (orderId) => {
 
                     {/* 테이블 바디 */}
                     <TableBody>
-  {ordersForThisDate.map((order, index) => (
-    <TableRow key={index}>
-      {/* 상품 이미지 */}
-      <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign:'center'}}>
-        <img
-          src={order.img1}
-          alt={order.name}
-          style={{ width: 50, height: 50, cursor: 'pointer', textAlign:'center' }}
-          onClick={() => { navigate(`/item/detail/${order.iid}`) }}
-        />
-      </TableCell>
+                      {ordersForThisDate.map((order, index) => (
+                        <TableRow key={index}>
+                          {/* 상품 이미지 */}
+                          <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign:'center'}}>
+                            <img
+                              src={order.img1}
+                              alt={order.name}
+                              style={{ width: 50, height: 50, cursor: 'pointer', textAlign:'center' }}
+                              onClick={() => { navigate(`/item/detail/${order.iid}`) }}
+                            />
+                          </TableCell>
 
-      {/* 상품명 */}
-      <TableCell
-        style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', cursor: 'pointer', textAlign:'center' }}
-        onClick={() => { navigate(`/item/detail/${order.iid}`) }}
-      >
-        {order.name.length > 10 ? order.name.substring(0, 10) + '...' : order.name}
-        <br />
-        ({order.option})
-      </TableCell>
+                          {/* 상품명 */}
+                          <TableCell
+                            style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', cursor: 'pointer', textAlign:'center' }}
+                            onClick={() => { navigate(`/item/detail/${order.iid}`) }}
+                          >
+                            {order.name.length > 10 ? order.name.substring(0, 10) + '...' : order.name}
+                            <br />
+                            ({order.option})
+                          </TableCell>
 
-      {/* 개수 */}
-      <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign:'center' }}>{order.count}</TableCell>
-      
-      {/* 가격 */}
-      <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign:'center' }}>{order.price.toLocaleString()}원</TableCell>
+                          {/* 개수 */}
+                          <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign:'center' }}>{order.count}</TableCell>
+                          
+                          {/* 가격 */}
+                          <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign:'center' }}>{order.price.toLocaleString()}원</TableCell>
 
-      {/* 배송조회 */}
-      <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign:'center' }}>
-        {order.way ? (
-          <div onClick={() => DeliveryTracker(order.way)} style={{ cursor: 'pointer', textAlign:'center' }}>
-            <TrackerComponent order={order} />
-          </div>
-        ) : order.status}
-      </TableCell>
+                          {/* 배송조회 */}
+                          <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign:'center' }}>
+                            {order.way ? (
+                              <div onClick={() => DeliveryTracker(order.way)} style={{ cursor: 'pointer', textAlign:'center' }}>
+                                <TrackerComponent order={order} />
+                              </div>
+                            ) : order.status}
+                          </TableCell>
 
-      {/* 주문취소/반품 버튼 */}
-      <TableCell style={{textAlign:'center'}}>
-        <Button variant="contained" color="error" onClick={() => handleDelete(order.oid)}>
-          주문취소/반품
-        </Button>
-      </TableCell>
-    </TableRow>
-  ))}
-</TableBody>
+                          {/* 주문취소/반품 버튼 */}
+                          <TableCell style={{textAlign:'center'}}>
+                            <Button variant="contained" color="error" onClick={() => handleDelete(order.oid)}>
+                              주문취소/반품
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
                   </Table>
                 </TableContainer>
 
