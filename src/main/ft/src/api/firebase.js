@@ -132,7 +132,7 @@ export function authRegister({ email, password, name, postCode, addr, detailAddr
       }
 
       alert(errorMessage); // 오류 메시지 출력
-      
+      window.location.replace("/signUp")
     });
 }
 
@@ -181,10 +181,10 @@ function insertUserData(email, password, name, postCode, addr, detailAddr,
     addr: addr,
     detailAddr: detailAddr,
     tel: tel,
-    req: req
-    
+    req: req,
   }).then(() => {
     console.log("사용자 정보가 성공적으로 저장되었습니다.");
+    alert('회원가입이 완료되었습니다.')
     window.location.reload();
   }).catch((error) => {
     console.error("사용자 정보 저장 중 오류가 발생했습니다:", error);

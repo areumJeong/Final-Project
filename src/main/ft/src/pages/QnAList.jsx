@@ -9,8 +9,19 @@ import EditModal from '../components/QnA/EditModal';
 import QnAPost from '../components/QnA/QnAPost';
 import { fetchQnAList } from '../api/boardApi';
 import { fetchReplies, postReply, updateReply, deleteReply } from '../api/replyApi';
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+
+const queryClient = new QueryClient();
 
 export default function QnAList() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <QnAListContent />
+    </QueryClientProvider>
+  );
+}
+
+function QnAListContent() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedType, setSelectedType] = useState("전체");
   const [expandedPost, setExpandedPost] = useState(null);
@@ -28,6 +39,8 @@ export default function QnAList() {
   const [editReplyId, setEditReplyId] = useState(null); // 수정할 답변 ID 상태 추가
   const [editReply, setEditReply] = useState(null); // 수정할 답변 ID 상태 추가
   const [loading, setLoading] = useState(true); // Loading state
+
+  const { data: qnaPosts, isLoading, error } = useQuery(posts, fetchQnAList);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -51,6 +64,11 @@ export default function QnAList() {
       fetchUserInfo();
     }
   }, [currentUserEmail]);
+  
+  useEffect(() => {
+    console.log("진입");
+    fetchReplyStatus();
+  }, [qnaPosts]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,10 +84,11 @@ export default function QnAList() {
   }, []);
   
   const fetchReplyStatus = async () => {
+    
     try {
-      if (posts && posts.length > 0) {
+      if (qnaPosts && qnaPosts.length > 0) {
         const status = {};
-        for (const post of posts) {
+        for (const post of qnaPosts) {
           if (post && post.bid) {
             const data = await fetchReplies(post.bid); // 답변 목록 가져오기
             status[post.bid] = data.length > 0;
@@ -81,10 +100,6 @@ export default function QnAList() {
       console.error('답변 목록을 불러오는 중 에러:', error);
     }
   };
-  
-  useEffect(() => {
-    fetchReplyStatus();
-  }, [posts]);
 
   const handlePageChange = (event, newPage) => {
     setCurrentPage(newPage);
@@ -103,6 +118,7 @@ export default function QnAList() {
 
   const handlePostClick = async (post, index) => {
     setExpandedPost(expandedPost === index ? null : index);
+    if(expandedPost !== index )
     try {
       await fetchRepliesAndItemInfo(post);
     } catch (error) {
