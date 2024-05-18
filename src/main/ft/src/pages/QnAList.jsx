@@ -208,7 +208,6 @@ function QnAListContent() {
       sorted.sort((a, b) => {
         const aHasReply = a.replyStatus === "미답변";
         const bHasReply = b.replyStatus === "미답변";
-        // 미답변인 게시물이 먼저 표시되도록 정렬
         if (aHasReply && bHasReply) {
           return 0;
         } else if (aHasReply) {
@@ -221,7 +220,6 @@ function QnAListContent() {
       sorted.sort((a, b) => {
         const aHasReply = a.replyStatus === "답변완료";
         const bHasReply = b.replyStatus === "답변완료";
-        // 답변이 있는 게시물들이 먼저 표시되도록 정렬
         if (aHasReply && bHasReply) {
           return 0;
         } else if (aHasReply) {
