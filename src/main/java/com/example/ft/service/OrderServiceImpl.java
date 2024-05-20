@@ -108,5 +108,10 @@ public class OrderServiceImpl implements OrderService {
 	    orderDao.orderWayUpdate(order);
 	}
 
+	@Override
+	public void oiidReviewUpdate(int oiid) {
+		orderDao.oiidReviewUpdate(oiid);
+	}
+
 
 }

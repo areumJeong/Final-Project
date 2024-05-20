@@ -16,6 +16,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+
 // 디자인
 function Copyright(props) {
   return (
@@ -38,7 +39,7 @@ export default function SignUp() {
     email: '', password: '', confirmPassword: '', name: '', postCode:'', addr: '',
     detailAddr: '', tel: '', req: ''
   });
-
+  localStorage.setItem('prevPage', '/signUp');
   const navigate = useNavigate();
 
   // 사용자 정보 변경 핸들러

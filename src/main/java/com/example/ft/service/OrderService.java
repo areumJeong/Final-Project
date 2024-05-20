@@ -52,6 +52,8 @@ public interface OrderService {
 	
 	void statusUpdate(Order order);
 	
+	// oiid 리뷰 여부 수정
+	void oiidReviewUpdate(int oiid);
 	//
 	void orderWayUpdate(int oid, String way);
 	

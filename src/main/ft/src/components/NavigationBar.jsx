@@ -25,6 +25,12 @@ import HotelIcon from '@mui/icons-material/Hotel';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import TableBarIcon from '@mui/icons-material/TableBar';
 import FoodBankIcon from '@mui/icons-material/FoodBank';
+import Avatar from '@mui/material/Avatar';
+import Logout from '@mui/icons-material/Logout';
+import Settings from '@mui/icons-material/Settings';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import PersonAdd from '@mui/icons-material/PersonAdd';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,7 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch',
+      width: '10ch',
     },
   },
 }));
@@ -70,6 +76,14 @@ export default function NavigationBar() {
   const [openList, setListOpen] = React.useState(false);
   const { user, logout } = useAuthContext();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false); // 기본적으로 로그아웃 상태
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   // ============== user 관련 함수들 =================
   const isAdmin = user && user.isAdmin == true;
@@ -170,7 +184,7 @@ export default function NavigationBar() {
               <ListItemIcon>
                 <DeskIcon />
               </ListItemIcon>
-              <ListItemText primary="책상"/>
+              <ListItemText primary="책상" />
             </ListItemButton>
             <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemlist/침대'} onClick={() => setDrawerOpen(false)}>
               <ListItemIcon>
@@ -235,20 +249,22 @@ export default function NavigationBar() {
               <ListItemText primary="Admin Option 1" />
             </ListItemButton>
           </ListItem>
-          )}
+        )}
       </List>
     </Box>
-      
+
   );
 
   const StyledAppBar = styled(AppBar)({
-    backgroundColor: 'gray',
+    color: 'black',
+    backgroundColor: '#ece6cc',
     height: '120px',
     justifyContent: 'center',
     position: 'fixed', // Add this line to make the app bar fixed
     top: 0, // Add this line to fix the app bar at the top of the viewport
     width: '100%', // Add this line to make the app bar cover the full width
     zIndex: 1000, // Add this line to ensure the app bar appears above other content
+    boxShadow: 'none',
   });
 
   // 검색 버튼 클릭 시 실행되는 함수
@@ -280,25 +296,24 @@ export default function NavigationBar() {
     <Box sx={{ flexGrow: 1, marginBottom: 2, paddingTop: '103px', }}>
       <StyledAppBar position="static">
         <Toolbar>
-          <div>
-            <Button onClick={toggleDrawer(true)} color="inherit"><MenuIcon /></Button>
-            <Drawer open={openDrawer} onClose={toggleDrawer(false)} BackdropProps={{ invisible: true }}>
-              {DrawerList}
-            </Drawer>
-          </div>
-          <Box sx={{ flexGrow: 1 }} />
+          <Button onClick={toggleDrawer(true)} color="inherit"><MenuIcon /></Button>
+          <Drawer open={openDrawer} onClose={toggleDrawer(false)} BackdropProps={{ invisible: true }}>
+            {DrawerList}
+          </Drawer>
+          <Box sx={{ flexGrow: 0.55, display: { xs: 'none', md: 'flex' } }} />
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flex: '1'
+              flexGrow: 1,
+              textAlign: 'center', // 수평 방향 가운데 정렬
+              display: 'flex', // 컨테이너를 플렉스 박스로 설정
+              justifyContent: 'center', // 수평 방향 가운데 정렬
+              alignItems: 'center', // 세로 방향 가운데 정렬
             }}
           >
-            <Link to={'/'} className='mainPageLink'>FUNiture</Link>
+            <Link to={'/'} className='mainPageLink'>FUNniture</Link>
           </Typography>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
             <form onSubmit={handleSearch}>
@@ -313,6 +328,67 @@ export default function NavigationBar() {
                 />
               </Search>
             </form>
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleClose}
+              onClick={handleClose}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: 'visible',
+                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                  mt: 1.5,
+                  '& .MuiAvatar-root': {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  '&::before': {
+                    content: '""',
+                    display: 'block',
+                    position: 'absolute',
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: 'background.paper',
+                    transform: 'translateY(-50%) rotate(45deg)',
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+              <MenuItem onClick={handleClose}>
+                <Avatar /> Profile
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Avatar /> My account
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                  <PersonAdd fontSize="small" />
+                </ListItemIcon>
+                Add another account
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                  <Settings fontSize="small" />
+                </ListItemIcon>
+                Settings
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                Logout
+              </MenuItem>
+            </Menu>
             <IconButton size="small" color="inherit" onClick={handleToOrderHistory}>
               <Stack direction="column" alignItems="center">
                 <Badge badgeContent={0} color="error">
@@ -346,12 +422,6 @@ export default function NavigationBar() {
               </>
             ) : (
               <>
-                {/* <Button color="inherit" onClick={handleLogin} startIcon={<LoginIcon />}>
-                  로그인
-                </Button>
-                <Button color="inherit" onClick={handleSignUp} startIcon={<PersonAddIcon />}>
-                  회원가입
-                </Button> */}
                 <IconButton size="small" color="inherit" onClick={handleLogin}>
                   <Stack direction="column" alignItems="center">
                     <LoginIcon />
@@ -366,7 +436,6 @@ export default function NavigationBar() {
                 </IconButton>
               </>
             )}
-
           </Box>
         </Toolbar>
       </StyledAppBar>

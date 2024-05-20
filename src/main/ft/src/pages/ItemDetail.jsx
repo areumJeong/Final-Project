@@ -205,20 +205,6 @@ export default function ItemDetail() {
     window.scrollTo({ top: sectionTop, behavior: 'smooth' });
   };
 
-  // 리뷰모달
-  const openModal = () => {
-    if (!userInfo || !userInfo.email) {
-      window.location.href = '/signIn'; 
-      return;
-    }
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    reloadReviewData();
-  };
-  // 리뷰 데이터 get
   useEffect(() => {
     fetchReviewsData(iid)
       .then(jArr => {
@@ -279,6 +265,7 @@ export default function ItemDetail() {
             regDate: qna.regDate,
             content: qna.content,
             img: qna.img,
+            secretMsg: qna.secretMsg,
           }));
           setQnAs(formattedQnA);
           setQnAsCount(formattedQnA.length);
@@ -420,6 +407,7 @@ export default function ItemDetail() {
           content: qnas.content,
           img: qnas.img,
           sta: qnas.sta,
+          secretMsg: qnas.secretMsg,
         }));
         setQnAs(formattedQnA);
         setQnAsCount(formattedQnA.length);
@@ -563,8 +551,6 @@ export default function ItemDetail() {
         <section id="review">
           <Grid container spacing={2} justifyContent="center" sx={{ paddingLeft: { xs: 2, md: 10 }, paddingRight: { xs: 2, md: 10 } }}>
             <Grid item xs={12}>
-              <Button variant="contained" color="primary" size="small" style={{ marginRight: 10 }} onClick={() => openModal(iid)}>리뷰작성</Button>
-              <ReviewForm isOpen={isModalOpen} handleClose={closeModal} iid={iid} /> 
               <ProductReviews reloadReviewData={reloadReviewData} reviews={reviews} item={item} />
             </Grid>
           </Grid>

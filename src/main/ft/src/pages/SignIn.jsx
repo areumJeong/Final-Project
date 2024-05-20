@@ -32,7 +32,7 @@ export default function SignIn() {
   // 상태 변수 정의
   const [userInfo, setUserInfo] = useState({ email: '', password: '' });
   const navigate = useNavigate();
-
+  
   // 이벤트 핸들러 - input 값 변화 처리
   const handleChange = e => {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
@@ -51,13 +51,14 @@ export default function SignIn() {
         console.log("일반 로그인 성공:", userData);
         
         const prevPage = localStorage.getItem('prevPage');
-        if (prevPage && prevPage !== '/signUp') {
-          navigate(-1); // 이전 페이지로 이동
-        } else {
+        if (prevPage === '/signUp') {
           navigate('/'); // 이전 페이지가 없거나 회원가입 페이지인 경우 홈페이지로 이동
+        } else {
+          navigate(-1); // 이전 페이지로 이동
         }
       }
       // * 나중에 수정 필요
+      localStorage.removeItem('prevPage');
     } catch (error) {
       // 로그인 실패 시 오류 메시지 표시
       console.error('로그인 오류:', error);
@@ -71,11 +72,12 @@ export default function SignIn() {
       console.log("구글 로그인 성공");
 
       const prevPage = localStorage.getItem('prevPage');
-        if (prevPage && prevPage !== '/signUp') {
-          navigate(-1); // 이전 페이지로 이동
-        } else {
-          navigate('/'); // 이전 페이지가 없거나 회원가입 페이지인 경우 홈페이지로 이동
-        }
+      if (prevPage === '/signUp') {
+        navigate('/'); // 이전 페이지가 없거나 회원가입 페이지인 경우 홈페이지로 이동
+      } else {
+        navigate(-1); // 이전 페이지로 이동
+      }
+        localStorage.removeItem('prevPage');
     } catch (error) {
       // 로그인 실패 시 오류 메시지 표시
       alert('구글 로그인에 실패했습니다.');
@@ -90,11 +92,12 @@ export default function SignIn() {
       console.log("카카오 로그인 성공");
       
       const prevPage = localStorage.getItem('prevPage');
-        if (prevPage && prevPage !== '/signUp') {
-          navigate(-1); // 이전 페이지로 이동
-        } else {
-          navigate('/'); // 이전 페이지가 없거나 회원가입 페이지인 경우 홈페이지로 이동
-        }
+      if (prevPage === '/signUp') {
+        navigate('/'); // 이전 페이지가 없거나 회원가입 페이지인 경우 홈페이지로 이동
+      } else {
+        navigate(-1); // 이전 페이지로 이동
+      }
+        localStorage.removeItem('prevPage');
     } catch (error) {
       // 로그인 실패 시 오류 메시지 표시
       alert('카카오 로그인에 실패했습니다.');
@@ -114,7 +117,6 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-
           <Typography component="h1" variant="h5">
             로그인
           </Typography>
