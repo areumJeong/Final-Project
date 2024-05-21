@@ -240,6 +240,37 @@ export default function NavigationBar() {
             <ListItemText primary="내 정보" />
           </ListItemButton>
         </ListItem>
+        {/* {isLoggedIn ? (
+              <>
+                <IconButton size="small" color="inherit" onClick={handleLogout}>
+                  <Stack direction="column" alignItems="center">
+                    <LogoutIcon />
+                    <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>로그아웃</Typography>
+                  </Stack>
+                </IconButton>
+                <IconButton size="small" color="inherit" onClick={handleUserInfo}>
+                  <Stack direction="column" alignItems="center">
+                    <AssignmentIndIcon />
+                    <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>마이페이지</Typography>
+                  </Stack>
+                </IconButton>
+              </>
+            ) : (
+              <>
+                <IconButton size="small" color="inherit" onClick={handleLogin}>
+                  <Stack direction="column" alignItems="center">
+                    <LoginIcon />
+                    <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>로그인</Typography>
+                  </Stack>
+                </IconButton>
+                <IconButton size="small" color="inherit" onClick={handleSignUp}>
+                  <Stack direction="column" alignItems="center">
+                    <PersonAddIcon />
+                    <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>회원가입</Typography>
+                  </Stack>
+                </IconButton>
+              </>
+            )} */}
         {isAdmin && (
           <ListItem disablePadding>
             <ListItemButton component={Link} to={'admin/chart'} onClick={() => setDrawerOpen(false)}>
@@ -287,6 +318,9 @@ export default function NavigationBar() {
   const handleToOrderHistory = () => {
     if (!user || !user.email) {
       window.location.href = '/signIn';
+      if (window.confirm('비회원 조회를 원하시나요?')) {
+        window.location.href = '/nonMemberOrderHistory';
+      }
       return;
     }
     navigate('/OrderHistoryList');

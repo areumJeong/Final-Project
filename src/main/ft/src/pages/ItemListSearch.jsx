@@ -40,7 +40,7 @@ function ItemListSearchContent() {
         <Box width="70%" margin="auto" mt={5} mb={5}>
           <MainCategoryBox />
         </Box>
-        <Grid container spacing={2} className="itemList">
+        <Grid container spacing={2} className="itemList" sx={{ padding: { xs: 0, sm: 5 } }}>
           {isLoading ? (
             <div style={{ position: 'relative', height: '100vh' }}>
               <img src="/img/loading.gif" alt="loading" style={{ width: '200px', height: '200px', position: 'absolute', top: '30%', left: '200%', transform: 'translate(170%, 10%) translateX(100%)' }} />

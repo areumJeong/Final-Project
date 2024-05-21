@@ -30,6 +30,9 @@ public interface OrderService {
 	
 	// email로 주문 내역 가져오기
 	List<OrderHistory> getOrderHistoryList(String email);
+
+	// email로 주문 내역 가져오기
+	List<OrderHistory> nonMembersOrderHistory(String name, String tel);
 	
 	// admin의 주문 내역 가져오기 
 	List<OrderHistory> getOrderHistoryListForAdmin();

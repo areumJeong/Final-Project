@@ -169,13 +169,13 @@ export default function ProductQnA({ posts, reloadQnAData }) {
                   {!isMobile && (
                     <TableCell style={{ fontWeight: 'bold', fontSize: '80%' }}>
                       <Typography variant="body2" style={{ fontWeight: 'bold' }}>
-                        {replyStatus[post.bid] ? '답변완료' : '미답변'}
+                        {replyStatus[post.bid] ? '답변' : '미답변'}
                       </Typography>
                     </TableCell>
                   )}
-                  <TableCell style={{ fontSize: '80%' }}>
+                  <TableCell style={{ fontSize: '80%', verticalAlign: 'middle' }}>
                     {post.secretMsg === 1 && (
-                      <LockIcon />
+                      <LockIcon style={{ fontSize: '120%', marginRight: '4px', verticalAlign: 'middle', marginBottom: '5px' }} />
                     )}
                     {post.title}
                   </TableCell>

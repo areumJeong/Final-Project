@@ -116,4 +116,12 @@ public interface OrderDao {
 	// oiid로 review 여부 수정
 	@Update("UPDATE orderItem set review=1 where oiid=#{oiid}")
 	void oiidReviewUpdate(int oiid);
+	
+	// 비회원
+	@Select(" SELECT o.oid, o.email, o.status, o.totalPrice, o.regDate, o.way, "
+			+ " oi.count, oi.price, oi.review, oi.oiid, i.name, i.img1, i.iid, itemOption.option  " + " FROM `order` o "
+			+ " JOIN orderItem oi ON o.oid = oi.oid " + " JOIN item i ON oi.iid = i.iid "
+			+ " JOIN itemOption ON oi.iid = itemOption.iid AND oi.ioid = itemOption.ioid "
+			+ " WHERE o.name=#{name} AND o.tel=#{tel} AND o.isDeleted=0 AND oi.isDeleted=0 " + " ORDER BY o.regDate DESC")
+	List<OrderHistory> nonMembersOrderHistory(String name, String tel);
 }

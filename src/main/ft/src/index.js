@@ -28,6 +28,8 @@ import ItemListSearch from './pages/ItemListSearch';
 import MainPage from './pages/MainPage';
 import AdminOrderHistoryList from './pages/AdminOrderHistoryList';
 import DashboardPage from './pages/DashBoardPage';
+import ProductAnalysis from './pages/Productanalysis'
+import NonMemberOrderHistory from './pages/NonMemberOrderHistory';
 
 const router = createBrowserRouter([
   {
@@ -57,6 +59,8 @@ const router = createBrowserRouter([
       { path: 'success', element: <SuccessPage/> },
       { path: 'fail', element: <FailPage/> },
       { path: 'checkout', element: <CheckoutPage/> },
+      { path: 'admin/products', element: <ProductAnalysisPage/>},
+      { path: 'nonMemberOrderHistory', element: <NonMemberOrderHistory/>},
     ]
   }
 ]);
@@ -89,6 +93,11 @@ function AdminOrderLists() {
 function Dashboard() {
   const { user } = useAuthContext(); 
   return user && user.isAdmin ? <DashboardPage /> : <MainPage />;
+}
+
+function ProductAnalysisPage() {
+  const { user } = useAuthContext(); 
+  return user && user.isAdmin ? <ProductAnalysis /> : <MainPage />;
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

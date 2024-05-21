@@ -508,6 +508,30 @@ export default function ItemDetail() {
     navigate("/order", { state: { orderItems } });
   };    
 
+  const nonMembersHandleOrder = () => {
+    // Ensure that selectedOptions has at least one option selected
+    if (selectedOptions.length === 0) {
+      alert("옵션을 선택해주세요");
+      return;
+    }
+  
+    const orderItems = selectedOptions.map(option => ({
+      iid: item.iid, // db
+      ioid: option.ioid, // db
+      option: option.option, // db
+      name:item.name, // db
+      img:item.img1, // db
+      count: option.count, // db
+      price: item.salePrice && new Date(item.saleDate) > new Date() ? item.salePrice : item.price
+    }));
+  
+    // orderItems를 로컬 스토리지에 저장
+    localStorage.setItem('orderItems', JSON.stringify(orderItems)); //  객체나 배열을 JSON 문자열로 변환
+    console.log(orderItems);
+    // Order 페이지로 이동할 때 orderItems 상태를 함께 전달
+    navigate("/order", { state: { orderItems } });
+  };    
+
   return (
     <Grid container spacing={2} className="itemDetail">
       <Grid container spacing={2} className="itemDetail" sx={{ paddingLeft: { xs: 0, md: 10 } }}>
@@ -521,7 +545,7 @@ export default function ItemDetail() {
             decreaseQuantity={decreaseQuantity} increaseQuantity={increaseQuantity} removeOption={removeOption} 
             totalPrice={totalPrice} handleOrder={handleOrder} handleAddToCart={handleAddToCart} 
             handleCopyLink={handleCopyLink} iswish={iswish} itemWishCount={itemWishCount} 
-            handleLikeClick={handleLikeClick} selectedOptions={selectedOptions}
+            handleLikeClick={handleLikeClick} selectedOptions={selectedOptions} nonMembersHandleOrder={nonMembersHandleOrder}
           />
         </Grid>
       </Grid>

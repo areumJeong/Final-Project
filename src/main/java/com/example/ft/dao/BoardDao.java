@@ -19,7 +19,7 @@ public interface BoardDao {
 	@Select("select * from board where isDeleted=0 and type=#{type} and iid=#{iid} order by regDate desc")
 	List<Board> getBoardList(String type, int iid);
 
-	@Insert("insert into  Board values (default, #{iid}, #{email}, #{type},"
+	@Insert("insert into Board values (default, #{iid}, #{email}, #{type},"
 			+ " #{typeQnA}, #{title}, default, #{content}, #{img}, default, #{secretMsg})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="bid", before=false, resultType=int.class)
 	void insertBoard(Board board);
