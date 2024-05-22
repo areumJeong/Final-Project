@@ -30,6 +30,7 @@ import AdminOrderHistoryList from './pages/AdminOrderHistoryList';
 import DashboardPage from './pages/DashBoardPage';
 import ProductAnalysis from './pages/Productanalysis'
 import NonMemberOrderHistory from './pages/NonMemberOrderHistory';
+import ItemMenuList from './pages/ItemMenuList';
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,7 @@ const router = createBrowserRouter([
       { path: 'checkout', element: <CheckoutPage/> },
       { path: 'admin/products', element: <ProductAnalysisPage/>},
       { path: 'nonMemberOrderHistory', element: <NonMemberOrderHistory/>},
+      { path: 'itemMenuList/:menu', element: <ItemMenuList/>},
     ]
   }
 ]);

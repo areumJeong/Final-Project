@@ -1,26 +1,26 @@
 import React, { useEffect } from "react";
 import { useQuery, QueryClientProvider, QueryClient } from "react-query"; // 추가
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchSearchItems } from "../components/Item/Items";
+import { menuItems } from "../components/Item/Items";
 import MainCategoryBox from "../components/main/MainCategoryBox";
 import LoadingIndicator from "../components/publics/LoadingIndicator";
 import ItemGrid from "../components/Item/ItemGrid";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 
 const queryClient = new QueryClient();
 
-export default function ItemListSearch() {
+export default function ItemMenuList() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ItemListSearchContent />
+      <ItemMenuListContent />
     </QueryClientProvider>
   );
 }
 
-function ItemListSearchContent() {
+function ItemMenuListContent() {
   const navigate = useNavigate();
-  const { searchQuery } = useParams();
-  const { isLoading, data: list } = useQuery(['search', searchQuery], () => fetchSearchItems(searchQuery), {
+  const { menu } = useParams();
+  const { isLoading, data: list } = useQuery(['menu', menu], () => menuItems(menu), {
     refetchInterval: 5000,
   });
 

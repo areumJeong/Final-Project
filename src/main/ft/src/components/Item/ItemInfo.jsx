@@ -4,6 +4,7 @@ import { Card } from "react-bootstrap";
 import CountDown from "../CountDown";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import "./itemInfo.css"
 
 const ItemInfo = ({ item, options, selectedOptions, handleOptionChange, decreaseQuantity, increaseQuantity, removeOption, totalPrice, handleOrder,
                     handleAddToCart, handleCopyLink, iswish, itemWishCount, handleLikeClick, nonMembersHandleOrder
@@ -70,7 +71,7 @@ const ItemInfo = ({ item, options, selectedOptions, handleOptionChange, decrease
                 <Typography variant="body1" style={{ flexGrow: 1 }}>
                   {option.option}
                 </Typography>
-                <Button onClick={() => decreaseQuantity(index)}>-</Button>
+                <Button className="optionButton" onClick={() => decreaseQuantity(index)}>-</Button>
                 <Input
                   value={option.count}
                   readOnly
@@ -78,8 +79,8 @@ const ItemInfo = ({ item, options, selectedOptions, handleOptionChange, decrease
                   disableUnderline 
                   inputProps={{ min: 0, max: 5 }}
                 />
-                <Button onClick={() => increaseQuantity(index, option.stock)}>+</Button>
-                <Button onClick={() => removeOption(index)}>X</Button>
+                <Button className="optionButton" onClick={() => increaseQuantity(index, option.stock)}>+</Button>
+                <Button className="optionButton" onClick={() => removeOption(index)}>X</Button>
               </Box>
             ))}
           </div>
@@ -88,13 +89,13 @@ const ItemInfo = ({ item, options, selectedOptions, handleOptionChange, decrease
             총 가격: {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
           </Typography>
           {/* 주문 및 장바구니 버튼 */}
-          <Button variant="contained" color="primary" style={{ marginBottom: '10px' }} 
+          <Button variant="contained" className="mainButton" style={{ marginBottom: '10px' }} 
             onClick={handleOrder}>주문하기</Button> 
-          <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5 }} onClick={handleAddToCart}>장바구니</Button>
-          <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5, backgroundColor: '#808080' }} onClick={nonMembersHandleOrder}>비회원 주문하기</Button>
+          <Button variant="contained" className="mainButton" style={{ marginBottom: '10px', marginLeft:5 }} onClick={handleAddToCart}>장바구니</Button>
+          <Button variant="contained" style={{ marginBottom: '10px', marginLeft:5, backgroundColor: '#808099' }} onClick={nonMembersHandleOrder}>비회원 주문하기</Button>
           <br/>
           {/* 공유 및 찜하기 버튼 */}
-          <Button variant="contained" color="primary" style={{ marginBottom: '10px' }} onClick={handleCopyLink}>공유하기</Button>
+          <Button variant="contained" className="mainButton" color="primary" style={{ marginBottom: '10px' }} onClick={handleCopyLink}>공유하기</Button>
           <Button variant="contained" color="primary" style={{ marginBottom: '10px', marginLeft:5, backgroundColor: 'transparent', color: 'black', }} onClick={handleLikeClick}>
             {iswish ? <FavoriteIcon style={{ color: 'red', width: 18 }} /> : <FavoriteBorderIcon style={{width:18}}/>} {itemWishCount}
           </Button>

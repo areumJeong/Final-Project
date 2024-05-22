@@ -2,6 +2,7 @@ package com.example.ft.controller;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -337,4 +338,47 @@ public class ItemController {
 	    itemService.saleItem(item);
 	    return "Success";
 	}
+	
+	@GetMapping("itemMenu/{menu}")
+	public JSONArray getlist(@PathVariable String menu) {
+		System.out.println(menu);
+		List<Item> list = new ArrayList<>();
+		switch (menu) {
+			case "hot": {
+				list = itemService.getHotItemList();
+				break;
+			}
+			case "sale": {
+				list = itemService.getSaleItemList();
+				break;
+			}
+			case "mostReview": {
+				list = itemService.getMostReviewItemList();
+				break;
+			}
+			default :{
+				list = itemService.getCategoryItemList(menu);
+				break;
+			}
+		}
+		JSONArray jArr = new JSONArray();
+		for(Item item : list) {
+			JSONObject jObj = new JSONObject(); 
+			jObj.put("iid", item.getIid());
+			jObj.put("name", item.getName());
+			jObj.put("category", item.getCategory());
+			jObj.put("img1", item.getImg1());
+			jObj.put("content", item.getContent());
+			jObj.put("price", item.getPrice());
+			jObj.put("salePrice", item.getSalePrice());
+			jObj.put("saleDate", item.getSaleDate());
+			jObj.put("regDate", item.getRegDate());
+			jObj.put("totalSta", item.getTotalSta());
+			jObj.put("company", item.getCompany());
+			jObj.put("cost", item.getCost());
+			jArr.add(jObj);
+		}
+		return jArr;
+	}
+	
 }
