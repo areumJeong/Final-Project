@@ -1,4 +1,4 @@
-import { CardContent, CardMedia, Chip, Fab, Stack, Typography } from "@mui/material";
+import { CardContent, CardMedia, Stack, Typography } from "@mui/material";
 import Rating from "../Rating";
 import CountDown from "../CountDown";
 

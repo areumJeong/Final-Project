@@ -13,7 +13,7 @@ export default function MainPage() {
 
   return (
     <>
-      <Box width="70%" margin="auto" mt={5} mb={5}>
+      <Box width="85%" margin="auto" mt={5} mb={5}>
         <MainCategoryBox />
       </Box>
       <Box width="60%" margin="auto" mt={5} mb={5}>

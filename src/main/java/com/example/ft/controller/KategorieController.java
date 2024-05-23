@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/admin/products")
 public class KategorieController {
-	
 	private final KategorieSerivce kategorieService;
 	
 	@GetMapping("/all")

@@ -15,7 +15,7 @@ public interface KategorieDao {
 	// 전체 주문상품 조회
 	@Select("SELECT " 
 			+ " o.regDate AS orderDate, "
-			+ " i.name AS itemName, " 
+			+ " i.name AS itemName, i.iid, " 
 			+ " i.category AS category, "
 			+ " i.company AS company, "
 			+ " io.option AS options, "
@@ -32,7 +32,7 @@ public interface KategorieDao {
 
 	// 카테고리별 상품 조회
 	@Select("SELECT "
-	        + " i.name AS itemName, "
+	        + " i.iid, i.name AS itemName,"
 	        + " i.category AS category, "
 	        + " i.company AS company, "
 	        + " io.option AS options, "
@@ -45,13 +45,13 @@ public interface KategorieDao {
 	        + "JOIN `order` o ON oi.oid = o.oid "
 	        + "JOIN " + " itemoption io ON oi.ioid = io.ioid " 
 	        + "WHERE o.regDate BETWEEN #{startDate} AND #{endDate} "
-	        + "group by i.company, i.category, io.option, i.name, i.cost, o.totalPrice, o.regDate "
+	        + "group by i.iid, i.company, i.category, io.option, i.name, i.cost, o.totalPrice, o.regDate "
 	        + "order by category DESC ")
 	List<KategorieDto> getCategoryItemByDateRange(LocalDate startDate, LocalDate endDate);
 
 	// 제조회사별 조회
 	@Select("SELECT " 
-			+ " i.company AS company, "
+			+ " i.iid, i.company AS company,"
 			+ " i.name AS itemName, " 
 			+ " i.category AS category, "
 			+ " io.option AS options, "
@@ -64,7 +64,7 @@ public interface KategorieDao {
 			+ "JOIN `order` o ON oi.oid = o.oid " 
 			+ "JOIN " + " itemoption io ON oi.ioid = io.ioid " 
 			+ "WHERE o.regDate BETWEEN #{startDate} AND #{endDate} "
-			+ "GROUP BY i.category, i.company, io.option, i.name, i.cost, o.totalPrice, o.regDate "
+			+ "GROUP BY i.iid, i.category, i.company, io.option, i.name, i.cost, o.totalPrice, o.regDate "
 			+ "order by company DESC ")
 	List<KategorieDto> getByCompanyAndDateRange(LocalDate startDate, LocalDate endDate);
 }

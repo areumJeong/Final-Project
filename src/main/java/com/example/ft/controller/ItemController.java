@@ -32,8 +32,8 @@ import com.example.ft.entity.ItemTag;
 import com.example.ft.entity.SaleData;
 import com.example.ft.entity.Wish;
 import com.example.ft.service.ItemService;
+import com.example.ft.service.RealTimesService;
 import com.example.ft.service.WishService;
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @Slf4j 
@@ -43,6 +43,7 @@ import com.fasterxml.jackson.annotation.JacksonInject.Value;
 public class ItemController {
 	private final ItemService itemService;
 	private final WishService wishService;
+	private final RealTimesService realTimeService;
 	
 	@GetMapping("/list")
 	public JSONArray list() {
@@ -69,6 +70,7 @@ public class ItemController {
 	
 	@GetMapping("/search/{query}")
     public JSONArray getSearchItemList(@PathVariable String query) {
+		realTimeService.insertRealTime(query);
         List<Item> list = itemService.getSearchItemList(query);
         JSONArray jArr = new JSONArray();
         for (Item item : list) {

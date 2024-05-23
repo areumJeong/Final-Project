@@ -31,6 +31,7 @@ import DashboardPage from './pages/DashBoardPage';
 import ProductAnalysis from './pages/Productanalysis'
 import NonMemberOrderHistory from './pages/NonMemberOrderHistory';
 import ItemMenuList from './pages/ItemMenuList';
+import DeveloperPage from './pages/DeveloperPage';
 
 const router = createBrowserRouter([
   {
@@ -51,18 +52,19 @@ const router = createBrowserRouter([
       { path: 'wish/list', element: <WishItemList/> },
       { path: 'order', element: <Order/> },
       { path: 'orderHistoryList', element: <OrderHistoryList/> },
+      { path: 'success', element: <SuccessPage/> },
+      { path: 'fail', element: <FailPage/> },
+      { path: 'checkout', element: <CheckoutPage/> },
+      { path: 'nonMemberOrderHistory', element: <NonMemberOrderHistory/>},
+      { path: 'itemMenuList/:menu', element: <ItemMenuList/>},
+      { path: 'developerPage', element: <DeveloperPage/>},
+      { path: 'admin/products', element: <ProductAnalysisPage/>},
       { path: 'admin/itemlist', element: <AdminItemLists /> },
       { path: 'admin/item/insert', element: <ItemInsertAdminRoutes /> },
       { path: 'admin/item/update/:iid', element: <ItemUpdateAdminRoutes/> },
       { path: 'admin/QnAlist', element: <AdminQnAList/> },
       { path: 'admin/order/list', element: <AdminOrderLists /> },
       { path: 'admin/chart', element: <Dashboard /> },
-      { path: 'success', element: <SuccessPage/> },
-      { path: 'fail', element: <FailPage/> },
-      { path: 'checkout', element: <CheckoutPage/> },
-      { path: 'admin/products', element: <ProductAnalysisPage/>},
-      { path: 'nonMemberOrderHistory', element: <NonMemberOrderHistory/>},
-      { path: 'itemMenuList/:menu', element: <ItemMenuList/>},
     ]
   }
 ]);

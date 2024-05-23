@@ -19,12 +19,10 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
-import DateRangePicker from "@mui/lab/DateRangePicker";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import ToggleButton from "@mui/material/ToggleButton";
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import axios from "axios";
 import AdminCategoryBar from "../components/AdminCategoryBar";
+import { useNavigate } from "react-router-dom";
 
 function Label({ componentName, valueType, isProOnly }) {
   const content = (
@@ -90,6 +88,7 @@ const HamburgerCheckbox = () => {
   const [selectedButton, setSelectedButton] = useState(0);
   const [datas, setDatas] = useState([]);
   const [groupedData, setGroupedData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const groupedData = groupAndSumData(datas);
@@ -350,30 +349,22 @@ const HamburgerCheckbox = () => {
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
-                  <TableRow>
-                    <StyledTableCell align="right">주문일</StyledTableCell>
-                    <StyledTableCell align="right">카테고리</StyledTableCell>
-                    <StyledTableCell align="right">상품명</StyledTableCell>
-                    <StyledTableCell align="right">옵션</StyledTableCell>
-                    <StyledTableCell align="right">주문 금액</StyledTableCell>
-                    <StyledTableCell align="right">
-                      상품 금액(정가)
-                    </StyledTableCell>
-                    <StyledTableCell align="right">수익</StyledTableCell>
-                    <StyledTableCell align="right">
-                      제조사
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      결제 상품 수량
-                    </StyledTableCell>
-                  </TableRow>
+                <TableRow style={{width: '100%'}}>
+                  <StyledTableCell align="right" style={{width: '7%'}}>주문일</StyledTableCell>
+                  <StyledTableCell align="right" style={{width: '8%'}}>카테고리</StyledTableCell>
+                  <StyledTableCell align="right" style={{width: '38%'}}>상품명</StyledTableCell>
+                  <StyledTableCell align="right" style={{width: '8%'}}>옵션</StyledTableCell>
+                  <StyledTableCell align="right" style={{width: '8%'}}>주문 금액</StyledTableCell>
+                  <StyledTableCell align="right" style={{width: '8%'}}>수익</StyledTableCell>
+                  <StyledTableCell align="right" style={{width: '8%'}}>판매가</StyledTableCell>
+                  <StyledTableCell align="right" style={{width: '7%'}}>제조사</StyledTableCell>
+                  <StyledTableCell align="right" style={{width: '8%'}}>결제 수량</StyledTableCell>
+              </TableRow>
                 </TableHead>
                 <TableBody>
                   {groupedData.map((row, index) => (
-                    <StyledTableRow key={index}>
-                      <StyledTableCell component="th" scope="row">
-                        {row.orderDate}
-                      </StyledTableCell>
+                    <StyledTableRow key={index} onClick={() => (navigate(`/item/detail/${row.iid}`))}>
+                      <StyledTableCell component="th" scope="row">{row.orderDate}</StyledTableCell>
                       <StyledTableCell align="right">{row.category}</StyledTableCell>
                       <StyledTableCell align="right">{row.itemName}</StyledTableCell>
                       <StyledTableCell align="right">{row.options}</StyledTableCell>

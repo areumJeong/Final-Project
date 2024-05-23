@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { TableCell, TableRow, IconButton, Stack, Typography, TableBody, Table } from '@mui/material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ChairAltIcon from '@mui/icons-material/ChairAlt';
 import WeekendIcon from '@mui/icons-material/Weekend';
 import DeskIcon from '@mui/icons-material/Desk';

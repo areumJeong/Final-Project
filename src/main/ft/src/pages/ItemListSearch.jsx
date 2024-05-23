@@ -30,7 +30,7 @@ function ItemListSearchContent() {
 
   return (
     <>
-      <Box width="70%" margin="auto" mt={5} mb={5}>
+      <Box width="85%" margin="auto" mt={5} mb={5}>
         <MainCategoryBox />
       </Box>
       {isLoading ? <LoadingIndicator /> : <ItemGrid items={list} navigate={navigate} />}

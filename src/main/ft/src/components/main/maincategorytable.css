@@ -3,7 +3,7 @@
     text-align: center;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
 
     .main-category-table td,
     .main-category-table th {

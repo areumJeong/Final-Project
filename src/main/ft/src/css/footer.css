@@ -57,6 +57,8 @@
   width: 160px;
   box-sizing: border-box;
   font-size: calc(8px + 0.5vw);
+  align-items: center;
+  text-align: center;
 }
 
 .footer-link-items h2 {
@@ -97,11 +99,9 @@
 }
 
 .social-media-wrap {
-  display: flex;
   align-items: center;
   text-align: center;
-  width: 90%;
-  max-width: 1000px;
+  width: 100%;
   margin:40px auto 0 auto;
 }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, alpha, AppBar, Box, Toolbar, IconButton, Typography, InputBase, Badge, Drawer, Button, List, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, Collapse, Stack } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -14,7 +14,6 @@ import {
   ExpandMore,
   AssignmentInd as AssignmentIndIcon
 } from '@mui/icons-material';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import StorageIcon from '@mui/icons-material/Storage';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from "../context/AuthContext";
@@ -25,12 +24,13 @@ import HotelIcon from '@mui/icons-material/Hotel';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import TableBarIcon from '@mui/icons-material/TableBar';
 import FoodBankIcon from '@mui/icons-material/FoodBank';
-import Avatar from '@mui/material/Avatar';
-import Logout from '@mui/icons-material/Logout';
-import Settings from '@mui/icons-material/Settings';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import PersonAdd from '@mui/icons-material/PersonAdd';
+import ChairAltIcon from '@mui/icons-material/ChairAlt';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { FaHotjar } from "react-icons/fa";
+import { FaBoltLightning } from "react-icons/fa6";
+import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
+import axios from 'axios';
+import RealTime from './RealTime';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -92,22 +92,26 @@ export default function NavigationBar() {
   const handleLogin = () => {
     // 로그인 페이지로 이동
     navigate('/signIn');
+    setDrawerOpen(false)
   };
 
   // 로그아웃  
   const handleLogout = () => {
     logout();
     navigate('/signIn');
+    setDrawerOpen(false)
   };
 
   //  회원가입
   const handleSignUp = () => {
     navigate('/signUp');
+    setDrawerOpen(false)
   };
 
   // 마이페이지
   const handleUserInfo = () => {
     navigate('/userInfo');
+    setDrawerOpen(false)
   };
   // ============== user 관련 함수들 끝 =================
 
@@ -142,149 +146,17 @@ export default function NavigationBar() {
     checkLoginStatus();
   }, []);
 
-
-  // 변경: AccountCircle 아이콘을 세션 로그인 상태에 따라 다르게 렌더링
-
-  const DrawerList = (
-    <Box sx={{ width: 350, }} role="presentation" >
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton onClick={() => setDrawerOpen(false)}>
-            <ListItemIcon>
-              <WhatshotIcon />
-            </ListItemIcon>
-            {/* Render admin options if user is an admin */}
-            <ListItemText component={Link} to={'/'} primary="특가" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton onClick={toggleList(!openList)}>
-            <ListItemIcon>
-              <ListIcon />
-            </ListItemIcon>
-            <ListItemText primary="카테고리" />
-            {openList ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-        </ListItem>
-        <Collapse in={openList} unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemlist/의자'} onClick={() => setDrawerOpen(false)}>
-              <ListItemIcon>
-                <WhatshotIcon />
-              </ListItemIcon>
-              <ListItemText primary="의자" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemlist/소파'} onClick={() => setDrawerOpen(false)}>
-              <ListItemIcon>
-                <WeekendIcon />
-              </ListItemIcon>
-              <ListItemText primary="소파" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemlist/책상'} onClick={() => setDrawerOpen(false)}>
-              <ListItemIcon>
-                <DeskIcon />
-              </ListItemIcon>
-              <ListItemText primary="책상" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemlist/침대'} onClick={() => setDrawerOpen(false)}>
-              <ListItemIcon>
-                <HotelIcon />
-              </ListItemIcon>
-              <ListItemText primary="침대" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemlist/책장'} onClick={() => setDrawerOpen(false)}>
-              <ListItemIcon>
-                <KitchenIcon />
-              </ListItemIcon>
-              <ListItemText primary="책장" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemlist/식탁'} onClick={() => setDrawerOpen(false)}>
-              <ListItemIcon>
-                <FoodBankIcon />
-              </ListItemIcon>
-              <ListItemText primary="식탁" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemlist/테이블'} onClick={() => setDrawerOpen(false)}>
-              <ListItemIcon>
-                <TableBarIcon />
-              </ListItemIcon>
-              <ListItemText primary="테이블" />
-            </ListItemButton>
-          </List>
-        </Collapse>
-      </List>
-      <Divider />
-      <Divider />
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton component={Link} to={'orderHistoryList'} onClick={() => setDrawerOpen(false)}>
-            <ListItemIcon>
-              <ShoppingCartIcon />
-            </ListItemIcon>
-            <ListItemText primary="주문내역" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component={Link} to={'wish/list'} onClick={() => setDrawerOpen(false)}>
-            <ListItemIcon>
-              <FavoriteIcon />
-            </ListItemIcon>
-            <ListItemText primary="찜목록" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component={Link} to={'userInfo'} onClick={() => setDrawerOpen(false)}>
-            <ListItemIcon>
-              <AccountCircleIcon />
-            </ListItemIcon>
-            <ListItemText primary="내 정보" />
-          </ListItemButton>
-        </ListItem>
-        {/* {isLoggedIn ? (
-              <>
-                <IconButton size="small" color="inherit" onClick={handleLogout}>
-                  <Stack direction="column" alignItems="center">
-                    <LogoutIcon />
-                    <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>로그아웃</Typography>
-                  </Stack>
-                </IconButton>
-                <IconButton size="small" color="inherit" onClick={handleUserInfo}>
-                  <Stack direction="column" alignItems="center">
-                    <AssignmentIndIcon />
-                    <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>마이페이지</Typography>
-                  </Stack>
-                </IconButton>
-              </>
-            ) : (
-              <>
-                <IconButton size="small" color="inherit" onClick={handleLogin}>
-                  <Stack direction="column" alignItems="center">
-                    <LoginIcon />
-                    <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>로그인</Typography>
-                  </Stack>
-                </IconButton>
-                <IconButton size="small" color="inherit" onClick={handleSignUp}>
-                  <Stack direction="column" alignItems="center">
-                    <PersonAddIcon />
-                    <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>회원가입</Typography>
-                  </Stack>
-                </IconButton>
-              </>
-            )} */}
-        {isAdmin && (
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to={'admin/chart'} onClick={() => setDrawerOpen(false)}>
-              <ListItemIcon>
-                <ListIcon />
-              </ListItemIcon>
-              <ListItemText primary="Admin Option 1" />
-            </ListItemButton>
-          </ListItem>
-        )}
-      </List>
-    </Box>
-
-  );
+  const handleToOrderHistory = () => {
+    if (!user || !user.email) {
+      window.location.href = '/signIn';
+      if (window.confirm('비회원 조회를 원하시나요?')) {
+        window.location.href = '/nonMemberOrderHistory';
+      }
+      return;
+    }
+    navigate('/OrderHistoryList');
+    setDrawerOpen(false)
+  };
 
   const StyledAppBar = styled(AppBar)({
     color: 'black',
@@ -313,18 +185,194 @@ export default function NavigationBar() {
       return;
     }
     navigate('/cart');
+    setDrawerOpen(false)
   };
 
-  const handleToOrderHistory = () => {
+  const handleWish = () => {
     if (!user || !user.email) {
       window.location.href = '/signIn';
-      if (window.confirm('비회원 조회를 원하시나요?')) {
-        window.location.href = '/nonMemberOrderHistory';
-      }
       return;
     }
-    navigate('/OrderHistoryList');
+    navigate('/wish/list');
+    setDrawerOpen(false)
   };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+    setListOpen(false);
+  };
+
+  const DrawerList = (
+    <Box sx={{ width: 350, }} role="presentation" >
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to={'itemMenuList/hot'} onClick={() => setDrawerOpen(false)}>
+            <ListItemIcon>
+              <FaHotjar />
+            </ListItemIcon>
+            <ListItemText primary="HOT" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to={'itemMenuList/sale'} onClick={() => setDrawerOpen(false)}>
+            <ListItemIcon>
+              <FaBoltLightning />
+            </ListItemIcon>
+            <ListItemText primary="SALE" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to={'itemMenuList/mostReview'} onClick={() => setDrawerOpen(false)}>
+            <ListItemIcon>
+              <AutoAwesomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="리뷰" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={toggleList(!openList)}>
+            <ListItemIcon>
+              <ListIcon />
+            </ListItemIcon>
+            <ListItemText primary="카테고리" />
+            {openList ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+        </ListItem>
+        <Collapse in={openList} unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemMenuList/의자'} onClick={handleDrawerClose}>
+              <ListItemIcon>
+                <ChairAltIcon />
+              </ListItemIcon>
+              <ListItemText primary="의자" />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemMenuList/소파'} onClick={handleDrawerClose}>
+              <ListItemIcon>
+                <WeekendIcon />
+              </ListItemIcon>
+              <ListItemText primary="소파" />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemMenuList/책상'} onClick={handleDrawerClose}>
+              <ListItemIcon>
+                <DeskIcon />
+              </ListItemIcon>
+              <ListItemText primary="책상" />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemMenuList/침대'} onClick={handleDrawerClose}>
+              <ListItemIcon>
+                <HotelIcon />
+              </ListItemIcon>
+              <ListItemText primary="침대" />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemMenuList/책장'} onClick={handleDrawerClose}>
+              <ListItemIcon>
+                <KitchenIcon />
+              </ListItemIcon>
+              <ListItemText primary="책장" />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemMenuList/식탁'} onClick={handleDrawerClose}>
+              <ListItemIcon>
+                <FoodBankIcon />
+              </ListItemIcon>
+              <ListItemText primary="식탁" />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={'itemMenuList/테이블'} onClick={handleDrawerClose}>
+              <ListItemIcon>
+                <TableBarIcon />
+              </ListItemIcon>
+              <ListItemText primary="테이블" />
+            </ListItemButton>
+          </List>
+        </Collapse>
+      </List>
+      <Divider />
+      <Divider />
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton onClick={handleToOrderHistory}>
+            <ListItemIcon>
+              <StorageIcon />
+            </ListItemIcon>
+            <ListItemText primary="주문내역" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={handleToCart}>
+            <ListItemIcon>
+              <ShoppingCartIcon />
+            </ListItemIcon>
+            <ListItemText primary="장바구니" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={handleWish}>
+            <ListItemIcon>
+              <FavoriteIcon />
+            </ListItemIcon>
+            <ListItemText primary="찜목록" />
+          </ListItemButton>
+        </ListItem>
+        {isLoggedIn ? (
+              <>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleLogout}>
+                    <ListItemIcon>
+                      <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="로그아웃" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleUserInfo}>
+                    <ListItemIcon>
+                      <AssignmentIndIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="마이페이지" />
+                  </ListItemButton>
+                </ListItem>
+              </>
+            ) : (
+              <>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleLogin}>
+                    <ListItemIcon>
+                      <LoginIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="로그인" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleSignUp}>
+                    <ListItemIcon>
+                      <PersonAddIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="회원가입" />
+                  </ListItemButton>
+                </ListItem>
+              </>
+            )}
+        {isAdmin && (
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to={'admin/chart'} onClick={() => setDrawerOpen(false)}>
+              <ListItemIcon>
+                <ListIcon />
+              </ListItemIcon>
+              <ListItemText primary="AdminOptionPage" />
+            </ListItemButton>
+          </ListItem>
+        )}
+        <ListItem disablePadding>
+          <ListItemButton  component={Link} to={'developerPage'} onClick={() => setDrawerOpen(false)}>
+            <ListItemIcon>
+              <DeveloperBoardIcon />
+            </ListItemIcon>
+            <ListItemText primary="개발자페이지?" />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Box>
+
+  );
 
   return (
     <Box sx={{ flexGrow: 1, marginBottom: 2, paddingTop: '103px', }}>
@@ -350,19 +398,23 @@ export default function NavigationBar() {
             <Link to={'/'} className='mainPageLink'>FUNniture</Link>
           </Typography>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
-            <form onSubmit={handleSearch}>
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  name="search"
-                  placeholder="검색"
-                  inputProps={{ 'aria-label': 'search' }}
-                />
-              </Search>
-            </form>
-            <Menu
+            <Stack direction="column" style={{marginTop: 30}}>
+              <form onSubmit={handleSearch}>
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    name="search"
+                    placeholder="검색"
+                    inputProps={{ 'aria-label': 'search' }}
+                  />
+                </Search>
+              </form>
+              <RealTime/>
+            </Stack>
+            
+            {/* <Menu
               anchorEl={anchorEl}
               id="account-menu"
               open={open}
@@ -422,7 +474,7 @@ export default function NavigationBar() {
                 </ListItemIcon>
                 Logout
               </MenuItem>
-            </Menu>
+            </Menu> */}
             <IconButton size="small" color="inherit" onClick={handleToOrderHistory}>
               <Stack direction="column" alignItems="center">
                 <Badge badgeContent={0} color="error">
