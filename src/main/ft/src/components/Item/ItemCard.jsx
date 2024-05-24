@@ -3,10 +3,34 @@ import Rating from "../Rating";
 import CountDown from "../CountDown";
 
 export default function ItemCard({ item, navigate }) {
-  const isNewItem = new Date(item.regDate) > new Date(new Date().setDate(new Date().getDate() - 7));
-  console.log(new Date().setDate(new Date().getDate() - 7));
+  const isNewItem = new Date(item.regDate) > new Date(new Date().setDate(new Date().getDate() - 14));
+
+  const handleItemClick = () => {
+    const MAX_RECENT_ITEMS = 9;
+    const recentItems = JSON.parse(localStorage.getItem('recentItems')) || [];
+    const newItem = {
+      iid: item.iid,
+      name: item.name,
+      img1: item.img1,
+    };
+
+    // 중복 제거
+    const filteredItems = recentItems.filter(i => i.iid !== item.iid);
+    filteredItems.unshift(newItem);
+
+    if (filteredItems.length > MAX_RECENT_ITEMS) {
+      filteredItems.splice(MAX_RECENT_ITEMS); // 초과하는 아이템 삭제
+    }
+
+    // 저장
+    localStorage.setItem('recentItems', JSON.stringify(filteredItems));
+
+    // 상세 페이지로 이동
+    navigate(`/item/detail/${item.iid}`);
+  };
+
   return (
-    <div className="paper-item" onClick={() => { navigate(`/item/detail/${item.iid}`) }} sx={{ maxWidth: 300, paddingBottom: 0 }}>
+    <div className="paper-item" onClick={handleItemClick} sx={{ maxWidth: 300, paddingBottom: 0 }}>
       <div style={{ position: 'relative' }}>
         <CardMedia
           component="img"

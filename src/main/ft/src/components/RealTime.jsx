@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function RealTimeContent() {
   });
 
   const [rank, setRank] = React.useState(0);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -37,15 +39,21 @@ function RealTimeContent() {
       fontSize: '16px',
     },
     rank: {
-      color: 'orange', // 숫자의 색상을 주황색으로 지정
-      fontWeight: 'bold', // 굵은 글꼴로 설정
-      fontFamily: 'Arial, sans-serif', // 원하는 둥근체 글꼴로 변경
+      color: 'orange',
+      fontWeight: 'bold',
+      fontFamily: 'Arial, sans-serif',
       marginLeft: 20
     },
     rankName: {
-      fontFamily: 'Arial, sans-serif', // 원하는 둥근체 글꼴로 변경
-      marginLeft: 20
+      fontFamily: 'Arial, sans-serif',
+      marginLeft: 20,
+      cursor: 'pointer',
     }
+  };
+
+  const handleClick = (event) => {
+    const targetText = event.target.innerText;
+    navigate(`/itemlist/${targetText}`)
   };
 
   if (error) return <div>Error fetching data</div>;
@@ -54,7 +62,7 @@ function RealTimeContent() {
   return (
     <div style={styles.term}>
       <span style={styles.rank}>{(rank + 1).toString().padStart(2, '0')}</span>
-      <span style={styles.rankName}>{listData[rank]?.query}</span>
+      <span style={styles.rankName} onClick={handleClick}>{listData[rank]?.query}</span>
     </div>
   );
 }
