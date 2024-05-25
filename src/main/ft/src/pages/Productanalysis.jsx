@@ -23,6 +23,7 @@ import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import axios from "axios";
 import AdminCategoryBar from "../components/AdminCategoryBar";
 import { useNavigate } from "react-router-dom";
+import * as XLSX from "xlsx";
 
 function Label({ componentName, valueType, isProOnly }) {
   const content = (
@@ -112,7 +113,6 @@ const HamburgerCheckbox = () => {
     );
     const result = response.data;
     setDatas(result);
-    console.log(result);
   };
 
   const handleReset = () => {
@@ -148,6 +148,14 @@ const HamburgerCheckbox = () => {
     } else if (index === 2) {
       setStartDate(twoWeeksAgo.toISOString().split("T")[0]);
     }
+  };
+
+  const exportToExcel = () => {
+    const currentDate = new Date().toISOString().split('T')[0];
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(groupedData);
+    XLSX.utils.book_append_sheet(wb, ws, "Data");
+    XLSX.writeFile(wb, `FUNniture ${currentDate}.xlsx`);
   };
 
   return (
@@ -339,7 +347,14 @@ const HamburgerCheckbox = () => {
                 icon={faDownload}
                 style={{ marginLeft: "5px" }}
               />
-              <span style={{ marginLeft: "5px" }}>현재 데이터 다운로드</span>
+              <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={exportToExcel}
+                  style={{ marginLeft: "10px" }}
+                >
+                  엑셀로 내보내기
+                </Button>
               <FontAwesomeIcon
                 icon={faDownload}
                 style={{ marginLeft: "5px" }}
@@ -349,28 +364,28 @@ const HamburgerCheckbox = () => {
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
-                <TableRow style={{width: '100%'}}>
+                <TableRow style={{width: '100%', textAlign: 'center'}}>
                   <StyledTableCell align="right" style={{width: '7%'}}>주문일</StyledTableCell>
                   <StyledTableCell align="right" style={{width: '8%'}}>카테고리</StyledTableCell>
-                  <StyledTableCell align="right" style={{width: '38%'}}>상품명</StyledTableCell>
+                  <StyledTableCell align="right" style={{width: '36%'}}>상품명</StyledTableCell>
                   <StyledTableCell align="right" style={{width: '8%'}}>옵션</StyledTableCell>
                   <StyledTableCell align="right" style={{width: '8%'}}>주문 금액</StyledTableCell>
-                  <StyledTableCell align="right" style={{width: '8%'}}>수익</StyledTableCell>
-                  <StyledTableCell align="right" style={{width: '8%'}}>판매가</StyledTableCell>
+                  <StyledTableCell align="right" style={{width: '8%'}}>원가</StyledTableCell>
+                  <StyledTableCell align="right" style={{width: '10%'}}>수익</StyledTableCell>
                   <StyledTableCell align="right" style={{width: '7%'}}>제조사</StyledTableCell>
                   <StyledTableCell align="right" style={{width: '8%'}}>결제 수량</StyledTableCell>
               </TableRow>
                 </TableHead>
                 <TableBody>
                   {groupedData.map((row, index) => (
-                    <StyledTableRow key={index} onClick={() => (navigate(`/item/detail/${row.iid}`))}>
+                    <StyledTableRow key={index} style={{cursor: 'pointer'}} onClick={() => (navigate(`/item/detail/${row.iid}`))}>
                       <StyledTableCell component="th" scope="row">{row.orderDate}</StyledTableCell>
                       <StyledTableCell align="right">{row.category}</StyledTableCell>
                       <StyledTableCell align="right">{row.itemName}</StyledTableCell>
                       <StyledTableCell align="right">{row.options}</StyledTableCell>
-                      <StyledTableCell align="right">{row.orderPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</StyledTableCell>
-                      <StyledTableCell align="right">{row.itemPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</StyledTableCell>
-                      <StyledTableCell align="right">{(row.orderPrice - row.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</StyledTableCell>
+                      <StyledTableCell align="right">{(row.orderPrice * row.orderCount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</StyledTableCell>
+                      <StyledTableCell align="right">{(row.itemPrice * row.orderCount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</StyledTableCell>
+                      <StyledTableCell align="right">{((row.orderPrice - row.itemPrice)  * row.orderCount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</StyledTableCell>
                       <StyledTableCell align="right">{row.company}</StyledTableCell>
                       <StyledTableCell align="right">{row.orderCount}</StyledTableCell>
                     </StyledTableRow>
