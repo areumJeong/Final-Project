@@ -4,14 +4,14 @@ import { AuthContextProvider } from './context/AuthContext';
 import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
 import RecentItems from "./components/Item/RecentItems";
-import ImageComponent from "./pages/ImageComponent";
+import AITest from "./pages/AITest";
 
 export default function App() {
   return (
     <AuthContextProvider>
         <NavigationBar/>
         <RecentItems/>
-        {/* <ImageComponent/> */}
+        {/* <AITest/> */}
         <Outlet />
         <Footer />
     </AuthContextProvider>
