@@ -24,6 +24,7 @@ import axios from "axios";
 import AdminCategoryBar from "../components/AdminCategoryBar";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
+import { Container } from "@mui/material";
 
 function Label({ componentName, valueType, isProOnly }) {
   const content = (
@@ -160,7 +161,7 @@ const HamburgerCheckbox = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <>
+      <Container>
         <AdminCategoryBar/>
         <Card>
           <CardContent style={{ alignItems: "center", display: "flex" }}>
@@ -341,25 +342,18 @@ const HamburgerCheckbox = () => {
                 alignItems: "center",
               }}
             >
-              <Checkbox />
-              <span style={{ marginLeft: "5px" }}>금액 상세보기</span>
               <FontAwesomeIcon
                 icon={faDownload}
                 style={{ marginLeft: "5px" }}
               />
               <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={exportToExcel}
-                  style={{ marginLeft: "10px" }}
-                >
-                  엑셀로 내보내기
-                </Button>
-              <FontAwesomeIcon
-                icon={faDownload}
-                style={{ marginLeft: "5px" }}
-              />
-              <span style={{ marginLeft: "5px" }}>원본 데이터 다운로드</span>
+                variant="contained"
+                color="primary"
+                onClick={exportToExcel}
+                style={{ marginLeft: "10px" }}
+              >
+                엑셀로 내보내기
+              </Button>
             </div>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -395,7 +389,7 @@ const HamburgerCheckbox = () => {
             </TableContainer>
           </CardContent>
         </Card>
-      </>
+      </Container>
     </ThemeProvider>
   );
 };

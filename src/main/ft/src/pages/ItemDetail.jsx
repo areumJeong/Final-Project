@@ -585,7 +585,7 @@ export default function ItemDetail() {
           <Grid container spacing={2} justifyContent="center" sx={{ paddingLeft: { xs: 2, md: 10 }, paddingRight: { xs: 2, md: 10 } }}>
             <Grid item xs={12} >
               <ProductQnA posts={qnAs} reloadQnAData={reloadQnAData}/>
-              <Button variant="contained" style={{ marginBottom: '20px', backgroundColor: '#808080' }} onClick={() => openInquiryModal(iid)}>문의하기</Button>
+              <Button variant="contained" style={{ marginBottom: '20px', backgroundColor: '#808080', position:'relative', top:'-50px'}} onClick={() => openInquiryModal(iid)}>문의하기</Button>
               <InquiryContent isOpen={isInquiryModalOpen} handleClose={closeInquiryModal} iid={iid}/>
             </Grid>
           </Grid>
