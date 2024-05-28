@@ -7,6 +7,7 @@ const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
 const Karlo = () => {
   const [imageURL, setImageURL] = useState('');
   const [prompt, setPrompt] = useState('');
+  const [negative_prompt, setNegative_prompt] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedMask, setSelectedMask] = useState(null);
 
@@ -16,7 +17,11 @@ const Karlo = () => {
         'https://api.kakaobrain.com/v2/inference/karlo/inpainting',
         {
           image: image,
-          mask: mask
+          mask: mask,
+          prompt: 'The interior should be arranged so that it stands out naturally from other rooms or spaces and should always be located on the floor.',
+          negative_prompt: 'person',
+          image_quality: 100,
+          prior_num_inference_steps	: 100,
         },
         {
           headers: {
@@ -66,7 +71,10 @@ const Karlo = () => {
 
   return (
     <div>
+      <span>제시어</span>
       <input value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+      <span>제외</span>
+      <input value={negative_prompt} onChange={(e) => setNegative_prompt(e.target.value)} />
       <input type="file" accept="image/*" onChange={handleImageChange} />
       <input type="file" accept="image/*" onChange={handleMaskChange} />
       <button onClick={handleImageUpload}>이미지 변환</button>
@@ -76,3 +84,6 @@ const Karlo = () => {
 };
 
 export default Karlo;
+
+// The interior should be arranged so that it stands out naturally from other rooms or spaces and should always be located on the floor.
+// person
