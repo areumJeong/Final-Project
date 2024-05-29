@@ -58,7 +58,7 @@ const DeveloperPage = () => {
       imgUrl: '/img/circle03.png' },
     { id: 4, 
       name: '박성민', 
-      description:  '주문, Firebase를 이용한 유저, 소셜로그인 기능과 RealtimeDB, Karlo, cloudinary, CoolSMS api', 
+      description:  '주문, Firebase를 이용한 유저, 소셜로그인 기능과 RealtimeDB, Karlo, CoolSMS api', 
       oneLine: '개발 중 복잡한 문제를 쪼개어 해결한 후 통합하는 방식이 더 효율적임을 깨달았습니다. ' +
                 '또한 파이어베이스를 공부하며 새로운 기술을 빠르게 습득하는 역량과 검색 및 자료 활용 능력이 ' +
                 '개발자에게 중요하다는 것을 깨달았습니다.',
