@@ -11,6 +11,7 @@ import { selectUserData } from '../api/firebase';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { fetchWishList } from "../api/wishApi ";
 import ImageDownload from "../components/AI/ImageDownload";
+import { auto } from "@cloudinary/url-gen/actions/resize";
 
 
 
@@ -78,7 +79,20 @@ export default function WishItemList() {
 
   return (
     <Container>
-      <Grid container spacing={2} className="itemList" marginTop={10}>
+      <Grid container spacing={2} className="itemList" marginTop={5}>
+        <Grid item xs={12} sm={12} md={5} lg={5} sx={{ position:'fixed',  right:{ md: '4%', lg:'2%',} , top:{md:'145px', lg:'145px', xs: '100px', sm:'100px', }, height:{ md: '55%', lg: '59%', xs:'40%', sm:'40%',}, width:'auto', marginBottom: 3, zIndex: 999 }}>
+          <Card sx={{ padding: 3, backgroundColor: 'rgb(240, 240, 240)',  }}>
+            <Typography variant="h5">
+              AI 이미지 생성
+            </Typography>
+            <Typography variant="body2">
+              검정색 상품은 제대로 작동되지 않습니다... 죄송합니다
+            </Typography>
+            <Grid sx={{width:{ xs: 300, sm:300, md: '100%', lg:'100%',}}}>
+              <ImageDownload img={image} />
+            </Grid>
+          </Card>
+        </Grid>
         <Grid item xs={12} sm={12} md={7} lg={7}>
           <Grid container spacing={2} className="itemList">
             {list.map((item, index) => (
@@ -116,17 +130,6 @@ export default function WishItemList() {
               </Grid>
             ))}
           </Grid>
-        </Grid>
-        <Grid item xs={12} sm={12} md={5} lg={5} sx={{ position: 'sticky', top: '10px', zIndex: 999 }}>
-          <Card sx={{ padding: 3, backgroundColor: 'rgb(240, 240, 240)' }}>
-            <Typography variant="h5">
-              AI 이미지 생성
-            </Typography>
-            <Typography variant="body2">
-              검정색 상품은 제대로 작동되지 않습니다... 죄송합니다
-            </Typography>
-            <ImageDownload img={image} />
-          </Card>
         </Grid>
       </Grid>
     </Container>

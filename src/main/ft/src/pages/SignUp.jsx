@@ -13,6 +13,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Divider } from "@mui/material";
 
 // 디자인
 function Copyright(props) {
@@ -374,18 +375,21 @@ export default function SignUp() {
                   계정이 있으신가요? 로그인
                 </Link>
               </Grid>
+              </Grid>
+              <Divider sx={{ my: 1 }} />
+
               <Grid item>
                 <Box display="flex" flexDirection="row" alignItems="center">
                   <CustomButton onClick={handleGoogle} startIcon={<img src="img/googlelogo.png" alt="구글 로고" style={{ width: '36px', marginRight: '8px' }} />}>
-                    Google
+                    
                   </CustomButton>
                   <Box mx={1} />
                   <CustomButton onClick={handleKakao} startIcon={<img src="img/kakaologo.png" alt="카카오 로고" style={{ width: '36px', marginRight: '8px' }} />}>
-                    Kakao
+                    
                   </CustomButton>
                 </Box>
               </Grid>
-            </Grid>
+            
 
             
           </Box>
