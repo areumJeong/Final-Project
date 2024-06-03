@@ -150,7 +150,7 @@ export default function AdminItemList() {
                   <table style={{ width: '100%' }}>
                     <tbody>
                       <tr>
-                        <td style={{ width: '30%', paddingRight: 20 }} rowspan="2">
+                        <td style={{ width: '30%', paddingRight: 20 }} rowSpan="2">
                           <img src={item.img1} alt={'img'} style={{ width: '100%', height: 160, cursor: 'pointer' }} onClick={() => { navigate(`/item/detail/${item.iid}`) }}/>
                         </td>
                         <td style={{ verticalAlign: 'top',  width: '40%' }}>

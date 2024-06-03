@@ -3,12 +3,11 @@ import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import '../../css/Calendar.css';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { selectUserData } from '../../api/firebase';
-import axios from 'axios';
 import OrderInfoModal from './OrderInfoModal';
+import { fetchAdminOrderHistory } from '../../api/orderApi';
 
 const Calendar = () => {
   const [currentUserEmail, setCurrentUserEmail] = useState(null);
-  const [userInfo, setUserInfo] = useState(null);
   const [orders, setOrders] = useState({});
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +28,6 @@ const Calendar = () => {
       const fetchUserInfo = async () => {
         try {
           const info = await selectUserData(currentUserEmail);
-          setUserInfo(info);
         } catch (error) {
           console.log('사용자 정보를 불러오는 중 에러:', error);
         }
@@ -39,22 +37,22 @@ const Calendar = () => {
   }, [currentUserEmail]);
 
   useEffect(() => {
-    if (currentUserEmail) {
-      const fetchOrderHistory = async () => {
+    const fetchOrderHistory = async () => {
+      if (currentUserEmail) {
         try {
-          const response = await axios.post('/ft/order/admin/historyList', { email: currentUserEmail});
-          const ordersData = response.data.reduce((acc, order) => {
-            const date = order.regDate.substring(0, 10); // 날짜 부분만 추출
+          const response = await fetchAdminOrderHistory(currentUserEmail);
+          const ordersData = (response || []).reduce((acc, order) => {
+            const date = order.regDate.substring(0, 10);
             if (!acc[date]) {
               acc[date] = [];
             }
             acc[date].push({
               oid: order.oid,
               regDate: order.regDate,
-              img1: order.img1, // assuming order object has an imageUrl field
-              name: order.name, // assuming order object has a name field
+              img1: order.img1,
+              name: order.name,
               option: order.option,
-              count: order.count, // assuming order object has a quantity field
+              count: order.count,
               status: order.status,
               iid: order.iid,
               totalPrice: order.totalPrice,
@@ -72,9 +70,9 @@ const Calendar = () => {
           }
           setOrders({});
         }
-      };
-      fetchOrderHistory();
-    }
+      }
+    };
+    fetchOrderHistory();
   }, [currentUserEmail]);
 
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
@@ -140,7 +138,6 @@ const Calendar = () => {
           
             const cancelledCount = orders[dateString] ? orders[dateString]
               .filter((order, index, self) => {
-                // oid 기준으로 같은 거 필터링
                 return (
                   index ===
                   self.findIndex((o) => o.oid === order.oid && o.status === '취소')
@@ -206,7 +203,7 @@ const Calendar = () => {
       <table className='claendarTable'>
         <thead>
           <tr>
-            <th className='t0'>일</th><th>월</th> <th>화</th> <th>수</th> <th>목</th> <th>금</th><th className='t6'>토</th>
+            <th className='t0'>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th className='t6'>토</th>
           </tr>
         </thead>
         <tbody>

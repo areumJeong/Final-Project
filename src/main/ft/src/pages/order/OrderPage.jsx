@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Button, Card, Container, Grid, Typography, Table, TableBody, TableCell, TableHead, TableContainer,useTheme,
-  TableRow, Checkbox, CardMedia, TextField, MenuItem, FormControl, InputLabel, Select, Divider, useMediaQuery,
+  Card, Container, Grid, Typography, Table, TableBody, TableCell, TableHead, TableContainer,useTheme,
+  TableRow, CardMedia, TextField, MenuItem, FormControl, InputLabel, Select, Divider, useMediaQuery,
 } from "@mui/material";
 import { nanoid } from "nanoid";
 import { useDaumPostcodePopup } from 'react-daum-postcode';
@@ -10,11 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import CustomButton from '../../components/publics/CustomButton';
 
-
 const Order = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
   // order
   const [orderItems, setOrderItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0); // 총 결제 금액 추가
@@ -51,7 +47,7 @@ const Order = () => {
           setUserInfo(info);
 
         } catch (error) {
-          console.error('사용자 정보를 불러오는 중 에러:', error);
+          console.log('사용자 정보를 불러오는 중 에러:', error);
         }
       };
       fetchUserInfo();
@@ -137,7 +133,7 @@ const Order = () => {
       // 모든 주문이 성공적으로 생성되었을 때 메시지 출력
       alert('주문이 성공적으로 생성되었습니다.');
     } catch (error) {
-      console.error('주문 처리 중 오류:', error);
+      console.log('주문 처리 중 오류:', error);
       alert('주문 생성 중 오류가 발생했습니다.');
     }
   };
@@ -161,7 +157,6 @@ const Order = () => {
   const [tel, setTel] = useState('');
   const [req, setReq] = useState('');
   const [messageType, setMessageType] = useState('');
-  const [customMessage, setCustomMessage] = useState('');
   const openPostcode = useDaumPostcodePopup("//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js");
 
   useEffect(() => { // 컴포넌트가 렌더링될 때마다 실행되기 때문에, 기본적으로 매 렌더링마다 실행됩니다. 
@@ -222,14 +217,6 @@ const Order = () => {
 
     // 상태 업데이트
     setTel(updatedTel);
-  };
-
-  const handleMessageChange = (e) => {
-    const selectedMessageType = e.target.value;
-    setMessageType(selectedMessageType);
-    if (selectedMessageType !== '직접 입력') {
-      setCustomMessage('');
-    }
   };
 
   return (

@@ -4,7 +4,7 @@ import { selectUserData } from '../../api/firebase';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { getItemDetail } from '../../components/Item/Items'; // 아이템 정보 가져오기
 import AdminCategoryBar from '../../components/admin/AdminCategoryBar';
-import SelectedItemInfo from '../../components/QnA/SelectedItemInfo';
+import SelectedItemInfo from '../../components/Item/SelectedItemInfo';
 import EditModal from '../../components/QnA/EditModal';
 import QnAPost from '../../components/QnA/QnAPost';
 import { adminQnAList } from '../../api/boardApi';
@@ -55,7 +55,7 @@ function QnAListContent() {
         try {
           const info = await selectUserData(currentUserEmail);
         } catch (error) {
-          console.error('사용자 정보를 불러오는 중 에러:', error);
+          console.log('사용자 정보를 불러오는 중 에러:', error);
         }
       };
       fetchUserInfo();
@@ -69,7 +69,7 @@ function QnAListContent() {
         setPosts(data); // 가져온 데이터를 posts 상태에 설정
         setLoading(false); // Set loading to false when data is fetched
       } catch (error) {
-        console.error('데이터를 불러오는 중 에러:', error);
+        console.log('데이터를 불러오는 중 에러:', error);
       }
     };
     fetchData();
@@ -92,12 +92,11 @@ function QnAListContent() {
 
   const handlePostClick = async (post, index) => {
     setExpandedPost(expandedPost === index ? null : index);
-    console.log(post);
     if(expandedPost !== index )
     try {
       await fetchRepliesAndItemInfo(post);
     } catch (error) {
-      console.error('게시물 정보를 불러오는 중 에러:', error);
+      console.log('게시물 정보를 불러오는 중 에러:', error);
     }
   };
 
@@ -112,13 +111,13 @@ function QnAListContent() {
           const itemInfo = await getItemDetail(post.iid); // 아이템 정보 가져오기 함수 호출
           setSelectedItem(itemInfo); // 선택된 아이템 정보 설정
         } else {
-          console.error('게시물에 아이템 ID가 없습니다.');
+          console.log('게시물에 아이템 ID가 없습니다.');
         }
       } else {
-        console.error('유효하지 않은 게시물입니다.');
+        console.log('유효하지 않은 게시물입니다.');
       }
     } catch (error) {
-      console.error('답변 목록을 불러오는 중 에러:', error);
+      console.log('답변 목록을 불러오는 중 에러:', error);
     }
   };
 
@@ -154,7 +153,6 @@ function QnAListContent() {
         content: editContent.replace(/\n/g, "<br/>") 
       };
       const response = await updateReply(updateReplyData);
-      console.log('답변을 성공적으로 수정했습니다:', response.data);
       handleCloseEditModal();
       const responseReplies = await fetchReplies(editReply.bid);
       setReplies(responseReplies);
@@ -162,7 +160,7 @@ function QnAListContent() {
       const updatedData = await adminQnAList();
       setPosts(updatedData);
     } catch (error) {
-      console.error('답변을 수정하는 중 에러:', error);
+      console.log('답변을 수정하는 중 에러:', error);
     }
   };
 
@@ -184,8 +182,6 @@ function QnAListContent() {
       // 답변을 서버로 전송
       const response = await postReply(replyData);
   
-      // 응답 확인
-      console.log('답변을 성공적으로 작성했습니다:', response.data);
       // 답변 내용 초기화
       setReplyContent('');
       const updatedRepliesData = await fetchReplies(post.bid); // 수정된 답변이 속한 게시물의 답변 목록
@@ -194,7 +190,7 @@ function QnAListContent() {
       const updatedData = await adminQnAList();
       setPosts(updatedData);
     } catch (error) {
-      console.error('답변을 작성하는 중 에러:', error);
+      console.log('답변을 작성하는 중 에러:', error);
     }
   };
 
@@ -261,7 +257,7 @@ function QnAListContent() {
       const updatedData = await adminQnAList();
       setPosts(updatedData);
     } catch (error) {
-      console.error('답변 삭제 중 에러:', error);
+      console.log('답변 삭제 중 에러:', error);
     }
   };
 

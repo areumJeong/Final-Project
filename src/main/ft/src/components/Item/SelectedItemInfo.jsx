@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Paper, Typography, CardMedia } from '@mui/material';
-import CountDown from '../Item/CountDown';
+import CountDown from './CountDown';
 import { useNavigate } from 'react-router-dom';
 
 const SelectedItemInfo = ({ selectedItem }) => {
