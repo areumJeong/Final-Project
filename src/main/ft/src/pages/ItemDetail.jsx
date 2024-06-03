@@ -2,7 +2,7 @@ import React, { useState, useEffect  } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import { Snackbar } from '@mui/material';
+import { Container, Snackbar } from '@mui/material';
 import ReviewForm from "../components/ReviewForm";
 import InquiryContent from "../components/InquiryContent";
 import ProductReviews from "../components/ProductReviews";
@@ -82,7 +82,7 @@ export default function ItemDetail() {
         setIsWish(value === 1);
         setIsLoading(false);
       } catch (error) {
-        console.error('상품 정보를 불러오는 중 에러:', error);
+        console.log('상품 정보를 불러오는 중 에러:', error);
         setIsLoading(false);
       }
     };
@@ -148,7 +148,6 @@ export default function ItemDetail() {
   
     addToCart(cartItem)
       .then(response => {
-        console.log(response);
         if (response) {
           const addToCartConfirmation = window.confirm('장바구니에 상품이 추가되었습니다.\n장바구니로 이동하시겠습니까?');
           if (addToCartConfirmation) {
@@ -161,7 +160,7 @@ export default function ItemDetail() {
         }
       })
       .catch(error => {
-        console.error('장바구니 추가 실패:', error);
+        console.log('장바구니 추가 실패:', error);
       });
   };
 
@@ -276,7 +275,7 @@ export default function ItemDetail() {
         setIsLoading(false);
       })
       .catch(err => {
-        console.error('Error fetching QnA:', err);
+        console.log('Error fetching QnA:', err);
         setIsLoading(false);
         // 사용자에게 메시지 표시
         // 예를 들어, 에러 상태를 관리하는 state를 추가하여 에러 메시지를 화면에 렌더링할 수 있습니다.
@@ -306,7 +305,7 @@ export default function ItemDetail() {
           const itemWishCount = response.data;
           setItemWishCount(itemWishCount);
         } catch (error) {
-          console.error('아이템 찜 수를 불러오는 중 에러:', error);
+          console.log('아이템 찜 수를 불러오는 중 에러:', error);
         }
       };
     
@@ -314,7 +313,7 @@ export default function ItemDetail() {
   
     })
     .catch(error => {
-      console.error('Error while updating like count:', error);
+      console.log('Error while updating like count:', error);
     });
   };
 
@@ -379,7 +378,6 @@ export default function ItemDetail() {
       })) : [];
       setTags(formattedTags);
       
-      console.log(value);
       if (value === 1){
         setIsWish(true)
       } else{
@@ -439,7 +437,7 @@ export default function ItemDetail() {
           setUserInfo(info);
           setIsAdmin(info && info.isAdmin === 1);
         } catch (error) {
-          console.error('사용자 정보를 불러오는 중 에러:', error);
+          console.log('사용자 정보를 불러오는 중 에러:', error);
         }
       };
       fetchUserInfo();
@@ -455,7 +453,6 @@ export default function ItemDetail() {
       textField.select();
       document.execCommand('copy');
       textField.remove();
-      console.log('링크가 클립보드에 복사되었습니다.');
       setIsSnackbarOpen(true);
   };
 
@@ -471,7 +468,7 @@ export default function ItemDetail() {
         const itemWishCount = response.data;
         setItemWishCount(itemWishCount);
       } catch (error) {
-        console.error('아이템 찜 수를 불러오는 중 에러:', error);
+        console.log('아이템 찜 수를 불러오는 중 에러:', error);
       }
     };
   
@@ -504,7 +501,6 @@ export default function ItemDetail() {
   
     // orderItems를 로컬 스토리지에 저장
     localStorage.setItem('orderItems', JSON.stringify(orderItems)); //  객체나 배열을 JSON 문자열로 변환
-    console.log(orderItems);
     // Order 페이지로 이동할 때 orderItems 상태를 함께 전달
     navigate("/order", { state: { orderItems } });
   };    
@@ -528,7 +524,6 @@ export default function ItemDetail() {
   
     // orderItems를 로컬 스토리지에 저장
     localStorage.setItem('orderItems', JSON.stringify(orderItems)); //  객체나 배열을 JSON 문자열로 변환
-    console.log(orderItems);
     // Order 페이지로 이동할 때 orderItems 상태를 함께 전달
     navigate("/order", { state: { orderItems } });
   };    
@@ -564,12 +559,14 @@ export default function ItemDetail() {
       </nav>
       <Grid item xs={12} md={12}>
         <section id="detail">
-          <Grid container spacing={2} justifyContent="center">
-            <Grid item xs={12} sx={{ padding: { xs: 0, md: 5 }, textAlign: 'center' }}>
-              <img src={item.img2} alt={item.img2} style={{ width: '90%' }} />
-              <img src={item.img3} alt={item.img3} style={{ width: '90%' }} />
+          <Container>
+            <Grid container spacing={2} justifyContent="center">
+              <Grid item xs={12} sx={{ padding: { xs: 0, md: 5 }, textAlign: 'center' }}>
+                <img src={item.img2} alt={item.img2} style={{ width: '90%' }} />
+                <img src={item.img3} alt={item.img3} style={{ width: '90%' }} />
+              </Grid>
             </Grid>
-          </Grid>
+          </Container>
         </section>
       </Grid>
       <Grid item xs={12} md={12}>

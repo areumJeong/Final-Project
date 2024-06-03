@@ -39,13 +39,12 @@ export default function SaleModal({ open, onClose, iid, cost, price, ordSaleDate
   
       addItemSale(formData)
         .then(res => {
-          console.log(res);
           setSalePrice(null)
           setSaleDate(null)
           onClose(); // 모달 닫기
         })
         .catch(error => {
-          console.error('Error:', error);
+          console.log('Error:', error);
 
         });
     }

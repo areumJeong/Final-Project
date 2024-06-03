@@ -35,7 +35,7 @@ const ReviewEditModal = ({ open, handleClose, review, item }) => {
           setUserInfo(info);
           setIsAdmin(info && info.isAdmin === 1);
         } catch (error) {
-          console.error('사용자 정보를 불러오는 중 에러:', error);
+          console.log('사용자 정보를 불러오는 중 에러:', error);
         }
       };
       fetchUserInfo();
@@ -78,11 +78,10 @@ const ReviewEditModal = ({ open, handleClose, review, item }) => {
 
     updateBoard(formData)
       .then(response => {
-        console.log('Review updated successfully:', response);
         handleClose();
       })
       .catch(error => {
-        console.error('Error updating review:', error);
+        console.log('Error updating review:', error);
       });
   };
 
@@ -94,7 +93,7 @@ const ReviewEditModal = ({ open, handleClose, review, item }) => {
           [name]: url
         }));
       }).catch(error => {
-        console.error('Error uploading image:', error);
+        console.log('Error uploading image:', error);
       });
     }
   }

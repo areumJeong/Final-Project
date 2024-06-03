@@ -19,7 +19,7 @@ export default function BackgroundRemoval({ imageFile }) {
 
   const removeBackground = async () => {
     if (!selectedImage) {
-      console.error('No image selected.');
+      console.log('No image selected.');
       return;
     }
 
@@ -53,14 +53,14 @@ export default function BackgroundRemoval({ imageFile }) {
 
       fileReader.readAsArrayBuffer(selectedImage);
     } catch (error) {
-      console.error('Error removing background:', error);
+      console.log('Error removing background:', error);
       if (error.response) {
-        console.error('Status:', error.response.status);
+        console.log('Status:', error.response.status);
 
         // Blob 데이터를 텍스트로 변환하여 출력
         const reader = new FileReader();
         reader.onload = () => {
-          console.error('Data:', reader.result);
+          console.log('Data:', reader.result);
         };
         reader.readAsText(error.response.data);
       }

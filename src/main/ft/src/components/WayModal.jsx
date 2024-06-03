@@ -20,11 +20,10 @@ const WayModal = ({ open, onClose, order }) => {
       // 서버로 운송장 번호를 전송
       order.oid = String(order.oid); // 05/31 추가함
       await axios.post('/ft/order/orderWayUpdate', { oid: order.oid, way: trackingNumber });
-      console.log('운송장 번호 업데이트 완료');
       // 모달 닫기
       onClose();
     } catch (error) {
-      console.error('운송장 번호 업데이트 실패:', error);
+      console.log('운송장 번호 업데이트 실패:', error);
     }
   };
 

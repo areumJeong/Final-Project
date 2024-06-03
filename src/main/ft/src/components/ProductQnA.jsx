@@ -45,7 +45,7 @@ export default function ProductQnA({ posts, reloadQnAData }) {
           const info = await selectUserData(currentUserEmail);
           setUserInfo(info);
         } catch (error) {
-          console.error('사용자 정보를 불러오는 중 에러:', error);
+          console.log('사용자 정보를 불러오는 중 에러:', error);
         }
       };
       fetchUserInfo();
@@ -66,7 +66,7 @@ export default function ProductQnA({ posts, reloadQnAData }) {
           setReplyStatus(status);
         }
       } catch (error) {
-        console.error('답변 목록을 불러오는 중 에러:', error);
+        console.log('답변 목록을 불러오는 중 에러:', error);
       }
     };
   
@@ -94,7 +94,7 @@ export default function ProductQnA({ posts, reloadQnAData }) {
         console.error('유효하지 않은 게시물입니다.');
       }
     } catch (error) {
-      console.error('답변 목록을 불러오는 중 에러:', error);
+      console.log('답변 목록을 불러오는 중 에러:', error);
     }
   };
 
@@ -116,10 +116,9 @@ export default function ProductQnA({ posts, reloadQnAData }) {
     if (confirmDelete) {
       try {
         const response = await deleteBoard(post.bid);
-        console.log('포스트가 성공적으로 삭제되었습니다.', response);
         reloadQnAData();
       } catch (error) {
-        console.error('포스트 삭제 중 오류가 발생했습니다.', error);
+        console.log('포스트 삭제 중 오류가 발생했습니다.', error);
       }
     }
   };

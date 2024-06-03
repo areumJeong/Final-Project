@@ -36,7 +36,7 @@ const ReviewFormModal = ({ isOpen, handleClose, iid, oiid }) => {
           setUserInfo(info);
           setIsAdmin(info && info.isAdmin === 1);
         } catch (error) {
-          console.error('사용자 정보를 불러오는 중 에러:', error);
+          console.log('사용자 정보를 불러오는 중 에러:', error);
         }
       };
       fetchUserInfo();
@@ -68,16 +68,14 @@ const ReviewFormModal = ({ isOpen, handleClose, iid, oiid }) => {
       email: userInfo.email,
       oiid: oiid,
     };
-    console.log(formData);
     submitBoard(formData)
       .then(response => {
-        console.log('Review submitted successfully:', response.data);
         handleClose();
         setRating(null)
         setReview(null)
       })
       .catch(error => {
-        console.error('Error submitting review:', error);
+        console.log('Error submitting review:', error);
       });
   };
 
@@ -89,7 +87,7 @@ const ReviewFormModal = ({ isOpen, handleClose, iid, oiid }) => {
           [name]: url
         }));
       }).catch(error => {
-        console.error('Error uploading image:', error);
+        console.log('Error uploading image:', error);
       });
     }
   }

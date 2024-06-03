@@ -85,7 +85,7 @@ const ProductReviews = ({ reviews, item, reloadReviewData }) => {
           setUserInfo(info);
           setIsAdmin(info && info.isAdmin === 1);
         } catch (error) {
-          console.error('사용자 정보를 불러오는 중 에러:', error);
+          console.log('사용자 정보를 불러오는 중 에러:', error);
         }
       };
       fetchUserInfo();

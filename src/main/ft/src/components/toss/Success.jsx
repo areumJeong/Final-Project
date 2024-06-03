@@ -40,7 +40,7 @@ export function SuccessPage({orderData}) {
         // 결제 성공 시 처리할 로직을 여기에 추가하세요.
         // 예: navigate(`/success?orderId=${json.orderId}`);
       } catch (error) {
-        console.error('Error confirming payment:', error);
+        console.log('Error confirming payment:', error);
       }
     };
 

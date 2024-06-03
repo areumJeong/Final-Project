@@ -42,7 +42,6 @@ const AdminOrderHistoryListContent = () => {
     refetchInterval: 1000,
   });
 
-
   const handleOpenModal = (orderId) => {
     setSelectedOrderId(orderId);
     setOpenModal(true);

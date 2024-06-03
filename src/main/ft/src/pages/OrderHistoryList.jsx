@@ -13,14 +13,11 @@ import {
   TableContainer,
   Button,
 } from "@mui/material";
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { selectUserData } from '../api/firebase';
 import { useNavigate } from 'react-router-dom';
 import TrackerComponent from '../components/TrackerComponent';
 import ReviewFormModal from '../components/ReviewForm';
-import Calendar from '../components/calendar/Calendar';
 
 const OrderHistoryList = () => {
   const [currentUserEmail, setCurrentUserEmail] = useState(null);
@@ -28,7 +25,6 @@ const OrderHistoryList = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const [orders, setOrders] = useState([]);
-  const [showCalendar, setShowCalendar] = useState(false); // 캘린더 표시 여부 상태
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -129,7 +125,6 @@ const OrderHistoryList = () => {
     }
   };
 
-  const [reviews, setReviews] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [iid, setIid] = useState();
   const [oiid, setOiid] = useState();
@@ -170,104 +165,91 @@ const OrderHistoryList = () => {
 
   return (
     <Container fixed sx={{ mt: 5, mb: 5 }}>
-
-      {/* 캘린더 보기 버튼 */}
-      <Box display="flex" justifyContent="flex-end" sx={{ marginBottom: 1 }}>
-        <Button variant="contained" onClick={() => setShowCalendar(!showCalendar)}>
-          {showCalendar ? '주문 내역 보기' : <CalendarMonthIcon></CalendarMonthIcon>}
-        </Button>
-      </Box>
-
-      {showCalendar ? (
-        <Calendar />
-      ) : (
-        // 날짜별로 주문 목록 표시
-        Object.entries(groupedOrdersByDate).map(([date, orders]) => (
-          <div key={date}>
-            <Typography variant="h5" sx={{ marginBottom: 1 }}>
-              {date}
-            </Typography>
-            {sortedOrdersByOrderId().map(({ orderId, orderList, totalPrice }) => {
-              const ordersForThisDate = orderList.filter(order => order.regDate.substring(0, 10) === date);
-              if (ordersForThisDate.length === 0) return null;
-              return (
-                <div key={orderId}>
-                  <Typography variant="subtitle1" sx={{ marginBottom: 1 }}>
-                    주문 번호: {orderId}
-                  </Typography>
-                  <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                    총 가격: {totalPrice.toLocaleString()}원
-                  </Typography>
-                  <TableContainer>
-                    <Table>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell style={{ textAlign: 'center' }}>상품 이미지</TableCell>
-                          <TableCell style={{ textAlign: 'center' }}>상품명</TableCell>
-                          <TableCell style={{ textAlign: 'center' }}>개수</TableCell>
-                          <TableCell style={{ textAlign: 'center' }}>가격</TableCell>
-                          <TableCell style={{ textAlign: 'center' }}>배송조회</TableCell>
-                          <TableCell style={{ textAlign: 'center' }}>주문취소/반품</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {ordersForThisDate.map((order, index) => (
-                          <TableRow key={index}>
-                            <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign: 'center' }}>
-                              <img
-                                src={order.img1}
-                                alt={order.name}
-                                style={{ width: 50, height: 50, cursor: 'pointer', textAlign: 'center' }}
-                                onClick={() => { navigate(`/item/detail/${order.iid}`) }}
-                              />
-                            </TableCell>
-                            <TableCell
-                              style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', cursor: 'pointer', textAlign: 'center' }}
+      {Object.entries(groupedOrdersByDate).map(([date, orders]) => (
+        <div key={date}>
+          <Typography variant="h5" sx={{ marginBottom: 1 }}>
+            {date}
+          </Typography>
+          {sortedOrdersByOrderId().map(({ orderId, orderList, totalPrice }) => {
+            const ordersForThisDate = orderList.filter(order => order.regDate.substring(0, 10) === date);
+            if (ordersForThisDate.length === 0) return null;
+            return (
+              <div key={orderId}>
+                <Typography variant="subtitle1" sx={{ marginBottom: 1 }}>
+                  주문 번호: {orderId}
+                </Typography>
+                <Typography variant="h6" sx={{ marginBottom: 1 }}>
+                  총 가격: {totalPrice.toLocaleString()}원
+                </Typography>
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell style={{ textAlign: 'center' }}>상품 이미지</TableCell>
+                        <TableCell style={{ textAlign: 'center' }}>상품명</TableCell>
+                        <TableCell style={{ textAlign: 'center' }}>개수</TableCell>
+                        <TableCell style={{ textAlign: 'center' }}>가격</TableCell>
+                        <TableCell style={{ textAlign: 'center' }}>배송조회</TableCell>
+                        <TableCell style={{ textAlign: 'center' }}>주문취소/반품</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {ordersForThisDate.map((order, index) => (
+                        <TableRow key={index}>
+                          <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign: 'center' }}>
+                            <img
+                              src={order.img1}
+                              alt={order.name}
+                              style={{ width: 50, height: 50, cursor: 'pointer', textAlign: 'center' }}
                               onClick={() => { navigate(`/item/detail/${order.iid}`) }}
-                            >
-                              {order.name.length > 10 ? order.name.substring(0, 10) + '...' : order.name}
-                              <br />
-                              ({order.option})
-                            </TableCell>
-                            <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign: 'center' }}>{order.count}</TableCell>
-                            <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign: 'center' }}>{order.price.toLocaleString()}원</TableCell>
-                            <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign: 'center' }}>
-                              {order.way ? (
-                                <div onClick={() => DeliveryTracker(order.way)} style={{ cursor: 'pointer', textAlign: 'center' }}>
-                                  <TrackerComponent order={order} />
-                                </div>
-                              ) : order.status}
-                            </TableCell>
-                            <TableCell style={{ textAlign: 'center' }}>
-                              <Button variant="contained" color="error" size="small" onClick={() => handleDelete(order.oid)}>
-                                주문취소
-                              </Button>
-                              {order.review === 0 && order.status === '배송완료' && (
-                                <>
-                                  <br />
-                                  <Button variant="contained" color="primary" size="small" onClick={() => openModal(order.iid, order.oiid)}>리뷰작성</Button>
-                                  <ReviewFormModal isOpen={isModalOpen} handleClose={closeModal} iid={iid} oiid={oiid} />
-                                </>
-                              )}
-                              {order.review === 1 && (
-                                <>
-                                  <br />
-                                  <div>리뷰 작성 완료</div>
-                                </>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  <Divider sx={{ my: 3 }} />
-                </div>
-              );
-            })}
-          </div>
-        ))
-      )}
+                            />
+                          </TableCell>
+                          <TableCell
+                            style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', cursor: 'pointer', textAlign: 'center' }}
+                            onClick={() => { navigate(`/item/detail/${order.iid}`) }}
+                          >
+                            {order.name.length > 10 ? order.name.substring(0, 10) + '...' : order.name}
+                            <br />
+                            ({order.option})
+                          </TableCell>
+                          <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign: 'center' }}>{order.count}</TableCell>
+                          <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign: 'center' }}>{order.price.toLocaleString()}원</TableCell>
+                          <TableCell style={{ borderRight: '1px solid rgba(224, 224, 224, 1)', textAlign: 'center' }}>
+                            {order.way ? (
+                              <div onClick={() => DeliveryTracker(order.way)} style={{ cursor: 'pointer', textAlign: 'center' }}>
+                                <TrackerComponent order={order} />
+                              </div>
+                            ) : order.status}
+                          </TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>
+                            <Button variant="contained" color="error" size="small" onClick={() => handleDelete(order.oid)}>
+                              주문취소
+                            </Button>
+                            {order.review === 0 && order.status === '배송완료' && (
+                              <>
+                                <br />
+                                <Button variant="contained" color="primary" size="small" onClick={() => openModal(order.iid, order.oiid)}>리뷰작성</Button>
+                                <ReviewFormModal isOpen={isModalOpen} handleClose={closeModal} iid={iid} oiid={oiid} />
+                              </>
+                            )}
+                            {order.review === 1 && (
+                              <>
+                                <br />
+                                <div>리뷰 작성 완료</div>
+                              </>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <Divider sx={{ my: 3 }} />
+              </div>
+            );
+          })}
+        </div>
+      ))}
     </Container>
   );
 };

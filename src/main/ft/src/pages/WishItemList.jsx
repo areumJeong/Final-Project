@@ -43,7 +43,7 @@ export default function WishItemList() {
           setUserInfo(info);
           setIsAdmin(info && info.isAdmin === 1);
         } catch (error) {
-          console.error('사용자 정보를 불러오는 중 에러:', error);
+          console.log('사용자 정보를 불러오는 중 에러:', error);
         }
       };
       fetchUserInfo();
@@ -59,7 +59,7 @@ export default function WishItemList() {
         }
         setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching product list:', error);
+        console.log('Error fetching product list:', error);
         setIsLoading(false);
       }
     }

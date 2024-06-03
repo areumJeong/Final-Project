@@ -45,7 +45,7 @@ export default function Karlo({ image, maskImage }) {
       );
       setImageURL(response.data.images[0].image);
     } catch (error) {
-      console.error('Error:', error);
+      console.log('Error:', error);
     } finally {
       setLoading(false);
     }
@@ -53,7 +53,7 @@ export default function Karlo({ image, maskImage }) {
 
   const handleImageUpload = async () => {
     if (!selectedImage || !selectedMask) {
-      console.error('Both image and mask must be selected.');
+      console.log('Both image and mask must be selected.');
       return;
     }
 

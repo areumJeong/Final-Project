@@ -14,7 +14,7 @@ export function CheckoutPage() {
   const [price, setPrice] = useState(0); 
   const location = useLocation();
   const { orderData } = location.state || {};
- console.log(orderData.order.orderId);
+  
   useEffect(() => {
     const fetchPaymentWidget = async () => {
       try {
@@ -65,7 +65,6 @@ export function CheckoutPage() {
     try {
         // 주문 정보를 서버에 전송하고 응답을 받음
         const response = await axios.post('/ft/order/insert', orderData);
-        console.log(response);
         
         // 주문 정보를 이용하여 결제 요청을 보냄
         await paymentWidget?.requestPayment({

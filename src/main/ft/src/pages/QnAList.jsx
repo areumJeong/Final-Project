@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, MenuItem, Select, useMediaQuery, CircularProgress } from '@mui/material';
+import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, MenuItem, Select, useMediaQuery, CircularProgress, Container } from '@mui/material';
 import { selectUserData } from '../api/firebase';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { getItemDetail } from '../components/Item/Items'; // 아이템 정보 가져오기
@@ -266,7 +266,7 @@ function QnAListContent() {
   };
 
   return (
-    <>
+    <Container>
       <AdminCategoryBar/>
       <SelectedItemInfo selectedItem={selectedItem} />
       {loading ? (
@@ -347,6 +347,6 @@ function QnAListContent() {
           />
         </>
       )}
-    </>
+    </Container>
   );
 }

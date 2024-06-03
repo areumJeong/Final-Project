@@ -102,12 +102,11 @@ export default function AdminItemList() {
     if (isConfirmed) {
       deletedItem(iid)
         .then(res => {
-          console.log(res);
           // 삭제된 아이템을 UI에서도 동적으로 제거
           setList(prevList => prevList.filter(item => item.iid !== iid));
         })
         .catch(err => {
-          console.error('Error deleting item:', err);
+          console.log('Error deleting item:', err);
         });
     }
   };

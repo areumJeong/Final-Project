@@ -14,10 +14,10 @@ const TrackerComponent = ({ order }) => {
                     processDeliveryData(data);
                 } else {
                     // Handle error response
-                    console.error('Error fetching delivery information:', response.statusText);
+                    console.log('Error fetching delivery information:', response.statusText);
                 }
             } catch (error) {
-                console.error('Error fetching delivery information:', error);
+                console.log('Error fetching delivery information:', error);
             }
         };
 
@@ -60,10 +60,9 @@ const TrackerComponent = ({ order }) => {
             try {
                 // 주문 상태 업데이트 요청
                 await axios.post(`/ft/order/statusUpdate`, { status: deliveryInfo.status, oid: order.oid }); // deliveryInfo.status와 order.oid 사용
-                console.log('주문 상태가 성공적으로 업데이트되었습니다.');
                 // 주문 목록 다시 불러오기
             } catch (error) {
-                console.error('주문 상태 업데이트 중 에러:', error);
+                console.log('주문 상태 업데이트 중 에러:', error);
             }
         };
 

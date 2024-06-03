@@ -36,7 +36,7 @@ export default function InquiryContent({ isOpen, handleClose, iid }) {
           setUserInfo(info);
           setIsAdmin(info && info.isAdmin === 1);
         } catch (error) {
-          console.error('사용자 정보를 불러오는 중 에러:', error);
+          console.log('사용자 정보를 불러오는 중 에러:', error);
         }
       };
       fetchUserInfo();
@@ -59,7 +59,6 @@ export default function InquiryContent({ isOpen, handleClose, iid }) {
 
     submitBoard(formData)
       .then(response => {
-        console.log('Review submitted successfully:', response);
         handleClose();
         setIssueType('');
         setTitle('');
@@ -68,7 +67,7 @@ export default function InquiryContent({ isOpen, handleClose, iid }) {
         setIsPrivate(false);
       })
       .catch(error => {
-        console.error('Error submitting review:', error);
+        console.log('Error submitting review:', error);
       });
   };
 
@@ -80,7 +79,7 @@ export default function InquiryContent({ isOpen, handleClose, iid }) {
           [name]: url
         }));
       }).catch(error => {
-        console.error('Error uploading image:', error);
+        console.log('Error uploading image:', error);
       });
     }
   }

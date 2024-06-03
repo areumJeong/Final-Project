@@ -64,11 +64,10 @@ export default function ItemInsert() {
   
     insertItem(requestData) // insertItem 함수 사용
       .then(res => {
-        console.log(res);
         navigate(-1);
       })
       .catch(error => {
-        console.error('Error:', error);
+        console.log('Error:', error);
       });
   }
 
@@ -95,7 +94,7 @@ export default function ItemInsert() {
           [name]: url
         }));
       }).catch(error => {
-        console.error('Error uploading image:', error);
+        console.log('Error uploading image:', error);
       });
     }
   }

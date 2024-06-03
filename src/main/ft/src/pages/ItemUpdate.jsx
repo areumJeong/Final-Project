@@ -142,7 +142,7 @@ export default function ItemUpdate() {
           [name]: url
         }));
       }).catch(error => {
-        console.error('Error uploading image:', error);
+        console.log('Error uploading image:', error);
       });
     }
   }
@@ -178,11 +178,10 @@ export default function ItemUpdate() {
     // 서버에 폼 데이터 전송
     updateItem(requestData)
       .then(res => {
-        console.log(res);
         navigate(-1);
       })
       .catch(error => {
-        console.error('Error:', error);
+        console.log('Error:', error);
       });
   }
   return (
