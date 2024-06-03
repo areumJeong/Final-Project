@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { base64Encode } from 'base64-arraybuffer'; // base64 인코딩을 위한 라이브러리 (설치 필요)
+import { base64Encode } from 'base64-arraybuffer';
 import LoadingIndicator from '../publics/LoadingIndicator';
-import { CircularProgress, Typography } from '@mui/material';
 
 const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
 

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
-import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
-import axios from "axios";
-import { Stack } from "react-bootstrap";
+import { Button, Card, CardContent, Grid } from "@mui/material";
+import { orderInsert } from "../../api/orderApi";
 
 const widgetClientKey = process.env.REACT_APP_WIDGET_CLIENT_KEY;
 const customerKey = process.env.REACT_APP_CUSTOMER_KEY;
@@ -64,7 +63,7 @@ export function CheckoutPage() {
   const handlePaymentRequest = async () => {
     try {
         // 주문 정보를 서버에 전송하고 응답을 받음
-        const response = await axios.post('/ft/order/insert', orderData);
+        const response = await orderInsert(orderData);
         
         // 주문 정보를 이용하여 결제 요청을 보냄
         await paymentWidget?.requestPayment({

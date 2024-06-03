@@ -6,7 +6,9 @@ export default function ImageDownload({ img }) {
   const [downloadedImage, setDownloadedImage] = useState(null);
 
   useEffect(() => {
-    downloadImage();
+    if (img) {
+      downloadImage();
+    }
   }, [img]);
 
   const downloadImage = async () => {
