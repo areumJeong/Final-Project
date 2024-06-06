@@ -41,7 +41,7 @@ const DeveloperPage = () => {
   const circles = [
     { id: 1, 
       name: '이강성 :', 
-      description: '상품, 리뷰, 문의의 기능과 결제(toss), 택배(DeliveryTracker), Karlo, cloudinary api, 통합',
+      description: '상품, 리뷰, 문의의 기능과 결제(toss), 택배(DeliveryTracker), Karlo, cloudinary api, 통합, reactjs배포',
       oneLine: '기획할 때 API가 너무 많아 걱정이 되었습니다. 구현 실패한 API도 있었지만 API 사용방법을 공부하게 되어 좋은경험이었습니다.' , 
       imgUrl: '/img/circle01.png' },
     { id: 2, 
@@ -68,7 +68,7 @@ const DeveloperPage = () => {
       imgUrl: '/img/circle04.png' },
     { id: 5, 
       name: '홍시표', 
-      description: '최근 상품, 장바구니와 관리자 분석, 통계 페이지', 
+      description: '최근 상품, 장바구니와 관리자 분석, 통계 페이지, Azure api', 
       oneLine: 'react를 이용해서 웹을 띄우는게 처음으로 작업하는거라 코드 잡기가 어려웠습니다. ' +
                 '또한 back단에서 axios를 이용해서 데이터를 넘겨줄때도 많은 오류가 발생해서 어떤 오류가' +
                 '발생했고 왜 발생했는지 이유를 찾고 해결방안을 찾으면서 공부를 많이 한거같습니다. ',
