@@ -3,7 +3,7 @@
 또한 관리자로 로그인 시 관리자를 위한 상품 추가, 회원 전체의 주문내역 보기, 통계 페이지 등을 제공합니다.
 
 # FURNiture 영상
-[영상](https://www.youtube.com/watch?v=MfuXneddQo8)
+[![Video Label](https://www.youtube.com/watch?v=MfuXneddQo8)
 
 # 프로젝트 기간
 - 2024년 4월 16일 ~ 2024년 6월 14일
