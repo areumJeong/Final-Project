@@ -7,9 +7,6 @@
 # 프로젝트 기간
 - 2024년 4월 16일 ~ 2024년 6월 14일
 
-# 팀원
-## 6명
-
 # [1] 기술 스택
 ![image](https://github.com/Ape07Park/Final-project-24.05-integralation/assets/132667775/5b77c38a-1026-4411-a1e4-659baab2391e)
 
