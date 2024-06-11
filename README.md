@@ -13,22 +13,47 @@ http://3.39.231.168:8090/ft
 
 # [2] 주요 기능
 ## 유저
-회원가입, 로그인, 유저 마이페이지, 유저 정보 수정, 이메일로 비밀번호 변경, sms 아이디 찾기 비밀번호 변경
+- 회원가입
+- 로그인
+- 유저 마이페이지
+- 유저 정보 수정
+- 이메일로 비밀번호 변경
+- SMS 아이디 찾기 및 비밀번호 변경
 
 ## 아이템
-상품 리스트, 리뷰, 해시태그, 검색, 문의, 세일
+- 상품 리스트
+- 리뷰
+- 해시태그
+- 검색
+- 문의
+- 세일
 
 ## 장바구니
-상품 저장, 구매 후 삭제
+- 상품 저장
+- 구매 후 삭제
 
 ## 주문
-결제, 송장번호 조회, 구매 내역
-
+- 결제
+- 송장번호 조회
+- 구매 내역
+- 현재 배달 상태
+  
 ## 관리자
-상품 관리 / 문의내역 관리 / 주문 내역 관리/ 상품 통계
+- 상품 관리
+- 문의내역 관리
+- 주문 내역 관리
+- 상품 통계
 
 ## api
-Firebase Authentication, realtimeDB, Cloudinary, Toss, DeliveryTracker, Chart.js, Karlo, CoolSMS, Azure 등이 있습니다.
+- Firebase Authentication
+- Firebase Realtime DB
+- Cloudinary
+- Toss
+- DeliveryTracker
+- Chart.js
+- Karlo
+- CoolSMS
+- Azure
 
 # [3] 업무 플로우
 ![image](https://github.com/Ape07Park/Final-project-24.05-integralation/assets/132667775/56fda504-e0bf-4460-bc2c-1721d16251a0)
