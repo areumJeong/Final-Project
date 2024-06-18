@@ -52,12 +52,12 @@
  - 데이터베이스에서 추출한 데이터를 기반으로 한 상품 판매 통계 제공
 
 ## 사용할 기술 및 서비스
-1. Frontend: React.js
-2. Backend: SpringBoot
-3. 데이터베이스: Firebase Realtime DB, MySQL
-4. 데이터 시각화: Chart.js
-5. 외부 서비스 연동: Firebase Authentication, Cloudinary, Toss, DeliveryTracker, CoolSMS, Azure, Karlo
-6. 배포 : AWS EC2, Linux
+ - Frontend: React.js
+ - Backend: SpringBoot
+ - 데이터베이스: Firebase Realtime DB, MySQL
+ - 데이터 시각화: Chart.js
+ - 외부 서비스 연동: Firebase Authentication, Cloudinary, Toss, DeliveryTracker, CoolSMS, Azure, Karlo
+ - 배포 : AWS EC2, Linux
 
 # [2] 기술 스택
 ![image](https://github.com/Ape07Park/Final-project-24.05-integralation/assets/132667775/5b77c38a-1026-4411-a1e4-659baab2391e)
