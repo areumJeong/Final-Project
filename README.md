@@ -121,7 +121,18 @@
 </details>
 
 ## 상품 관련 기능
-1. 상품 리스트 및 상세 페이지
+<details>
+  <summary><b>1. 상품 리스트 및 상세 페이지</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>리스트</h3>
+    <ul>
+      <li>MySQL로 데이터를 관리 상품 정보 저장 및 상품 리스트 구현</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/67e1e82c-e712-4713-8f15-fd5f87d2d7b7" alt="리스트">
+    </ul>
+  </div>
+</details>
+
  - MySQL로 데이터를 관리 상품 정보 저장 및 상품 리스트 구현
 2. 리뷰 및 해시태그
  - 상품 상세 페이지에서 사용자 리뷰 및 해시태그 관리
