@@ -256,14 +256,66 @@
 </details>
   
 ## 관리자 관련 기능
-1. 상품 관리
- - 관리자 페이지에서 상품 등록, 수정, 삭제 기능 구현
-2. 문의내역 관리
- - 관리자 페이지에서 사용자 문의 내역 관리
-3. 주문 내역 관리
- - 관리자 페이지에서 주문 정보 확인 및 처리
-4. 상품 통계
- - 데이터베이스에서 추출한 데이터를 기반으로 한 상품 판매 통계 제공
+<details>
+  <summary><b>1. 상품 관리</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>관리자 페이지에서 상품 등록, 수정, 삭제 기능 구현</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/45972bdb-0ff3-4fb4-8411-8aaaf3bcde5c" alt="로그인">
+
+  <li>관리자 페이지에서 상품 등록</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/bc1d2748-037e-4253-b88c-1fa8c1370e0a" alt="로그인">
+
+   <li>관리자 페이지에서 상품 수정</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/1c5c2f62-8c90-4cc4-9fe3-9832d2de6dd2" alt="로그인">
+   <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/80208268-7568-4e93-8814-098216e05845" alt="로그인">
+    <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/9e57f60d-5f29-4026-8382-e2d6817a3ff6" alt="로그인">
+
+  <li>관리자 페이지에서 세일 설정</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/e17a54e2-e171-449a-b1cc-711611fdbf60" alt="로그인">
+  </ul>
+  </div>
+  </details>
+  
+  <details>
+  <summary><b>2. 문의내역 관리</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>관리자 페이지에서 사용자 문의 내역 관리</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/eec2357b-a489-4de2-b733-5e74b06b9b1d" alt="로그인">
+  </ul>
+  </div>
+</details>
+
+ <details>
+  <summary><b>3. 주문 내역 관리</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>관리자 페이지에서 주문 정보 확인 및 처리</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/aec55160-ef8c-4a2a-a0b8-dd6cf849989a" alt="로그인">
+        <li>관리자 페이지에서 송장번호 입력 모달창</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/213599f0-a26b-4142-89ae-5216384642b5" alt="로그인">
+      <li>관리자 페이지에서 주문상세정보 모달창</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/7fb509ba-171b-40d3-880e-ed347b8ecb4c" alt="로그인">
+  </ul>
+  </div>
+</details>
+
+ <details>
+  <summary><b>4. 상품 통계</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>데이터베이스에서 추출한 데이터를 기반으로 한 상품 판매 통계 제공</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/4b7bc210-d966-4a53-a985-5045bcd22f4f" alt="로그인">
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/8d60bf1e-d5d6-4ccd-b9c2-0d15a3f56c66" alt="로그인">
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/538924e6-dd79-4bed-806a-669b616bdaa7" alt="로그인">    
+  </ul>
+  </div>
+</details>
 
 ## api
 - Firebase Authentication
