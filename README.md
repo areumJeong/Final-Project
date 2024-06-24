@@ -194,7 +194,7 @@
   <summary><b>5. 마음에 드는 상품 찜 기능 + AI 방 배경 그리기</b> (👈 Click)</summary>
   <br>
   <div markdown="1">
-    <h3>찜 + AI 방 배경 그리기</h3>
+    <h3>사용자가 찜한 상품 리스트와 Azure의 Computer Vision API를 사용하여 이미지에서 배경을 자동으로 제거, Karlo의 AI 이미지 편집 기능으로 배경 생성 기능 제공</h3>
     <ul>
       <li>찜 리스트</li>
       <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/34ad89d6-dcc5-4c44-a141-07f8f5ddccd2" alt="찜 리스트">
@@ -203,8 +203,6 @@
     </ul>
   </div>
 </details>
-
- - 사용자가 찜한 상품 리스트와 Azure의 Computer Vision API를 사용하여 이미지에서 배경을 자동으로 제거, Karlo의 AI 이미지 편집 기능으로 배경 생성 기능 제공
 
 ## 주문 및 결제 관련 기능
 1. 주문 및 결제
