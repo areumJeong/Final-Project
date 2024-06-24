@@ -1,23 +1,124 @@
-# 가구 쇼핑몰 FUNiture
+# 가구 쇼핑몰 FURNiture
 가구를 다루는 쇼핑몰 웹사이트입니다. 쇼핑몰의 일반적인 기능들에 직관적인 UI를 추가했습니다.
 또한 관리자로 로그인 시 관리자를 위한 상품 추가, 회원 전체의 주문내역 보기, 통계 페이지 등을 제공합니다.
 
+# FURNiture 영상
+- 배포 중단 관계로 시연영상으로 대체
+- [![Video Label](https://i.ytimg.com/vi/MfuXneddQo8/hqdefault.jpg?sqp=-oaymwE2CPYBEIoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgBqgeAAtAFigIMCAAQARhlIGUoZTAP&rs=AOn4CLDRDGLgA1YnJaiYybY-sKx9lgljww)](https://www.youtube.com/watch?v=MfuXneddQo8)
 
 # 프로젝트 기간
 - 2024년 4월 16일 ~ 2024년 6월 14일
 
-# [1] 주요 기능
+# 역할 분담
+- 이강성: 상품, 리뷰, 문의의 기능과 결제(toss), 택배(DeliveryTracker), Karlo, cloudinary api, 통합, 배포
+- 송햇님: 택배(스마트택배) API, 주문내역캘린더, 문의, 비회원주문, 개발자페이지, 하트 토글
+- 정아름: 후기, 회원 주문, footer, ERD, 통계(상품 분석), 실시간 검색어
+- 박성민: 주문, Firebase를 이용한 유저, 소셜로그인 기능과 RealtimeDB, Karlo, CoolSMS api, 배포
+- 홍시표: 최근 상품, 장바구니와 관리자 분석, 통계 페이지, Azure api
+- 김용현: 디자인, 유저인터페이스, 페이지 데이터 출력 기능 연결
+
+# [1] 기술 스택
+![image](https://github.com/Ape07Park/Final-project-24.05-integralation/assets/132667775/5b77c38a-1026-4411-a1e4-659baab2391e)
+
+# [2] 아키텍처
+![아키텍쳐 drawio](https://github.com/Ape07Park/Human-Final-Project/assets/132667775/fd9907ed-339a-4555-9032-c205fa787aca)
+
+# [3] 주요 기능
 ## 유저 관련 기능
-1. 회원가입 및 로그인
- - Firebase Authentication을 사용하여 사용자 인증 기능 구현
-2. 유저 마이페이지
- - Firebase Realtime DB를 이용하여 유저 정보 저장 및 관리
-3. 유저 정보 수정
- - Firebase Authentication 및 Realtime DB를 통해 유저 정보 업데이트
-4. 이메일로 비밀번호 변경
- - Firebase Authentication을 이용하여 이메일로 비밀번호 변경 기능 제공
-5. SMS 아이디 찾기 및 비밀번호 변경
- - CoolSMS API를 활용하여 SMS 전송 기능을 통해 아이디 찾기 및 비밀번호 변경 기능 구현
+<details>
+  <summary><b>1. 회원가입 및 로그인</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>로그인</h3>
+    <ul>
+      <li>Firebase Authentication을 사용하여 사용자 인증 기능 구현</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/7e72acca-af8f-4a17-8a83-714c0169b56f" alt="로그인">
+  </ul>
+  </div>
+</details>
+
+ <details>
+  <summary><b>2. 유저 마이페이지</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>Firebase Realtime DB를 이용하여 유저 정보 저장 및 관리</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/254bf3b4-babf-4620-a069-2b4180276bb0" alt="로그인">
+  </ul>
+  </div>
+</details>
+
+  <details>
+  <summary><b>3. 유저 정보 수정</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>Firebase Authentication 및 Realtime DB를 통해 유저 정보 업데이트</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/e44fc74c-4550-4ba3-b1e8-186e4c93b88a" alt="로그인">
+  </ul>
+  </div>
+</details>
+
+ <details>
+  <summary><b>4. 이메일로 비밀번호 변경</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>Firebase Authentication을 이용하여 이메일로 비밀번호 변경 기능 제공</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/3bb2f4ad-d65b-4ced-a880-de6f03bfd2f3" alt="로그인">
+       
+  <li>이메일 변경을 위한 이메일 입력 모달</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/017a8a55-bcbe-4ba8-8d24-82eacdf46087" alt="로그인">
+       
+  <li>이메일 입력 시 변경됨</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/d7b9a39c-aa91-44c7-a56c-abe8669fae45" alt="로그인">
+
+  <li>이메일</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/4069e2d1-947b-40f1-9c40-2b824bce4bdb" alt="로그인">
+
+  <li>이메일로 비밀번호 변경</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/0e715eaa-0de6-4600-83b9-fe7a5a9e6ff1" alt="로그인">
+  </ul>
+
+   <li>이메일로 비밀번호 변경 완료</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/99f5e50b-1745-4510-8300-1284aeffaafe" alt="로그인">
+  </ul>  
+  </div>
+</details>
+
+ <details>
+  <summary><b>5. SMS로 비밀번호 변경</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>CoolSMS API를 활용하여 SMS 전송 기능을 통해 비밀번호 변경 기능 구현</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/5a29b2eb-af84-4af1-a1ab-d53dacc6ef0b" alt="로그인">
+
+  <li>인증코드 확인</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/2adb478e-e284-480a-a563-c4ccc32ccabb" alt="로그인">
+
+   <li>비밀번호 입력</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/a0f2a854-fd6d-4c00-83e0-786bb9a3ef3f" alt="로그인">   
+  </ul>
+  </div>
+</details>
+
+<details>
+  <summary><b>6. SMS로 아이디 찾기</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>CoolSMS API를 활용하여 SMS 전송 기능을 통해 아이디 찾기 기능 구현</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/10dc9089-53a6-4e52-aa43-f0a614571f0f" alt="로그인">
+
+  <li>인증코드 확인</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/2adb478e-e284-480a-a563-c4ccc32ccabb" alt="로그인">
+
+   <li>비밀번호 입력</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/a0f2a854-fd6d-4c00-83e0-786bb9a3ef3f" alt="로그인">   
+  </ul>
+  </div>
+</details>
 
 ## 상품 관련 기능
 1. 상품 리스트 및 상세 페이지
@@ -51,27 +152,27 @@
 4. 상품 통계
  - 데이터베이스에서 추출한 데이터를 기반으로 한 상품 판매 통계 제공
 
-## 사용할 기술 및 서비스
- - Frontend: React.js
- - Backend: SpringBoot
- - 데이터베이스: Firebase Realtime DB, MySQL
- - 데이터 시각화: Chart.js
- - 외부 서비스 연동: Firebase Authentication, Cloudinary, Toss, DeliveryTracker, CoolSMS, Azure, Karlo
- - 배포 : AWS EC2, Linux
+## api
+- Firebase Authentication
+- Firebase Realtime DB
+- Cloudinary
+- Toss
+- DeliveryTracker
+- Chart.js
+- Karlo
+- CoolSMS
+- Azure
 
-# [2] 기술 스택
-![image](https://github.com/Ape07Park/Final-project-24.05-integralation/assets/132667775/5b77c38a-1026-4411-a1e4-659baab2391e)
-
-# [3] 업무 플로우
+# [4] 업무 플로우
 ![image](https://github.com/Ape07Park/Final-project-24.05-integralation/assets/132667775/56fda504-e0bf-4460-bc2c-1721d16251a0)
 
-# [4] ERD
+# [5] ERD
 ![image](https://github.com/Ape07Park/Final-project-24.05-integralation/assets/132667775/1acb14e4-d903-44ff-9902-b30729a0a6ce)
 
-# [5] API 명세
+# [6] API 명세
 ![image](https://github.com/Ape07Park/Final-project-24.05-integralation/assets/132667775/3a5ba29d-a5d8-4643-9bef-6842265f0861)
 
-# [6] 서비스 구성
+# [7] 서비스 구성
 ## [1] 메인![image](https://github.com/Ape07Park/Final-project-24.05-integralation/assets/132667775/cef4c586-bb21-4fd9-ac71-f3ec1e1889ee)
 
 ## [2] 로그인![image](https://github.com/Ape07Park/Final-project-24.05-integralation/assets/132667775/91ddb2eb-a178-45bc-bf64-87185a219a79)
@@ -109,7 +210,6 @@
 
 
 ## [16] 통계(관리자)![image](https://github.com/Ape07Park/Final-project-24.05-integralation/assets/132667775/7d210218-f211-41c0-907b-46da6030a680)
-
 
 
 
