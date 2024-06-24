@@ -123,36 +123,199 @@
 </details>
 
 ## 상품 관련 기능
-1. 상품 리스트 및 상세 페이지
- - MySQL로 데이터를 관리 상품 정보 저장 및 상품 리스트 구현
-2. 리뷰 및 해시태그
- - 상품 상세 페이지에서 사용자 리뷰 및 해시태그 관리
-3. 검색 기능
- - 데이터베이스 검색 기능을 구현하여 상품 검색 지원
-4. 세일 및 장바구니
- - 장바구니 기능을 구현하고, 상품의 할인 정보 관리
-5. 상품 저장 및 수정 삭제
- - 관리가 저장한 상품 관리 및 수정 삭제 기능 제공
-6. 마음에 드는 상품 찜 기능 + AI 방 배경 그리기
- - 사용자가 찜한 상품 리스트와 Azure의 Computer Vision API를 사용하여 이미지에서 배경을 자동으로 제거, Karlo의 AI 이미지 편집 기능으로 배경 생성 기능 제공
+<details>
+  <summary><b>1. 상품 리스트 및 상세 페이지, 해시태그</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>리스트</h3>
+    <ul>
+      <li>MySQL로 데이터를 관리 상품 정보 저장 및 상품 리스트 구현</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/67e1e82c-e712-4713-8f15-fd5f87d2d7b7" alt="상품리스트">
+    </ul>
+    <h3>상세 페이지</h3>
+    <ul>
+      <li>MySQL로 데이터를 관리 상품 정보 저장 및 상품 상세 페이지 및 해시태그 구현</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/67e1e82c-e712-4713-8f15-fd5f87d2d7b7" alt="상세페이지">
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary><b>2. 리뷰 및 문의</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>리뷰</h3>
+    <ul>
+      <li>상품 상세 페이지에서 사용자 리뷰 리스트</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/828df158-d72b-4718-9b4e-d0c2a1534032" alt="리뷰 리스트">
+      <li>리뷰 작성</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/bb234e38-a7c7-4d65-a238-fe7aa9ee5afc" alt="리뷰 작성">
+      <li>리뷰 수정</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/1b271334-2938-4494-85c3-87b408171c41" alt="리뷰 수정">
+    </ul>
+    <h3>문의</h3>
+    <ul>
+      <li>상품 상세 페이지에서 사용자 문의 리스트</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/f975a32c-125c-4b0d-b1eb-c47a1126273d" alt="문의 리스트">
+      <li>문의 작성</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/c3c5d970-0da4-4524-a16e-e5ab4dd7c42d" alt="문의 작성">
+      <li>문의 수정 및 삭제</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/d022de92-1820-4c94-9049-e941f261646e" alt="문의 수정 및 삭제">
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary><b>3. 검색 기능</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>검색 기능</h3>
+    <ul>
+      <li>데이터베이스 검색 기능을 구현하여 상품 검색 지원</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/577fc44b-91e5-4dd6-bf96-ec48bc870ad0" alt="검색창">
+      <li>검색 리스트</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/82dd6120-9d42-4682-8568-e5ea34f4b7a3" alt="검색 리스트">
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary><b>4. 세일 및 장바구니</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>세일</h3>
+    <ul>
+      <li>세일 리스트</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/62e2c6e7-1c26-441f-ad18-bd8f8a5e1dcd" alt="세일 리스트">
+    </ul>
+    <h3>장바구니</h3>
+    <ul>
+      <li>장바구니 수량 변경 및 삭제 주문하기 기능</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/d6d529f7-ab25-43b7-b483-96e55b2f645f" alt="장바구니">
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary><b>5. 마음에 드는 상품 찜 기능 + AI 방 배경 그리기</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>사용자가 찜한 상품 리스트와 Azure의 Computer Vision API를 사용하여 이미지에서 배경을 자동으로 제거, Karlo의 AI 이미지 편집 기능으로 배경 생성 기능 제공</h3>
+    <ul>
+      <li>찜 리스트</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/34ad89d6-dcc5-4c44-a141-07f8f5ddccd2" alt="찜 리스트">
+      <li>AI 방 배경 생성</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/7eb8c614-cdcc-4c08-b3ad-598f6a00cf2f" alt="AI 방 배경 생성">
+    </ul>
+  </div>
+</details>
 
 ## 주문 및 결제 관련 기능
-1. 주문 및 결제
- - Toss API를 통해 결제 처리 및 결제 상태 관리
-2. 송장번호 조회 및 현재 배달 상태
- - DeliveryTracker API를 사용하여 송장번호 조회 및 배송 상태 관리
-3. 구매 내역 관리
- - 데이터베이스에 구매 내역 저장 및 관리
+<details>
+  <summary><b>1. 주문 및 결제</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>Toss API를 통해 결제 처리 및 결제 상태 관리</h3>
+    <ul>
+      <li>결제창</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/3aafd7bc-3e66-4be4-926c-5ac6a0535f89" alt="결제창">
+      <li>Toss API를 통해 결제창</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/b9c2f300-59fa-4861-95e2-744de03330a3" alt="Toss API를 통해 결제창">
+      <li>Toss API를 통해 결제 처리</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/3011307a-2ca8-44be-877a-63b7657ce894" alt="Toss API를 통해 결제 처리">
+      <li>Toss API를 통해 결제 완료</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/6128a335-e2e7-4406-8746-dd777fa0b422" alt="Toss API를 통해 결제 완료">
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary><b>2. 구매 내역 관리</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>데이터베이스에 구매 내역 저장 및 관리</h3>
+    <ul>
+      <li>주문내역 리스트</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/c821ab6b-e00e-4c6b-ab4d-4df13b5a3b58" alt="주문내역 리스트">
+      <li>주문내역 상세조회</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/fcf6db31-ac65-40df-a642-7df2316cdb99" alt="주문내역 상세조회">
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary><b>3. 송장번호 조회 및 현재 배달 상태</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>DeliveryTracker API를 사용하여 송장번호 조회 및 배송 상태 관리</h3>
+    <ul>
+      <li>송장번호 조회 및 배송 상태 관리</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/673a92fc-24c1-4c8f-addd-f33c9acd2eed" alt="송장번호 조회 및 배송 상태 관리">
+    </ul>
+  </div>
+</details>
   
 ## 관리자 관련 기능
-1. 상품 관리
- - 관리자 페이지에서 상품 등록, 수정, 삭제 기능 구현
-2. 문의내역 관리
- - 관리자 페이지에서 사용자 문의 내역 관리
-3. 주문 내역 관리
- - 관리자 페이지에서 주문 정보 확인 및 처리
-4. 상품 통계
- - 데이터베이스에서 추출한 데이터를 기반으로 한 상품 판매 통계 제공
+<details>
+  <summary><b>1. 상품 관리</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>관리자 페이지에서 상품 등록, 수정, 삭제 기능 구현</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/45972bdb-0ff3-4fb4-8411-8aaaf3bcde5c" alt="로그인">
+
+  <li>관리자 페이지에서 상품 등록</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/bc1d2748-037e-4253-b88c-1fa8c1370e0a" alt="로그인">
+
+   <li>관리자 페이지에서 상품 수정</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/1c5c2f62-8c90-4cc4-9fe3-9832d2de6dd2" alt="로그인">
+   <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/80208268-7568-4e93-8814-098216e05845" alt="로그인">
+    <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/9e57f60d-5f29-4026-8382-e2d6817a3ff6" alt="로그인">
+
+  <li>관리자 페이지에서 세일 설정</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/e17a54e2-e171-449a-b1cc-711611fdbf60" alt="로그인">
+  </ul>
+  </div>
+  </details>
+  
+  <details>
+  <summary><b>2. 문의내역 관리</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>관리자 페이지에서 사용자 문의 내역 관리</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/eec2357b-a489-4de2-b733-5e74b06b9b1d" alt="로그인">
+  </ul>
+  </div>
+</details>
+
+ <details>
+  <summary><b>3. 주문 내역 관리</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>관리자 페이지에서 주문 정보 확인 및 처리</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/aec55160-ef8c-4a2a-a0b8-dd6cf849989a" alt="로그인">
+        <li>관리자 페이지에서 송장번호 입력 모달창</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/213599f0-a26b-4142-89ae-5216384642b5" alt="로그인">
+      <li>관리자 페이지에서 주문상세정보 모달창</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/7fb509ba-171b-40d3-880e-ed347b8ecb4c" alt="로그인">
+  </ul>
+  </div>
+</details>
+
+ <details>
+  <summary><b>4. 상품 통계</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <ul>
+      <li>데이터베이스에서 추출한 데이터를 기반으로 한 상품 판매 통계 제공</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/4b7bc210-d966-4a53-a985-5045bcd22f4f" alt="로그인">
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/8d60bf1e-d5d6-4ccd-b9c2-0d15a3f56c66" alt="로그인">
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/538924e6-dd79-4bed-806a-669b616bdaa7" alt="로그인">    
+  </ul>
+  </div>
+</details>
 
 ## api
 - Firebase Authentication
