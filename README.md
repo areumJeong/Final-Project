@@ -211,12 +211,49 @@
 </details>
 
 ## 주문 및 결제 관련 기능
-1. 주문 및 결제
- - Toss API를 통해 결제 처리 및 결제 상태 관리
-2. 송장번호 조회 및 현재 배달 상태
- - DeliveryTracker API를 사용하여 송장번호 조회 및 배송 상태 관리
-3. 구매 내역 관리
- - 데이터베이스에 구매 내역 저장 및 관리
+<details>
+  <summary><b>1. 주문 및 결제</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>Toss API를 통해 결제 처리 및 결제 상태 관리</h3>
+    <ul>
+      <li>결제창</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/3aafd7bc-3e66-4be4-926c-5ac6a0535f89" alt="결제창">
+      <li>Toss API를 통해 결제창</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/b9c2f300-59fa-4861-95e2-744de03330a3" alt="Toss API를 통해 결제창">
+      <li>Toss API를 통해 결제 처리</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/3011307a-2ca8-44be-877a-63b7657ce894" alt="Toss API를 통해 결제 처리">
+      <li>Toss API를 통해 결제 완료</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/6128a335-e2e7-4406-8746-dd777fa0b422" alt="Toss API를 통해 결제 완료">
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary><b>2. 구매 내역 관리</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>데이터베이스에 구매 내역 저장 및 관리</h3>
+    <ul>
+      <li>주문내역 리스트</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/c821ab6b-e00e-4c6b-ab4d-4df13b5a3b58" alt="주문내역 리스트">
+      <li>주문내역 상세조회</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/fcf6db31-ac65-40df-a642-7df2316cdb99" alt="주문내역 상세조회">
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary><b>3. 송장번호 조회 및 현재 배달 상태</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>DeliveryTracker API를 사용하여 송장번호 조회 및 배송 상태 관리</h3>
+    <ul>
+      <li>송장번호 조회 및 배송 상태 관리</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/673a92fc-24c1-4c8f-addd-f33c9acd2eed" alt="송장번호 조회 및 배송 상태 관리">
+    </ul>
+  </div>
+</details>
   
 ## 관리자 관련 기능
 1. 상품 관리
