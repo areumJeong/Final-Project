@@ -31,8 +31,10 @@
   <div markdown="1">
     <h3>로그인</h3>
     <ul>
-      <li>Firebase Authentication을 사용하여 사용자 인증 기능 구현</li>
+      <li>Firebase Authentication을 사용하여 로그인 기능 구현</li>
   <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/7e72acca-af8f-4a17-8a83-714c0169b56f" alt="로그인">
+       <li>Firebase Authentication을 사용하여 회원가입 기능 구현</li>
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/2eb69b62-4fea-460e-b3f2-2de062cda279" alt="로그인">
   </ul>
   </div>
 </details>
@@ -109,57 +111,21 @@
   <div markdown="1">
     <ul>
       <li>CoolSMS API를 활용하여 SMS 전송 기능을 통해 아이디 찾기 기능 구현</li>
-  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/10dc9089-53a6-4e52-aa43-f0a614571f0f" alt="로그인">
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/f31d8c7f-d96c-4d3e-aba5-fadce20ac859" alt="로그인">
 
   <li>인증코드 확인</li>
   <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/2adb478e-e284-480a-a563-c4ccc32ccabb" alt="로그인">
 
    <li>비밀번호 입력</li>
-  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/a0f2a854-fd6d-4c00-83e0-786bb9a3ef3f" alt="로그인">   
+  <img src="https://github.com/Ape07Park/Human-Final-Project/assets/132667775/91770945-035c-4d0a-be3a-7096f9e78c78" alt="로그인">   
   </ul>
   </div>
 </details>
 
 ## 상품 관련 기능
-<details>
-  <summary><b>1. 상품 리스트 및 상세 페이지, 해시태그</b> (👈 Click)</summary>
-  <br>
-  <div markdown="1">
-    <h3>리스트</h3>
-    <ul>
-      <li>MySQL로 데이터를 관리 상품 정보 저장 및 상품 리스트 구현</li>
-      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/67e1e82c-e712-4713-8f15-fd5f87d2d7b7" alt="상품리스트">
-    </ul>
-    <h3>상세 페이지</h3>
-    <ul>
-      <li>MySQL로 데이터를 관리 상품 정보 저장 및 상품 상세 페이지 및 해시태그 구현</li>
-      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/67e1e82c-e712-4713-8f15-fd5f87d2d7b7" alt="상세페이지">
-    </ul>
-  </div>
-</details>
-<details>
-  <summary><b>2. 리뷰 및 문의</b> (👈 Click)</summary>
-  <br>
-  <div markdown="1">
-    <h3>리뷰</h3>
-    <ul>
-      <li>상품 상세 페이지에서 사용자 리뷰 리스트</li>
-      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/828df158-d72b-4718-9b4e-d0c2a1534032" alt="리뷰리스트">
-      <li>리뷰 작성</li>
-      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/bb234e38-a7c7-4d65-a238-fe7aa9ee5afc" alt="리뷰작성">
-      <li>리뷰 수정</li>
-      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/1b271334-2938-4494-85c3-87b408171c41" alt="리뷰수정">
-    </ul>
-    <h3>문의</h3>
-    <ul>
-      <li>상품 상세 페이지에서 사용자 문의 리스트</li>
-      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/f975a32c-125c-4b0d-b1eb-c47a1126273d" alt="문의 리스트">
-      <li>문의 작성</li>
-      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/c3c5d970-0da4-4524-a16e-e5ab4dd7c42d" alt="문의작성">
-    </ul>
-  </div>
-</details>
-
+1. 상품 리스트 및 상세 페이지
+ - MySQL로 데이터를 관리 상품 정보 저장 및 상품 리스트 구현
+2. 리뷰 및 해시태그
  - 상품 상세 페이지에서 사용자 리뷰 및 해시태그 관리
 3. 검색 기능
  - 데이터베이스 검색 기능을 구현하여 상품 검색 지원
@@ -246,6 +212,7 @@
 
 
 ## [16] 통계(관리자)![image](https://github.com/Ape07Park/Final-project-24.05-integralation/assets/132667775/7d210218-f211-41c0-907b-46da6030a680)
+
 
 
 
