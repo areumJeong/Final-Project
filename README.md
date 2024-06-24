@@ -144,30 +144,66 @@
     <h3>리뷰</h3>
     <ul>
       <li>상품 상세 페이지에서 사용자 리뷰 리스트</li>
-      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/828df158-d72b-4718-9b4e-d0c2a1534032" alt="리뷰리스트">
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/828df158-d72b-4718-9b4e-d0c2a1534032" alt="리뷰 리스트">
       <li>리뷰 작성</li>
-      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/bb234e38-a7c7-4d65-a238-fe7aa9ee5afc" alt="리뷰작성">
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/bb234e38-a7c7-4d65-a238-fe7aa9ee5afc" alt="리뷰 작성">
       <li>리뷰 수정</li>
-      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/1b271334-2938-4494-85c3-87b408171c41" alt="리뷰수정">
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/1b271334-2938-4494-85c3-87b408171c41" alt="리뷰 수정">
     </ul>
     <h3>문의</h3>
     <ul>
       <li>상품 상세 페이지에서 사용자 문의 리스트</li>
       <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/f975a32c-125c-4b0d-b1eb-c47a1126273d" alt="문의 리스트">
       <li>문의 작성</li>
-      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/c3c5d970-0da4-4524-a16e-e5ab4dd7c42d" alt="문의작성">
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/c3c5d970-0da4-4524-a16e-e5ab4dd7c42d" alt="문의 작성">
+      <li>문의 수정 및 삭제</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/d022de92-1820-4c94-9049-e941f261646e" alt="문의 수정 및 삭제">
+    </ul>
+  </div>
+</details>
+<details>
+  <summary><b>3. 검색 기능</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>검색 기능</h3>
+    <ul>
+      <li>데이터베이스 검색 기능을 구현하여 상품 검색 지원</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/577fc44b-91e5-4dd6-bf96-ec48bc870ad0" alt="검색창">
+      <li>검색 리스트</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/82dd6120-9d42-4682-8568-e5ea34f4b7a3" alt="검색 리스트">
+    </ul>
+  </div>
+</details>
+<details>
+  <summary><b>4. 세일 및 장바구니</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>세일</h3>
+    <ul>
+      <li>세일 리스트</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/62e2c6e7-1c26-441f-ad18-bd8f8a5e1dcd" alt="세일 리스트">
+    </ul>
+    <h3>장바구니</h3>
+    <ul>
+      <li>장바구니 수량 변경 및 삭제 주문하기 기능</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/d6d529f7-ab25-43b7-b483-96e55b2f645f" alt="장바구니">
+    </ul>
+  </div>
+</details>
+<details>
+  <summary><b>5. 마음에 드는 상품 찜 기능 + AI 방 배경 그리기</b> (👈 Click)</summary>
+  <br>
+  <div markdown="1">
+    <h3>찜 + AI 방 배경 그리기</h3>
+    <ul>
+      <li>찜 리스트</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/34ad89d6-dcc5-4c44-a141-07f8f5ddccd2" alt="찜 리스트">
+      <li>AI 방 배경 생성</li>
+      <img src="https://github.com/KangSungLee/Final-Project/assets/155405751/7eb8c614-cdcc-4c08-b3ad-598f6a00cf2f" alt="AI 방 배경 생성">
     </ul>
   </div>
 </details>
 
- - 상품 상세 페이지에서 사용자 리뷰 및 해시태그 관리
-3. 검색 기능
- - 데이터베이스 검색 기능을 구현하여 상품 검색 지원
-4. 세일 및 장바구니
- - 장바구니 기능을 구현하고, 상품의 할인 정보 관리
-5. 상품 저장 및 수정 삭제
- - 관리가 저장한 상품 관리 및 수정 삭제 기능 제공
-6. 마음에 드는 상품 찜 기능 + AI 방 배경 그리기
  - 사용자가 찜한 상품 리스트와 Azure의 Computer Vision API를 사용하여 이미지에서 배경을 자동으로 제거, Karlo의 AI 이미지 편집 기능으로 배경 생성 기능 제공
 
 ## 주문 및 결제 관련 기능
